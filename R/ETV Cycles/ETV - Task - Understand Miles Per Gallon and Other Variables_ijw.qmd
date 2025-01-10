@@ -43,7 +43,8 @@ You only need to install the packages once. After installing the packages, you c
 ##### Load Libraries (Empty)
 
 ```{r}
-
+library(dplyr)     ## Data Transformation
+library(ggplot2)   ## Data Visualization
 
 ```
 
