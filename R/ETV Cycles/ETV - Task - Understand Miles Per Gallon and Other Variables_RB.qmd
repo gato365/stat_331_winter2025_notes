@@ -118,6 +118,8 @@ Q6. What is the definition of data transformation?
 
 <!-- \[Place Answer - Begin\] -->
 
+Data transformation is the process of transforming data from one format or structure into another format or structure
+
 <!-- \[Place Answer - End\] -->
 
 #### Learning Moment 4 - `select()`
@@ -135,11 +137,17 @@ Q6a. Go ahead and use `str()` on the `select_mpg_mtcars_df`. How many variables 
 
 <!-- \[Place Answer - Begin\] -->
 
+```{r}
+str(select_mpg_mtcars_df)
+```
+
 <!-- \[Place Answer - End\] -->
 
 Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+The select function is used to select columns from a data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -151,18 +159,22 @@ filter_wt_mtcars_df <- mtcars %>%
 ```
 
 ```{r}
-View(filter_wt_mtcars_df)
+View(filter_wt_mtcars_df) 
 ```
 
 Q8. What is the definition of the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
+The filter function is used to filter columns from a data set and remove anything that doesn't fit the criteria
+
 <!-- \[Place Answer - End\] -->
 
 Q9. What are other operators that can be used with the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+\>, \<, ==, \>=, \<=, !=
 
 <!-- \[Place Answer - End\] -->
 
@@ -183,6 +195,8 @@ View(mutate_kmpl_mtcars_df)
 Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+Mutate is used to create a new variable or modify an existing variable in the data frame
 
 <!-- \[Place Answer - End\] -->
 
