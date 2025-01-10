@@ -32,20 +32,27 @@ The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fu
 
 ```{r}
 ## Uncomment the following lines to install the packages
-# install.packages("dplyr")
-# install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("ggplot2")
 ```
+
+\*\*This is called an "R chunk"
 
 You only need to install the packages once. After installing the packages, you can load them using the `library()` function.
 
-**Libraries** are used to load functions that are not part of the base R package. In this case, we will be using the `dplyr` and `ggplot2` libraries. The `dplyr` library is used for data transformation, while the `ggplot2` library is used for data visualization.
+-   Once you buy the book, you don't need to buy it again
+
+**Libraries** are used to load functions that are not part of the base R package. In this case, we will be using the `dplyr` and `ggplot2` libraries. The `dplyr` library is used for [data transformation]{.underline}, while the `ggplot2` library is used for [data visualization]{.underline}.
 
 ##### Load Libraries (Empty)
 
 ```{r}
-
+library(dplyr) ## Data Transformation
+library(ggplot2) ## Data Visualization
 
 ```
+
+Warnings are not errors
 
 ##### Do a `commit` to your branch.
 
