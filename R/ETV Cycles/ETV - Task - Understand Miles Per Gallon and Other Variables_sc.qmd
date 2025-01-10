@@ -102,6 +102,8 @@ Q5. How can we view the tidy data frame `mtcars`?
 
 <!-- \[Place Answer - Begin\]  -->
 
+{r} view(mtcars)
+
 <!-- \[Place Answer - End\] -->
 
 ##### Do a `commit` to your branch.
@@ -114,8 +116,9 @@ Q6. What is the definition of data transformation?
 
 <!-- \[Place Answer - Begin\] -->
 
-```{r}
-view(mtcars)
+the process of converting data from structure or formateinto another format or structure
+
+```         
 ```
 
 ```{r}
@@ -143,11 +146,17 @@ Q6a. Go ahead and use `str()` on the `select_mpg_mtcars_df`. How many variables 
 
 <!-- \[Place Answer - Begin\] -->
 
+```{r}
+str(select_mpg_mtcars_df)
+```
+
 <!-- \[Place Answer - End\] -->
 
 Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+the select() function is used to select columns from a data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -166,11 +175,15 @@ Q8. What is the definition of the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
+the filter() function selects rows based on a critieria (logical condition)
+
 <!-- \[Place Answer - End\] -->
 
 Q9. What are other operators that can be used with the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+\<, \>, == \<=, \>=, !=
 
 <!-- \[Place Answer - End\] -->
 
@@ -191,6 +204,8 @@ View(mutate_kmpl_mtcars_df)
 Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+the mutate() function is used to create a new variable or modify an existing variable
 
 <!-- \[Place Answer - End\] -->
 
@@ -221,6 +236,8 @@ Q11. What is the definition of data visualization?
 
 <!-- \[Place Answer - Begin\] -->
 
+Data visualizations are the graphical representation of data, it is used to clearly and efficiently communicate data through graphical means.
+
 <!-- \[Place Answer - End\] -->
 
 #### Sub Task 1
@@ -230,7 +247,9 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
+mtcars %>% 
+  # select(mpg) %>% 
+  ggplot(aes(x=mpg ))+ geom_histogram()
 
 ```
 
@@ -247,7 +266,13 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
+p1 <- mtcars %>% 
+  select(mpg) %>% 
+  ggplot(aes(x=mpg)) +
+  geom_density() +
+  labs(title = "Density Plot of Miles per Gallon" , x = "Miles per Gallon")
+p1 + theme_bw() +
+ theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
 *Note 3:*
@@ -268,7 +293,15 @@ Q11. What is the definition of data visualization?
 
 ```{r}
 
-
+subtask3 <- mtcars %>% 
+  select(mpg, hp) %>% 
+  ggplot(aes(x = hp, y = mpg )) +
+  geom_point(color = "red", size = 1.5) +
+  labs(title = "Scatter Plot of MPG and HP" ,  x = "Horse Power",  y = "Miles per Gallon")+
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_smooth(method = "lm", se = FALSE)
+subtask3
 ```
 
 *Note 5:*
@@ -276,6 +309,7 @@ Q11. What is the definition of data visualization?
 *Note 6:*
 
 ```{r}
+ 
 
 ```
 
@@ -286,7 +320,14 @@ Q11. What is the definition of data visualization?
 *Sub Task 4:* Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Filter the data to only include cars with 6 cylinders. Describe your findings. Describe your findings.
 
 ```{r}
-
+ mtcars %>% 
+  filter( cyl == 6) %>% 
+  ggplot(aes(x = hp, y = mpg )) +
+  geom_point(color = "red", size = 1.5) +
+  labs(title = "Scatter Plot of MPG and HP" ,  x = "Horse Power",  y = "Miles per Gallon")+
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_smooth(method = "lm", se = FALSE)
 
 ```
 
@@ -295,7 +336,15 @@ Q11. What is the definition of data visualization?
 *Sub Task 5:* Create a new variable named `wt_lbs`. Create a scatter plot of miles per gallon `mpg` and weight in lbs `wt_lbs`. Filter the data to only include cars with 6 cylinders. Add a trend line. Describe your findings.
 
 ```{r}
-
+mtcars %>% 
+  mutate(wt_lbs) %>% 
+  %>% 
+  ggplot(aes(x = hp, y = mpg )) +
+  geom_point(color = "red", size = 1.5) +
+  labs(title = "Scatter Plot of MPG and HP" ,  x = "Horse Power",  y = "Miles per Gallon")+
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_smooth(method = "lm", se = FALSE)
 
 ```
 
