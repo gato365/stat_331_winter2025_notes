@@ -173,7 +173,11 @@ Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
+<<<<<<< HEAD
 The select() function is used to select columns from a data frame
+=======
+The select() fucntion is used to select columns from a data frame
+>>>>>>> a1aa993 (Learned about Data transformations with R functions)
 
 <!-- \[Place Answer - End\] -->
 
@@ -216,7 +220,7 @@ Q9. What are other operators that can be used with the `filter()` function?
 
 ```{r}
 mutate_kmpl_mtcars_df <- mtcars %>% 
-  mutate(kmpl = mpg * 0.425144)
+  mutate(kmpl = mpg * 0.425144, new_var = 1)
 
 ```
 
@@ -230,7 +234,11 @@ Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
+<<<<<<< HEAD
 the mutate function is used to create a new variable or modify an existing variable in the data frame
+=======
+mutate function is used to create a new variable or modify an existing variable in the data frame
+>>>>>>> a1aa993 (Learned about Data transformations with R functions)
 
 <!-- \[Place Answer - End\] -->
 
