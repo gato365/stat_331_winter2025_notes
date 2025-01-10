@@ -132,6 +132,10 @@ Q6. What is the definition of data transformation?
 
 <!-- \[Place Answer - Begin\] -->
 
+Data transformation is the process of converting data from one format or structure into another format or structure
+
+-   in this class we are doing 55-60% data transformation
+
 <!-- \[Place Answer - End\] -->
 
 #### Learning Moment 4 - `select()`
@@ -143,11 +147,21 @@ select_mpg_mtcars_df <- mtcars %>%
 
 `%>%` or `|>` is the pipe operator. It is used to pass the output of one function as an argument to another function. It is used to chain multiple functions together in a sequence.
 
-`<-` is the assignment operator. It is used to assign the output of a function to a variable.
+-   could of also done select mtcars (mpg) but this is better
+
+-   \_df for it being a dataframe -- also name is descriptive (not true on homework though)
+
+-   can do mpg, cyl to include both, or -mpg to remove it -- lot of versatility here
+
+`<-` is the assignment (STORE) operator. It is used to assign the output of a function to a variable.
 
 Q6a. Go ahead and use `str()` on the `select_mpg_mtcars_df`. How many variables are seen?
 
 <!-- \[Place Answer - Begin\] -->
+
+```{r}
+str(select_mpg_mtcars_df)
+```
 
 <!-- \[Place Answer - End\] -->
 
@@ -155,12 +169,18 @@ Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
+The select function is used to select columns from a data frame
+
 <!-- \[Place Answer - End\] -->
 
 #### Learning Moment 5 - `filter()`
 
+control + shift + m shows %\>%
+
+alt + - = \<-
+
 ```{r}
-filter_wt_mtcars_df <- mtcars %>% 
+filter_wt_mtcars_df <- mtcars %>%
   filter(wt > 2)
 ```
 
@@ -172,11 +192,29 @@ Q8. What is the definition of the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
+-   Number of rows change, columns stay the same (unlike select) -- can filter in view and see none are under 2 now
+
+    The filter function considers rows based on a criteria (logical condition)
+
+-   In homework exercise with multiple conditions (I assume you use a comma)
+
 <!-- \[Place Answer - End\] -->
 
 Q9. What are other operators that can be used with the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+-   \>
+
+-   \<
+
+-   == (equal to)
+
+-   \>= (at least)
+
+-   \<= (at most)
+
+-   != (Not equal)
 
 <!-- \[Place Answer - End\] -->
 
@@ -185,7 +223,6 @@ Q9. What are other operators that can be used with the `filter()` function?
 ```{r}
 mutate_kmpl_mtcars_df <- mtcars %>% 
   mutate(kmpl = mpg * 0.425144)
-
 ```
 
 `kmpl` is defined as miles per gallon `mpg` multiplied by 0.425144 to convert miles per gallon to kilometers per liter.
@@ -197,6 +234,10 @@ View(mutate_kmpl_mtcars_df)
 Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+mutate function is used to create a new variable or modify an existing variable in the data frame
+
+-   If you say, new_var=1 each row will have the value for 1 for that new variable
 
 <!-- \[Place Answer - End\] -->
 
