@@ -43,8 +43,8 @@ You only need to install the packages once. After installing the packages, you c
 ##### Load Libraries (Empty)
 
 ```{r}
-
-
+library(dplyr)
+library(ggplot2)
 ```
 
 ##### Do a `commit` to your branch.
