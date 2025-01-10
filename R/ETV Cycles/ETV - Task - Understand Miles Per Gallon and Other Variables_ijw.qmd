@@ -43,19 +43,9 @@ You only need to install the packages once. After installing the packages, you c
 ##### Load Libraries (Empty)
 
 ```{r}
-<<<<<<< HEAD
 library(dplyr)     ## Data Transformation
 library(ggplot2)   ## Data Visualization
-=======
-<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
-library(dplyr)   ## Data Transformation
-library(ggplot2) ## Data Visualization
-=======
-library(dplyr)     ## Data Transformation
-library(ggplot2)   ## Data Visualization
->>>>>>> c62eed1 (Added libraries for data transformation and visualization):R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
 
->>>>>>> 94dc048 (merge)
 ```
 
 ##### Do a `commit` to your branch.
@@ -130,15 +120,6 @@ str(mtcars)
 
 ```
 
-<<<<<<< HEAD
-=======
-```{r}
-
-```
-
->>>>>>> cfb4078 (Viewing data and data extraction - ijw)
-<!-- \[Place Answer - End\] -->
-
 ##### Do a `commit` to your branch.
 
 ------------------------------------------------------------------------
@@ -178,11 +159,7 @@ Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
-<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
 The select() fucntion is used to select columns from a data frame
-=======
-The select() function is used to select columns from a data frame
->>>>>>> ed3fb41 ( added some plots through Visualization sub task 3):R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
 
 <!-- \[Place Answer - End\] -->
 
@@ -282,16 +259,10 @@ Data visualziations is the graphical representation of Data. It is used to commu
 
 ```{r}
 mtcars %>% 
-<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
-  # select(mpg) %>% 
-  ggplot(aes(x = mpg)) + 
-  geom_histogram()
-
-=======
   select(mpg) %>% 
   ggplot(aes(x = mpg)) + 
   geom_histogram()
->>>>>>> ed3fb41 ( added some plots through Visualization sub task 3):R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
+
 ```
 
 *Note 1:*
@@ -322,10 +293,6 @@ p1 <- mtcars %>%
 p1 +
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
-<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
-  
-=======
->>>>>>> ed3fb41 ( added some plots through Visualization sub task 3):R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
 ```
 
 <!-- \[Place Answer - End\] -->
@@ -343,19 +310,6 @@ mtcars %>%
   geom_point(color = "red", size =2) +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
-
-<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
-  theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5)) 
-=======
-mtcars %>% 
-  select(mpg,hp) %>% 
-  ggplot(aes(x = hp, y = mpg)) +
-  geom_point(color = "red", size =2) +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
->>>>>>> ed3fb41 ( added some plots through Visualization sub task 3):R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
-
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
 ```
