@@ -59,7 +59,7 @@ Q1. What is the definition of data extraction?
 
 <!-- \[Place Answer - Begin\] -->
 
-To bring data from some source into your working environment
+-   To bring data from some source into your working environment
 
 ```{r}
 data("mtcars")
@@ -125,7 +125,7 @@ Q6. What is the definition of data transformation?
 
 <!-- \[Place Answer - Begin\] -->
 
-Data transformation is the process of converting data from one format of structure into another format or structure
+-   Data transformation is the process of converting data from one format of structure into another format or structure
 
 <!-- \[Place Answer - End\] -->
 
@@ -154,7 +154,7 @@ Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
-Select function is used to select columns from a data frame
+-   Select function is used to select columns from a data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -173,9 +173,7 @@ Q8. What is the definition of the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
-The filter() function allows for certain criteria to be shown as long as it is met
-
-The filter() function considers rows based on a criteria (logical condition)
+-   The filter() function considers rows based on a criteria (logical condition)
 
 <!-- \[Place Answer - End\] -->
 
@@ -183,7 +181,7 @@ Q9. What are other operators that can be used with the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
--   \<, \<=,\>=, !=,
+-   \<, \<=,\>=, !=, ==
 
 <!-- \[Place Answer - End\] -->
 
@@ -205,7 +203,7 @@ Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
-The mutate() function is used to create a new variable or modify an existing variable in the data frame
+-   The mutate() function is used to create a new variable or modify an existing variable in the data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -236,7 +234,7 @@ Q11. What is the definition of data visualization?
 
 <!-- \[Place Answer - Begin\] -->
 
-Data visualization is the graphical representation of data. It is used to communicate information clearly and efficiently throuh graphical means
+-   Data visualization is the graphical representation of data. It is used to communicate information clearly and efficiently through graphical means
 
 <!-- \[Place Answer - End\] -->
 
@@ -284,7 +282,7 @@ p1 <- mtcars %>%
 ```{r}
 p1 +
   theme_bw() +
-  theme(plot.title = elements_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 <!-- \[Place Answer - End\] -->
@@ -298,12 +296,12 @@ p1 +
 ```{r}
 mtcars %>%
   select(mpg, hp) %>%
-  ggplot(aes(x = h, y = mpg)) +
-  geom_point(color = "red", size = 2) +
+  ggplot(aes(x = hp, y = mpg)) +
+  geom_point(color = "red", size = 1.5) +
   geom_smooth(methd = "lm", se = FALSE) +
   labs(title = "scatter plot of mpg and hp", x = "HP", y = "MPG") + 
   theme_bw() +
-  theme(plot.title = elements_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5))
 
 ```
 
@@ -322,6 +320,16 @@ mtcars %>%
 *Sub Task 4:* Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Filter the data to only include cars with 6 cylinders. Describe your findings. Describe your findings.
 
 ```{r}
+mtcars %>% 
+  filter(cyl == 6) %>% 
+  select(mpg, hp) %>% 
+  ggplot(aes(x = hp, y = mpg)) +
+  geom_point() +
+  labs(title = "scatter plot of MPG and HP", x = "HP", y = "MPG" ) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+
 
 
 ```
@@ -331,7 +339,21 @@ mtcars %>%
 *Sub Task 5:* Create a new variable named `wt_lbs`. Create a scatter plot of miles per gallon `mpg` and weight in lbs `wt_lbs`. Filter the data to only include cars with 6 cylinders. Add a trend line. Describe your findings.
 
 ```{r}
+filter_wt_lbs_df <- mtcars %>% 
+  mutate(wt_lbs = wt * 1000)
+```
 
+```{r}
+ mtcars %>% 
+  mutate(wt_lbs = wt * 1000) %>% 
+  filter(cyl == 6) %>% 
+  select(mpg, wt_lbs) %>% 
+  ggplot(aes(x = wt_lbs, y = mpg)) +
+  geom_point() + 
+  geom_smooth(methd = "lm", se = FALSE) +
+  labs(title = "Scatter plot of MPG and Weight(lbs)", x = "Weight (lbs)", y = "MPG") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
 
 ```
 
