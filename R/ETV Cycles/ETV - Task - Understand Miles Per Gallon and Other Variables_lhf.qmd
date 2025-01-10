@@ -10,7 +10,7 @@ This task leverages the `mtcars` dataset to introduce key concepts in data trans
 
 Background Info:
 
-The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973--74 models).
 
 **Sub Task 1:** Create histogram of miles per gallon `mpg`. Describe your findings.
 
@@ -26,24 +26,25 @@ The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fu
 
 #### Learning Moment 1 - Packages and Libraries
 
-**Packages** are collections of functions in R that are bundled together. They are used to extend the functionality of R. In this case, we will be using the `dplyr` and `ggplot2` packages. The `dplyr` package is used for data transformation, while the `ggplot2` package is used for data visualization.
+**Packages** are collections of functions in R that are bundled together. They are used to extend the functionality of R. In this case, we will be using the `dplyr` and `ggplot2` packages. The `dplyr` package is used for data transformation, while the `ggplot2` package is used for data visualization. --like books
 
 ##### Install Packages
 
 ```{r}
 ## Uncomment the following lines to install the packages
-# install.packages("dplyr")
-# install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("ggplot2")
 ```
 
 You only need to install the packages once. After installing the packages, you can load them using the `library()` function.
 
-**Libraries** are used to load functions that are not part of the base R package. In this case, we will be using the `dplyr` and `ggplot2` libraries. The `dplyr` library is used for data transformation, while the `ggplot2` library is used for data visualization.
+**Libraries** are used to load functions that are not part of the base R package. In this case, we will be using the `dplyr` and `ggplot2` libraries. The `dplyr` library is used for data transformation, while the `ggplot2` library is used for data visualization. -- in laptop
 
 ##### Load Libraries (Empty)
 
 ```{r}
-
+library(dplyr)   ## Data transformation 
+library(ggplot2)  ## Data visualization
 
 ```
 
