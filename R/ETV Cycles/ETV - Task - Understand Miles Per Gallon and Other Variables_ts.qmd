@@ -242,6 +242,8 @@ Q11. What is the definition of data visualization?
 
 <!-- \[Place Answer - Begin\] -->
 
+Data visualizations is the graphical representation of data. It is used to communicate information clearly and efficiently through graphical means
+
 <!-- \[Place Answer - End\] -->
 
 #### Sub Task 1
@@ -251,13 +253,12 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
-
+mtcars  %>% select(mpg) %>% ggplot(aes(x=mpg)) + geom_histogram()
 ```
 
-*Note 1:*
+*Note 1: pass mtcars data frame with pipe*
 
-*Note 2:*
+*Note 2: select column mpg before just to be more specific*
 
 <!-- \[Place Answer - End\] -->
 
@@ -268,6 +269,7 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
+p1 <- mtcars %>% select(mpg) %>% ggplot(aes(x=mpg)) + geom_density() + labs(title = "Density Plot of Miles Per Gallon", x="Miles Per Gallon")
 
 ```
 
@@ -276,7 +278,9 @@ Q11. What is the definition of data visualization?
 *Note 4:*
 
 ```{r}
-
+p1 + 
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 <!-- \[Place Answer - End\] -->
@@ -288,6 +292,14 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
+mtcars %>% 
+  select(mpg, hp) %>%
+  ggplot(aes(x = hp, y = mpg)) + 
+  geom_point(color="red", size=5) + 
+  geom_smooth(method="lm", se = FALSE) +
+  labs(title= "Scatter Plot of MPG and HP", x = "HP", y ="MPG") + 
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5))
 
 
 ```
