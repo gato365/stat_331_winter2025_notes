@@ -124,6 +124,8 @@ Q6. What is the definition of data transformation?
 
 <!-- \[Place Answer - Begin\] -->
 
+Data transformation is the process of converting data from one format or structure into another format or structure
+
 <!-- \[Place Answer - End\] -->
 
 #### Learning Moment 4 - `select()`
@@ -141,11 +143,17 @@ Q6a. Go ahead and use `str()` on the `select_mpg_mtcars_df`. How many variables 
 
 <!-- \[Place Answer - Begin\] -->
 
+```{r}
+str(select_mpg_mtcars_df)
+```
+
 <!-- \[Place Answer - End\] -->
 
 Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+The select() function is used to select columns from a data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -164,11 +172,25 @@ Q8. What is the definition of the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
+The filter function considers rows based on a criteria (logical condition)
+
 <!-- \[Place Answer - End\] -->
 
 Q9. What are other operators that can be used with the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+-   \> (greater than)
+
+-   \< (less than)
+
+-   == (equal to)
+
+-   \<= (less than or equal to)
+
+-   \>= (greater than or equal to)
+
+-   != (not equal to)
 
 <!-- \[Place Answer - End\] -->
 
@@ -177,7 +199,6 @@ Q9. What are other operators that can be used with the `filter()` function?
 ```{r}
 mutate_kmpl_mtcars_df <- mtcars %>% 
   mutate(kmpl = mpg * 0.425144)
-
 ```
 
 `kmpl` is defined as miles per gallon `mpg` multiplied by 0.425144 to convert miles per gallon to kilometers per liter.
@@ -189,6 +210,8 @@ View(mutate_kmpl_mtcars_df)
 Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+The mutate function is used to create a new variable or modify an existing variable in the data frame
 
 <!-- \[Place Answer - End\] -->
 
