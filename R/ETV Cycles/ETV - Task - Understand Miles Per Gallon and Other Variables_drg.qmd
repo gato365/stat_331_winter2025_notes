@@ -2,6 +2,7 @@
 title: "ETV - Task - Understand Miles Per Gallon and Other Variables"
 format: html
 editor: visual
+---libr
 ---
 
 ## Description
@@ -44,7 +45,7 @@ You only need to install the packages once. After installing the packages, you c
 
 ```{r}
 library(dplyr)     # Data transformation
-library(ggplot2).  # Data visualization 
+library(ggplot2)  # Data visualization 
 
 ```
 
@@ -124,6 +125,8 @@ Q6. What is the definition of data transformation?
 
 <!-- \[Place Answer - Begin\] -->
 
+Data transformation is the process of converting data from one format of structure into another format or structure
+
 <!-- \[Place Answer - End\] -->
 
 #### Learning Moment 4 - `select()`
@@ -141,11 +144,17 @@ Q6a. Go ahead and use `str()` on the `select_mpg_mtcars_df`. How many variables 
 
 <!-- \[Place Answer - Begin\] -->
 
+```{r}
+str(select_mpg_mtcars_df)
+```
+
 <!-- \[Place Answer - End\] -->
 
 Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+Select function is used to select columns from a data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -164,11 +173,17 @@ Q8. What is the definition of the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
+The filter() function allows for certain criteria to be shown as long as it is met
+
+The filter() function considers rows based on a criteria (logical condition)
+
 <!-- \[Place Answer - End\] -->
 
 Q9. What are other operators that can be used with the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+-   \<, \<=,\>=, !=,
 
 <!-- \[Place Answer - End\] -->
 
@@ -189,6 +204,8 @@ View(mutate_kmpl_mtcars_df)
 Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+The mutate() function is used to create a new variable or modify an existing variable in the data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -219,6 +236,8 @@ Q11. What is the definition of data visualization?
 
 <!-- \[Place Answer - Begin\] -->
 
+Data visualization is the graphical representation of data. It is used to communicate information clearly and efficiently throuh graphical means
+
 <!-- \[Place Answer - End\] -->
 
 #### Sub Task 1
@@ -228,8 +247,13 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
+mtcars %>% 
+  select(mpg) %>%
+  ggplot(aes(x = mpg)) +
+  geom_histogram()
+```
 
-
+```{r}
 ```
 
 *Note 1:*
@@ -245,7 +269,12 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
+p1 <- mtcars %>%
+  select(mpg) %>%
+  ggplot(aes (x = mpg)) +
+  geom_density() +
+  labs(title = "Density plot of miles per gallon", x = "Miles Per Gallon")
+  
 ```
 
 *Note 3:*
@@ -253,7 +282,9 @@ Q11. What is the definition of data visualization?
 *Note 4:*
 
 ```{r}
-
+p1 +
+  theme_bw() +
+  theme(plot.title = elements_text(hjust = 0.5))
 ```
 
 <!-- \[Place Answer - End\] -->
@@ -265,7 +296,14 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
+mtcars %>%
+  select(mpg, hp) %>%
+  ggplot(aes(x = h, y = mpg)) +
+  geom_point(color = "red", size = 2) +
+  geom_smooth(methd = "lm", se = FALSE) +
+  labs(title = "scatter plot of mpg and hp", x = "HP", y = "MPG") + 
+  theme_bw() +
+  theme(plot.title = elements_text(hjust = 0.5))
 
 ```
 
