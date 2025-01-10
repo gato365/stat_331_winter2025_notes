@@ -95,7 +95,7 @@ Q4. What is the definition of a data frame?
 
 <!-- \[Place Answer - Begin\] -->
 
-A table or two-dimensial array in which each column contains values of one variable and each row contains one set of values from each column.
+A table or two-dimensional array in which each column contains values of one variable and each row contains one set of values from each column.
 
 <!-- \[Place Answer - End\] -->
 
@@ -123,6 +123,8 @@ Q6. What is the definition of data transformation?
 
 <!-- \[Place Answer - Begin\] -->
 
+The process of converting data from one format (or structure) into another format (or structure).
+
 <!-- \[Place Answer - End\] -->
 
 #### Learning Moment 4 - `select()`
@@ -130,6 +132,8 @@ Q6. What is the definition of data transformation?
 ```{r}
 select_mpg_mtcars_df <- mtcars %>% 
   select(mpg)
+  # select(mpg,wt): you can have more than one variable
+  # select(-mpg): will select everything but that variable
 ```
 
 `%>%` or `|>` is the pipe operator. It is used to pass the output of one function as an argument to another function. It is used to chain multiple functions together in a sequence.
@@ -140,11 +144,19 @@ Q6a. Go ahead and use `str()` on the `select_mpg_mtcars_df`. How many variables 
 
 <!-- \[Place Answer - Begin\] -->
 
+Only 1 variable is seen; the mpg.
+
+```{r}
+str(select_mpg_mtcars_df)
+```
+
 <!-- \[Place Answer - End\] -->
 
 Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+To select (or to create a subset of the data frame) based on a particular variable.
 
 <!-- \[Place Answer - End\] -->
 
@@ -163,11 +175,26 @@ Q8. What is the definition of the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
+Creates a sub set of the data frame based on criteria met.\
+(Reduces the number of observations to those that fit the criteria.)
+
 <!-- \[Place Answer - End\] -->
 
 Q9. What are other operators that can be used with the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+-   \> "less than"
+
+-   \< "greater than"
+
+-   == "equal to"
+
+-   \>= "less than or equal to"
+
+-   \<= "greater than or equal to"
+
+-   != "not equal to"
 
 <!-- \[Place Answer - End\] -->
 
@@ -188,6 +215,8 @@ View(mutate_kmpl_mtcars_df)
 Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+Create a new variable or modify an existing variable in the data frame.
 
 <!-- \[Place Answer - End\] -->
 
