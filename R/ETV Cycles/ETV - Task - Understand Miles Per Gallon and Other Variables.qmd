@@ -6,7 +6,7 @@ editor: visual
 
 ## Description
 
-This task leverages the `mtcars` dataset to introduce key concepts in data transformation and visualizationusing R. Students will engage in a series of subtasks that reinforce their understanding of data manipulation, filtering, and visualization. The subtasks emphasize the **ETV framework** (Extraction, Transformation, Visualization) to simulate real-world data analysis processes. These exercises highlight how to explore relationships between variables while encouraging critical thinking through interpretation of results.
+This task leverages the `mtcars` dataset to introduce key concepts in data transformation and visualization using R. Students will engage in a series of subtasks that reinforce their understanding of data manipulation, filtering, and visualization. The subtasks emphasize the **ETV framework** (Extraction, Transformation, Visualization) to simulate real-world data analysis processes. These exercises highlight how to explore relationships between variables while encouraging critical thinking through interpretation of results.
 
 Background Info:
 
@@ -31,9 +31,9 @@ The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fu
 ##### Install Packages
 
 ```{r}
-## Uncomment the following lines to install the packages
-# install.packages("dplyr")
-# install.packages("ggplot2")
+#Uncomment the following lines to install the packages
+install.packages("dplyr")
+install.packages("ggplot2")
 ```
 
 You only need to install the packages once. After installing the packages, you can load them using the `library()` function.
@@ -43,7 +43,8 @@ You only need to install the packages once. After installing the packages, you c
 ##### Load Libraries (Empty)
 
 ```{r}
-
+library(dplyr) # data transformations
+library(ggplot2) # data visualizations
 
 ```
 
