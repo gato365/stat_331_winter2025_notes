@@ -56,31 +56,41 @@ library(ggplot2) # data visualizations
 
 Q1. What is the definition of data extraction?
 
-<!-- \[Place Answer - Begin\] -->
+To bring data from some source into your working environment.
 
-<!-- \[Place Answer - End\] -->
+```{r}
+data("mtcars")
+```
 
 #### Learning Moment 2 - tidy data
 
 Q2. What is the definition of tidy data?
 
-<!-- \[Place Answer - Begin\] -->
+Each variable is stored in its own column
 
-<!-- \[Place Answer - End\] -->
+Each observation is stored in its own row
 
 #### Learning Moment 3 - Data Types, Data Frame, and View Data Frame
 
 Q3. What are three common data types in R?
 
-<!-- \[Place Answer - Begin\] -->
+numeric (quantitative)
 
-<!-- \[Place Answer - End\] -->
+character (categorical)
+
+logical (Boolean)
 
 Q4. What is the definition of a data frame?
 
-<!-- \[Place Answer - Begin\] -->
+Table/2D array where cols are variables and rows contain a set of one of each column.
 
-<!-- \[Place Answer - End\] -->
+```{r}
+View(mtcars)
+```
+
+```{r}
+str(mtcars)
+```
 
 Q5. How can we view the tidy data frame `mtcars`?
 
