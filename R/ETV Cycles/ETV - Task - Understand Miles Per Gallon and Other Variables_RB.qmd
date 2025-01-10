@@ -58,6 +58,12 @@ Q1. What is the definition of data extraction?
 
 <!-- \[Place Answer - Begin\] -->
 
+To bring data from an outside source into your working environment
+
+```{r}
+data("mtcars")
+```
+
 <!-- \[Place Answer - End\] -->
 
 #### Learning Moment 2 - tidy data
@@ -65,6 +71,8 @@ Q1. What is the definition of data extraction?
 Q2. What is the definition of tidy data?
 
 <!-- \[Place Answer - Begin\] -->
+
+Where you have columns and rows that denote variables and observations. Variables are the columns and rows are the observations
 
 <!-- \[Place Answer - End\] -->
 
@@ -74,17 +82,29 @@ Q3. What are three common data types in R?
 
 <!-- \[Place Answer - Begin\] -->
 
+numeric (quantitative), character (categorical), logical (boolean)
+
 <!-- \[Place Answer - End\] -->
 
 Q4. What is the definition of a data frame?
 
 <!-- \[Place Answer - Begin\] -->
 
+A data frame is a table or two dimensional array that is structured in a way that each column contains values of one variable and each row contains one set of values from each column
+
 <!-- \[Place Answer - End\] -->
 
 Q5. How can we view the tidy data frame `mtcars`?
 
 <!-- \[Place Answer - Begin\]  -->
+
+```{r}
+View(mtcars)
+```
+
+```{r}
+str(mtcars)
+```
 
 <!-- \[Place Answer - End\] -->
 
