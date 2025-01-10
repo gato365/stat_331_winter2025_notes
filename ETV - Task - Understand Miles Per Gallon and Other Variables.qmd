@@ -1,0 +1,300 @@
+---
+title: "ETV - Task - Understand Miles Per Gallon and Other Variables"
+format: html
+editor: visual
+---
+
+## Description
+
+This task leverages the `mtcars` dataset to introduce key concepts in data transformation and visualizationusing R. Students will engage in a series of subtasks that reinforce their understanding of data manipulation, filtering, and visualization. The subtasks emphasize the **ETV framework** (Extraction, Transformation, Visualization) to simulate real-world data analysis processes. These exercises highlight how to explore relationships between variables while encouraging critical thinking through interpretation of results.
+
+Background Info:
+
+The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+**Sub Task 1:** Create histogram of miles per gallon `mpg`. Describe your findings.
+
+**Sub Task 2:** Create a density plot of miles per gallon `mpg`. Add a better name to the x-axis and a better title. Describe your findings.
+
+**Sub Task 3:** Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Add labels to the x and y axis as well as title. Describe your findings.
+
+**Sub Task 4:** Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Filter the data to only include cars with 6 cylinders. Describe your findings.
+
+**Sub Task 5:** Create a new variable named `wt_lbs`. Create a scatter plot of miles per gallon `mpg` and weight in lbs `wt_lbs`. Filter the data to only include cars with 6 cylinders. Add a trend line. Describe your findings.
+
+**Data Ethics:** This data is from the mtcars dataset in R. The mtcars dataset is a built-in dataset in R that contains information about 32 different cars. The data is used for educational purposes and is freely available for use in R. It is important to verify the data before using it for analysis.
+
+#### Learning Moment 1 - Packages and Libraries
+
+**Packages** are collections of functions in R that are bundled together. They are used to extend the functionality of R. In this case, we will be using the `dplyr` and `ggplot2` packages. The `dplyr` package is used for data transformation, while the `ggplot2` package is used for data visualization.
+
+##### Install Packages
+
+```{r}
+##Uncomment the following lines to install the packages
+install.packages("dplyr")
+install.packages("ggplot2")
+```
+
+You only need to install the packages once. After installing the packages, you can load them using the `library()` function.
+
+**Libraries** are used to load functions that are not part of the base R package. In this case, we will be using the `dplyr` and `ggplot2` libraries. The `dplyr` library is used for data transformation, while the `ggplot2` library is used for data visualization.
+
+##### Load Libraries (Empty)
+
+```{r}
+library(dplyr) ## Data Transformation
+library(ggplot2) ## Data Visualization
+
+
+
+```
+
+##### Do a `commit` to your branch.
+
+------------------------------------------------------------------------
+
+### Extraction
+
+Q1. What is the definition of data extraction?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+#### Learning Moment 2 - tidy data
+
+Q2. What is the definition of tidy data?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+#### Learning Moment 3 - Data Types, Data Frame, and View Data Frame
+
+Q3. What are three common data types in R?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+Q4. What is the definition of a data frame?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+Q5. How can we view the tidy data frame `mtcars`?
+
+<!-- \[Place Answer - Begin\]  -->
+
+<!-- \[Place Answer - End\] -->
+
+##### Do a `commit` to your branch.
+
+------------------------------------------------------------------------
+
+### Transformation
+
+Q6. What is the definition of data transformation?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+#### Learning Moment 4 - `select()`
+
+```{r}
+select_mpg_mtcars_df <- mtcars %>% 
+  select(mpg)
+```
+
+`%>%` or `|>` is the pipe operator. It is used to pass the output of one function as an argument to another function. It is used to chain multiple functions together in a sequence.
+
+`<-` is the assignment operator. It is used to assign the output of a function to a variable.
+
+Q6a. Go ahead and use `str()` on the `select_mpg_mtcars_df`. How many variables are seen?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+Q7. What is the definition of the `select()` function?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+#### Learning Moment 5 - `filter()`
+
+```{r}
+filter_wt_mtcars_df <- mtcars %>% 
+  filter(wt > 2)
+```
+
+```{r}
+View(filter_wt_mtcars_df)
+```
+
+Q8. What is the definition of the `filter()` function?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+Q9. What are other operators that can be used with the `filter()` function?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+#### Learning Moment 6 - `mutate()`
+
+```{r}
+mutate_kmpl_mtcars_df <- mtcars %>% 
+  mutate(kmpl = mpg * 0.425144)
+
+```
+
+`kmpl` is defined as miles per gallon `mpg` multiplied by 0.425144 to convert miles per gallon to kilometers per liter.
+
+```{r}
+View(mutate_kmpl_mtcars_df)
+```
+
+Q10. What is the definition of the `mutate()` function?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+##### Do a `commit` to your branch.
+
+------------------------------------------------------------------------
+
+### Visualization
+
+Go AHEAD and create your 1st plot in R.
+
+```{r}
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_boxplot() 
+```
+
+**Lets explain this code**
+
+`data =`: mtcars specifies the data frame to use for the plot.
+
+`aes()`: aes() specifies the aesthetic mappings for the plot. In this case, x = mpg specifies that the x-axis should represent the miles per gallon variable.
+
+`+`: The + operator is used to add layers to the plot. In this case, geom_boxplot() specifies that a box plot should be added to the plot.
+
+`geom_boxplot()`: geom_boxplot() is a function from the ggplot2 package that is used to create a box plot.
+
+Q11. What is the definition of data visualization?
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+#### Sub Task 1
+
+*Sub Task 1:* Create histogram of miles per gallon `mpg`. Describe your findings.
+
+<!-- \[Place Answer - Begin\] -->
+
+```{r}
+
+
+```
+
+*Note 1:*
+
+*Note 2:*
+
+<!-- \[Place Answer - End\] -->
+
+#### Sub Task 2
+
+**Sub Task 2:** Create a density plot of miles per gallon `mpg`. Add a better name to the x-axis and a better title. Describe your findings.
+
+<!-- \[Place Answer - Begin\] -->
+
+```{r}
+
+```
+
+*Note 3:*
+
+*Note 4:*
+
+```{r}
+
+```
+
+<!-- \[Place Answer - End\] -->
+
+#### Sub Task 3
+
+*Sub Task 3:* Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Add labels to the x and y axis as well as title. Describe your findings.
+
+<!-- \[Place Answer - Begin\] -->
+
+```{r}
+
+
+```
+
+*Note 5:*
+
+*Note 6:*
+
+```{r}
+
+```
+
+<!-- \[Place Answer - End\] -->
+
+#### Sub Task 4
+
+*Sub Task 4:* Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Filter the data to only include cars with 6 cylinders. Describe your findings. Describe your findings.
+
+```{r}
+
+
+```
+
+#### Sub Task 5
+
+*Sub Task 5:* Create a new variable named `wt_lbs`. Create a scatter plot of miles per gallon `mpg` and weight in lbs `wt_lbs`. Filter the data to only include cars with 6 cylinders. Add a trend line. Describe your findings.
+
+```{r}
+
+
+```
+
+##### Do a `commit` to your branch.
+
+------------------------------------------------------------------------
+
+## Recap
+
+1.  **Extraction**: The `mtcars` dataset was introduced as the foundation for this task. Students practiced loading and inspecting the dataset, setting the stage for transformations and visualizations.
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+2.  **Transformation** (`dplyr`):
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+3.  **Visualization (`ggplot2`)**:
+
+<!-- \[Place Answer - Begin\] -->
+
+<!-- \[Place Answer - End\] -->
+
+##### Do a `commit` to your branch.
