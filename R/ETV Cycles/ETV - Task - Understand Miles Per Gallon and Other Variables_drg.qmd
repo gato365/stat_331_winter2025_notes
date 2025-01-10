@@ -32,8 +32,8 @@ The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fu
 
 ```{r}
 ## Uncomment the following lines to install the packages
-# install.packages("dplyr")
-# install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("ggplot2")
 ```
 
 You only need to install the packages once. After installing the packages, you can load them using the `library()` function.
@@ -43,7 +43,8 @@ You only need to install the packages once. After installing the packages, you c
 ##### Load Libraries (Empty)
 
 ```{r}
-
+library(dplyr)     # Data transformation
+library(ggplot2).  # Data visualization 
 
 ```
 
