@@ -43,8 +43,8 @@ You only need to install the packages once. After installing the packages, you c
 ##### Load Libraries (Empty)
 
 ```{r}
-library(dplyr)
-library(ggplot2)
+library(dplyr)    ## Data Transformation
+library(ggplot2)  ## Data Visualization
 ```
 
 ##### Do a `commit` to your branch.
@@ -57,6 +57,12 @@ Q1. What is the definition of data extraction?
 
 <!-- \[Place Answer - Begin\] -->
 
+To bring data from some source into your working environment.
+
+```{r}
+data("mtcars")
+```
+
 <!-- \[Place Answer - End\] -->
 
 #### Learning Moment 2 - tidy data
@@ -64,6 +70,10 @@ Q1. What is the definition of data extraction?
 Q2. What is the definition of tidy data?
 
 <!-- \[Place Answer - Begin\] -->
+
+-   Each variable is stored in its own column.
+
+-   Each observation is stored in its own row.
 
 <!-- \[Place Answer - End\] -->
 
@@ -73,17 +83,33 @@ Q3. What are three common data types in R?
 
 <!-- \[Place Answer - Begin\] -->
 
+-   Numeric (Quantitative)
+
+-   Character (Categorical (Binary))
+
+-   Logical (Boolean)
+
 <!-- \[Place Answer - End\] -->
 
 Q4. What is the definition of a data frame?
 
 <!-- \[Place Answer - Begin\] -->
 
+A table or two-dimensial array in which each column contains values of one variable and each row contains one set of values from each column.
+
 <!-- \[Place Answer - End\] -->
 
 Q5. How can we view the tidy data frame `mtcars`?
 
 <!-- \[Place Answer - Begin\]  -->
+
+```{r}
+View(mtcars) ## opens a new tab in a table view
+```
+
+```{r}
+str(mtcars)  ## into a string
+```
 
 <!-- \[Place Answer - End\] -->
 
