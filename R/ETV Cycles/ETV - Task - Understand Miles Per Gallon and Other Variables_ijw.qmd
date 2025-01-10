@@ -93,7 +93,11 @@ Q3. What are three common data types in R?
 
 -   character (categorical, categorical binary)
 
+<<<<<<< HEAD
 -   Logical (Boolean Logic)
+=======
+-    Logical (Boolean Logic)
+>>>>>>> cfb4078 (Viewing data and data extraction - ijw)
 
 <!-- \[Place Answer - End\] -->
 
@@ -121,6 +125,13 @@ str(mtcars)
 
 ```
 
+<<<<<<< HEAD
+=======
+```{r}
+
+```
+
+>>>>>>> cfb4078 (Viewing data and data extraction - ijw)
 <!-- \[Place Answer - End\] -->
 
 ##### Do a `commit` to your branch.
