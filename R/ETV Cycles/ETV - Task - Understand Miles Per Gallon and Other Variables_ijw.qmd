@@ -252,7 +252,7 @@ Go AHEAD and create your 1st plot in R.
 
 ```{r}
 ggplot(data = mtcars, aes(x = mpg)) +
-  geom_boxplot() 
+  geom_dotplot()
 ```
 
 **Lets explain this code**
@@ -281,9 +281,16 @@ Data visualziations is the graphical representation of Data. It is used to commu
 
 ```{r}
 mtcars %>% 
+<<<<<<< HEAD
   select(mpg) %>% 
   ggplot(aes(x = mpg)) + 
   geom_histogram()
+=======
+  # select(mpg) %>% 
+  ggplot(aes(x = mpg)) + 
+  geom_histogram()
+
+>>>>>>> b4df34b (CHange some elements of code for class)
 ```
 
 *Note 1:*
@@ -314,6 +321,10 @@ p1 <- mtcars %>%
 p1 +
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
+<<<<<<< HEAD
+=======
+  
+>>>>>>> b4df34b (CHange some elements of code for class)
 ```
 
 <!-- \[Place Answer - End\] -->
@@ -325,13 +336,24 @@ p1 +
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
 mtcars %>% 
   select(mpg,hp) %>% 
   ggplot(aes(x = hp, y = mpg)) +
   geom_point(color = "red", size =2) +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
+
+<<<<<<< HEAD
+mtcars %>% 
+  select(mpg,hp) %>% 
+  ggplot(aes(x = hp, y = mpg)) +
+  geom_point(color = "red", size =2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
+=======
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) 
+>>>>>>> b4df34b (CHange some elements of code for class)
 
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
