@@ -341,3 +341,15 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - End\] -->
 
 ##### Do a `commit` to your branch.
+
+**Recap:**
+
+dplyr: select, filter, mutate
+
+\<-
+
+%\>%
+
+ggplot: geom_boxplot, aes, labs, geom_point, geom_density, theme, theme_bw
+
+\+
