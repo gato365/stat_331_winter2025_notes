@@ -32,7 +32,21 @@ Lets Look at the excel file which contains the data of these three players.
 
 **Q1.** How many tabs are in the excel sheet? What does each one represent?
 
+5 sheets:
+
+-   MJ
+
+-   KB
+
+-   LJ
+
+-   Variable Names
+
+-   Divisions/Conferences
+
 **Q2.** What do you suppose we should analyze to find out who is the real GOAT of all time in the NBA? List some variables and questions you may have based on what you see. There is no right answer here.
+
+MP (minutes played), FG_Percent, 3P_Percent, FT_Percent, PTS
 
 ------------------------------------------------------------------------
 
@@ -74,14 +88,20 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 ```{r}
 ## Location to install packages
-
+install.packages("here")   ## Locate files
+install.packages("readxl") 
+install.packages("forcats")
 ```
 
 #### Load Libraries (Empty)
 
 ```{r}
 ## Locations to load libraries
-
+library(here)    ## Data Extraction
+library(readxl)  ## Data Extraction
+library(dplyr)   ## Data Transfomations
+library(forcats) ## Data Transformation
+library(ggplot2) ## Data Visualizations
 ```
 
 ### Extraction
@@ -92,20 +112,23 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 ```{r}
 ## Code here
+path_location_to_nba_file <- here("Data","nba_goats.xlsx")
 ```
 
 **Q4.** Run `path_location_to_nba_file` in the console. What do you see?
 
 ```{r}
-# _______ <- read_xlsx(path_location_to_nba_file)
+nba_goats_df <- read_xlsx(path_location_to_nba_file)
 ```
+
+Only have access to KB sheet
 
 ------------------------------------------------------------------------
 
 **Q5.** What number should be place in sheet to navigate to LeBron's Sheet?
 
 ```{r}
-# lj_df <- read_xlsx(path_location_to_nba_file, sheet = ___) ## Provide the number for LJ
+lj_df <- read_xlsx(path_location_to_nba_file, sheet = 'LJ') ## Provide the number for LJ
 ```
 
 *Note 1:* the name of the data frame. I use `_df` to signify that the object is a data frame
@@ -114,13 +137,14 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 ```{r}
 ## Provide the function name too
-# mj_df <- _______(path_location_to_nba_file, sheet = ____) ## Provide the number for MJ
+mj_df <- read_xlsx(path_location_to_nba_file, sheet = 'MJ') ## Provide the number for MJ
 ```
 
-**Q7.** Get LeBron James and the variable names in anyway you would like.
+**Q7.** Get KB and the variable names in anyway you would like.
 
 ```{r}
-
+kb_df <- read_xlsx(path_location_to_nba_file, sheet = 'KB') ## Provide the number for KB
+variables_df <- read_xlsx(path_location_to_nba_file, sheet = 4)
 ```
 
 **Q8.** Lets look at the data frame of Variables Meanings to get a better sense of the information. What does `GmSc` denote?
@@ -143,29 +167,29 @@ From HW 1 you learned to create data frames.
 
 ```{r}
 # # Data frame 1: Information about Group A
-# ex_1_df_a <- __________(
-#   id = c(1, 2, 3),
-#   name = c("Alice", "Bob", "Charlie"),
-#   score = c(85, 90, 78)
-# )
+ex_1_df_a <- data.frame(
+  id = c(1, 2, 3),
+  name = c("Alice", "Bob", "Charlie"),
+  score = c(85, 90, 78)
+)
 # 
 # # Data frame 2: Information about Group B
-# ex_1_df_b <- data.frame(
-#   id = __(4, 5, 6),
-#   name = __("David", "Ella", "Fiona"),
-#   score = __(88, 92, 81)
-# )
-# 
+ex_1_df_b <- data.frame(
+  id = c(4, 5, 6),
+  name = c("David", "Ella", "Fiona"),
+  score = c(88, 92, 81)
+)
+
 # # Data frame 3: Additional details for Group A
-# ex_1_df_details <- ______(
-#   age = __(25, 30, 35),
-#   location = __("NY", "CA", "TX")
-# )
-# 
+ex_1_df_details <- data.frame(
+  age = c(25, 30, 35),
+  location = c("NY", "CA", "TX")
+)
+
 # # Print the data frames to understand their structure
-# print(ex_1_df_a)
-# print(ex_1_df_b)
-# print(ex_1_df_details)
+print(ex_1_df_a)
+print(ex_1_df_b)
+print(ex_1_df_details)
 ```
 
 Sometime it is easier to analyze data if multiple data frames are merge in some way. Below we will learn two ways of doing this.
@@ -188,7 +212,11 @@ print(ex_1_combined_rows)
 
 **Q10.** What is the purpose of the `bind_rows` function?
 
+"bind_rows()" combines data frames by stacking them vertically, it is very useful when multiple data frames have the same columns
+
 **Q11.** What happens if the column names do not match when using `bind_rows()`? For example change `score` to `score_ex` in `ex_1_df_b`.
+
+It will add the rows to the new df
 
 ------------------------------------------------------------------------
 
@@ -204,20 +232,27 @@ print(ex_1_combined_cols)
 
 **Q12.** What is the purpose of the `bind_cols` function?
 
+bind_rows combines data frames by adding columns side-by-side. It is useful when we have the same number of rows in each data frame
+
 **Q13.** What happens if the number of rows do not match when using `bind_cols()`?
 
-Provide the gif
+Error due to size, it won't work
 
 **Q14.** What could be dangerous with `bind_cols` when working with real data?
+
+Data could get mismatched, you want to use a join instead
 
 **End of the digression**
 
 **Q15.** Which function (`bind_rows` or `bind_cols`) should we use to bind the data frames of the players (MJ, KB, LJ) into 1 data frame?
 
+bind_rows
+
 **Q16.** Go ahead and bind the data frames together.
 
 ```{r}
 ## Code Here
+nba_goats_df <- bind_rows(mj_df, kb_df, lj_df)
 ```
 
 I intentionally over wrote `nba_goats_df`
@@ -255,15 +290,31 @@ glimpse(nba_goats_df)
 
 **Q17.** When glancing at the data, which variables should be converted into factors to enhance their usefulness for potential analysis?
 
+name - character
+
+season - factor
+
+game location - factor
+
+game outcome - factor
+
+team - factor
+
+opp - factor
+
+last name - character
+
 **Q18.** Let's do 1 variable that should be considered a factor, convert `Name` to a factor, but name it `Name_factor`.
 
 ```{r}
 ## Code here
+mod_1_nba_goats_df <- nba_goats_df %>%
+  mutate(Name_Factor =  as_factor(Name))
 ```
 
 **What are the visible benefits?**
 
-**Version 1:** ANOVA with Default Baseline (`KB`)
+**Version 1:** Linear Model with Default Baseline (`KB`)
 
 By default, R uses the first level of the factor (alphabetically) as the baseline.
 
@@ -281,6 +332,9 @@ In order to do this we have to install and load forcats, be sure to install and 
 
 ```{r}
 ## Code here
+mod_2_nba_goats_df <- nba_goats_df%>% 
+  mutate(Name_Factor = as_factor(Name)) %>% 
+  mutate(Name_Factor = fct_relevel(Name_Factor,c("LJ","MJ","KB")))
 ```
 
 Let's see what this looks like:
