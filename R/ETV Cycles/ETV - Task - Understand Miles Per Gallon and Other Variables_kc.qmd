@@ -10,7 +10,7 @@ This task leverages the `mtcars` dataset to introduce key concepts in data trans
 
 Background Info:
 
-The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973--74 models).
 
 **Sub Task 1:** Create histogram of miles per gallon `mpg`. Describe your findings.
 
