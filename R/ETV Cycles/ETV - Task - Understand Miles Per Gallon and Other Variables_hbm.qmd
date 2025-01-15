@@ -211,6 +211,12 @@ mutate_kmpl_mtcars_df <- mtcars %>%
 `kmpl` is defined as miles per gallon `mpg` multiplied by 0.425144 to convert miles per gallon to kilometers per liter.
 
 ```{r}
+new_df <- mtcars %>% 
+  select(mpg, hp, cyl) %>% 
+  filter(cyl > 2)
+```
+
+```{r}
 View(mutate_kmpl_mtcars_df)
 ```
 
@@ -332,7 +338,14 @@ mtcars %>%
 *Sub Task 4:* Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Filter the data to only include cars with 6 cylinders. Describe your findings. Describe your findings.
 
 ```{r}
-
+mtcars %>% 
+  filter(cyl==6) %>% 
+  select(mpg, hp) %>%
+  ggplot(aes(x=mpg, y=hp)) + 
+  geom_point(color="red", size=2)+
+  labs(title = "Scatter Plot of MPG on HP", x= "Miles Per Gallon", y= "Horsepower")+
+  theme_bw()+
+  theme(plot.title=element_text(hjust = 0.5))
 
 ```
 
@@ -341,8 +354,22 @@ mtcars %>%
 *Sub Task 5:* Create a new variable named `wt_lbs`. Create a scatter plot of miles per gallon `mpg` and weight in lbs `wt_lbs`. Filter the data to only include cars with 6 cylinders. Add a trend line. Describe your findings.
 
 ```{r}
+mutate_wt_lbs_mtcars_df <- mtcars %>% 
+  mutate(wt_lbs = wt*2000)
+```
 
-
+```{r}
+mutate_wt_lbs_mtcars_df %>% 
+  filter(cyl==6) %>% 
+  select(wt_lbs, mpg) %>% 
+  ggplot(aes(x=wt_lbs, y=mpg))+
+  geom_point(color="blue", size=3)+
+  labs(title = "Scatter Plot of MPG on Weight", 
+       x= "Weight in Lbs", y= "MPG")+
+  geom_smooth(method="lm", se=FALSE)+
+  theme_bw()+
+  theme(plot.title=element_text(hjust = 0.5))
+  
 ```
 
 ##### Do a `commit` to your branch.
