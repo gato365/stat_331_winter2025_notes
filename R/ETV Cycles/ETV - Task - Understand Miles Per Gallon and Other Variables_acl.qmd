@@ -361,3 +361,13 @@ mtcars %>%
 <!-- \[Place Answer - End\] -->
 
 ##### Do a `commit` to your branch.
+
+dplyr: select, filter, mutate
+
+\<-
+
+%\>% (pipe)
+
+ggplot: geom_boxplot, aes, labs, geom_point, geom_density, theme, theme_bw
+
+\+
