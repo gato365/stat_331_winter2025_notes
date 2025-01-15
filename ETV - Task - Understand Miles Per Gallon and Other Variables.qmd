@@ -312,7 +312,7 @@ mtcars %>%
   select(mpg,hp) %>% 
   ggplot(aes(x = hp, y = mpg))
   geom_point(color = 'red', size = 2) + 
-  geom_smooth(method = 'lm') + 
+  geom_smooth(method = 'lm') + g
   labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG") + 
   theme_bw() + 
   theme(plot.title = element_text(hjust = 0.5))
