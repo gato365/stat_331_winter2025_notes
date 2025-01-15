@@ -358,11 +358,29 @@ mtcars %>%
 
 <!-- \[Place Answer - Begin\] -->
 
+Went over:
+
+-   select()
+
+-   filter()
+
+-   mutate()
+
 <!-- \[Place Answer - End\] -->
 
 3.  **Visualization (`ggplot2`)**:
 
 <!-- \[Place Answer - Begin\] -->
+
+Went over:
+
+-   geom_xxx (different types of plots)
+
+-   aes (aesthetics)
+
+-   labs (labels)
+
+-   theme
 
 <!-- \[Place Answer - End\] -->
 
