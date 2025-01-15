@@ -31,13 +31,8 @@ The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fu
 ##### Install Packages
 
 ```{r setup}
-#install.packages("installr")
-library(installr)
-updateR()
-
 ## Uncomment the following lines to install the packages
-# install.packages("dplyr")
-install.packages("gtable")
+install.packages("dplyr")
 install.packages("ggplot2")
 ```
 
@@ -114,7 +109,7 @@ View(mtcars)
 ```
 
 ```{r}
-
+str(mtcars)
 ```
 
 ```{r}
@@ -133,6 +128,8 @@ Q6. What is the definition of data transformation?
 
 <!-- \[Place Answer - Begin\] -->
 
+Data transformation is the process of converting data from one format or structure into another format or structure
+
 <!-- \[Place Answer - End\] -->
 
 #### Learning Moment 4 - `select()`
@@ -150,11 +147,17 @@ Q6a. Go ahead and use `str()` on the `select_mpg_mtcars_df`. How many variables 
 
 <!-- \[Place Answer - Begin\] -->
 
+```{r}
+str(select_mpg_mtcars_df)
+```
+
 <!-- \[Place Answer - End\] -->
 
 Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+The select() function is used to select columns from a data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -172,6 +175,8 @@ View(filter_wt_mtcars_df)
 Q8. What is the definition of the `filter()` function?
 
 <!-- \[Place Answer - Begin\] -->
+
+The filter function considers rows based on a criteria (logical condition)
 
 <!-- \[Place Answer - End\] -->
 
@@ -240,6 +245,8 @@ Q11. What is the definition of data visualization?
 
 <!-- \[Place Answer - Begin\] -->
 
+Data visualziations is the graphical representation of Data. It is used to communicate information clearly and efficiently through graphical means
+
 <!-- \[Place Answer - End\] -->
 
 #### Sub Task 1
@@ -249,8 +256,10 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
-
+mtcars %>% 
+  select(mpg) %>% 
+  ggplot(aes(x = mpg)) + 
+  geom_histogram()
 ```
 
 *Note 1:*
@@ -266,7 +275,11 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
+p1 <- mtcars %>% 
+  select(mpg) %>% 
+  ggplot(aes(x = mpg)) +
+  geom_density() +
+  labs(title = "Density Plot of Miles Per Gallon", x = "Miles Per Gallon")
 ```
 
 *Note 3:*
@@ -274,7 +287,9 @@ Q11. What is the definition of data visualization?
 *Note 4:*
 
 ```{r}
-
+p1 +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
 <!-- \[Place Answer - End\] -->
@@ -287,7 +302,15 @@ Q11. What is the definition of data visualization?
 
 ```{r}
 
+mtcars %>% 
+  select(mpg,hp) %>% 
+  ggplot(aes(x = hp, y = mpg)) +
+  geom_point(color = "red", size =2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
 
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
 *Note 5:*
