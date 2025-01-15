@@ -1,0 +1,590 @@
+---
+title: "ETV - Task - Who is the real GOAT of all time in the NBA"
+format: html
+editor: visual
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+Lets get up to date with our notes:
+
+1.  `git checkout main` via notes project
+
+2.  `git pull` request
+
+3.  `git checkout your_branch_name`
+
+4.  `git merge main`
+
+## Description
+
+MJ, LJ, and KB are the three most popular players in the NBA. They are all great players, but who is the real GOAT of all time in the NBA? In this task, you will analyze the data of these three players and find out who is the real GOAT of all time in the NBA. We have 1st 15 season for each player and we will analyze the data of these 15 seasons to find out who is the real GOAT of all time in the NBA while learning more ETV methods.
+
+Background Information:
+
+This dataset was originally extracted in 2019 as part of a research project I conducted. Since the data was sourced from an HTML webpage, significant cleaning was required to prepare it for analysis. In this class, we will explore various techniques for extracting and cleaning data from web pages, equipping you with practical skills for working with real-world datasets.
+
+#### Learning Moment 1 - View Excel File
+
+Lets Look at the excel file which contains the data of these three players.
+
+
+
+**Q1.** How many tabs are in the excel sheet? What does each one represent?
+
+
+
+
+**Q2.** What do you suppose we should analyze to find out who is the real GOAT of all time in the NBA? List some variables and questions you may have based on what you see. There is no right answer here.
+
+
+
+---
+
+
+
+
+**Here are my ideas on how to compare these players.**
+
+
+**Sub Task 1:** Boxplot & Violin Plot with Mean
+
+-   **Task Description**: Create a combined boxplot and violin plot comparing players against their points scored (`PTS`) during their first season, including mean markers and axis labels (make sure the axis titles are bolded). Interpret the distribution of points scored by each player and identify which player had the highest variability in points.
+
+---
+
+**Sub Task 2:** Summarized Table for KB
+
+-   **Task Description**: Generate a table summarizing `PTS` for Kobe Bryant (`KB`) during his first seven seasons. Compute the average, standard deviations points scored by KB, and the count of games he scored point, across these seasons or identify trends (e.g., season with the highest average). Arrange by highest variability in point to lowest so that we can understand his consistency.
+
+---
+
+**Sub Task 3:** Confidence Intervals with Error Bars
+
+-   **Task Description**: Create a plot displaying confidence intervals with error bars for Kobe Bryant's points across his first seven NBA seasons. Provide an explanation of what the confidence intervals represent and identify which player demonstrates the least overlap between their confidence intervals.
+
+
+---
+
+
+**Sub Task 4:** Facet Grid for MP & PTS
+
+-   **Task Description**: Use `facet_grid` to create visualizations comparing Minutes Played (`MP`) and Points (`PTS`) for different players during their first three seasons. Examine how the patterns of Minutes Played and Points Scored vary across season and player, and highlight any players who demonstrate standout performance.
+
+
+---
+
+
+**Sub Task 5:** Barplot for Discretized Points
+
+-   **Task Description**: Create a barplot showing the count of points (PTS), categorized into bins as follows: Low (PTS \< 20), Medium (20 ≤ PTS \< 30), and High (PTS ≥ 30). Use forcats to ensure the bins are ordered logically (Low, Medium, High). Compare the counts across player identities during the first season. Analyze which players had the most occurrences in each point range and interpret how the distribution varies among players.
+
+
+---
+
+
+
+
+
+**Data Ethics:** The data used in this project was scraped from the Sports Reference website, a publicly accessible resource. This data is harmless in its intended use, focusing solely on historical player statistics for educational purposes in data analysis and visualization. However, data ethics should still be considered. For instance, while this data is not sensitive, ensuring proper attribution to the data source is essential to respect intellectual property.
+
+Additionally, when working with data in general, it is important to avoid misrepresentation, maintain transparency about data collection methods, and consider privacy and consent, especially when analyzing personal or sensitive information. Ethical practices ensure that the data is used responsibly and for its intended purpose.
+
+
+
+
+
+```{r}
+## Location to install packages
+
+```
+
+
+
+
+
+
+
+#### Load Libraries (Empty)
+
+
+
+```{r}
+## Locations to load libraries
+
+```
+
+
+
+
+
+
+### Extraction
+
+
+
+
+#### Learning Moment 2 -  `here` and `read_xlsx` Packages
+
+
+
+**Q3.** State the path to location to *nba_goats.xlsx* using the `here` function.
+
+
+
+
+```{r}
+## Code here
+```
+
+**Q4.** Run `path_location_to_nba_file` in the console. What do you see?
+
+
+
+
+
+```{r}
+# _______ <- read_xlsx(path_location_to_nba_file)
+```
+
+---
+
+
+
+**Q5.** What number should be place in sheet to navigate to LeBron's Sheet?
+
+
+```{r}
+# lj_df <- read_xlsx(path_location_to_nba_file, sheet = ___) ## Provide the number for LJ
+```
+
+*Note 1:* the name of the data frame. I use `_df` to signify that the object is a data frame
+
+
+
+**Q6.** If we wanted to get Michael Jordan's table using his name instead, how do we do that?
+
+
+```{r}
+## Provide the function name too
+# mj_df <- _______(path_location_to_nba_file, sheet = ____) ## Provide the number for MJ
+```
+
+**Q7.** Get LeBron James and the variable names in anyway you would like.
+
+```{r}
+
+```
+
+
+
+**Q8.** Lets look at the data frame of Variables Meanings to get a better sense of the information. What does `GmSc` denote?
+
+```{r}
+View(variables_df)
+```
+
+------------------------------------------------------------------------
+
+### Transformation
+
+#### Learning Moment 3 - `bind_rows` & `bind_cols` (A digression)
+
+From HW 1 you learned to create data frames.
+
+**Step 1: Create Data Frames**
+
+**Q9.** Below are three data frames that will be used in this Learning Moment. Fill in the appropriate functions to create 3 data frames from vectors.
+
+
+
+```{r}
+# # Data frame 1: Information about Group A
+# ex_1_df_a <- __________(
+#   id = c(1, 2, 3),
+#   name = c("Alice", "Bob", "Charlie"),
+#   score = c(85, 90, 78)
+# )
+# 
+# # Data frame 2: Information about Group B
+# ex_1_df_b <- data.frame(
+#   id = __(4, 5, 6),
+#   name = __("David", "Ella", "Fiona"),
+#   score = __(88, 92, 81)
+# )
+# 
+# # Data frame 3: Additional details for Group A
+# ex_1_df_details <- ______(
+#   age = __(25, 30, 35),
+#   location = __("NY", "CA", "TX")
+# )
+# 
+# # Print the data frames to understand their structure
+# print(ex_1_df_a)
+# print(ex_1_df_b)
+# print(ex_1_df_details)
+```
+
+Sometime it is easier to analyze data if multiple data frames are merge in some way. Below we will learn two ways of doing this.
+
+---
+
+**Step 2: Combine (or just bind) the Data Frames**
+
+Now that we have created the data frames, let’s bring them together for analysis using `bind_rows()` and `bind_cols()`.
+
+##### **Using `bind_rows()`**
+
+```{r}
+# Combine Group A and Group B
+ex_1_combined_rows <- bind_rows(ex_1_df_a, ex_1_df_b)
+
+# Print the combined data frame
+print(ex_1_combined_rows)
+```
+
+**Q10.** What is the purpose of the `bind_rows` function?
+
+
+
+
+
+
+
+**Q11.** What happens if the column names do not match when using `bind_rows()`? For example change `score` to `score_ex` in `ex_1_df_b`.
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+##### **Using `bind_cols()`**
+
+```{r}
+# Add additional details to Group A
+ex_1_combined_cols <- bind_cols(ex_1_df_a, ex_1_df_details)
+
+# Print the combined data frame
+print(ex_1_combined_cols)
+```
+
+**Q12.** What is the purpose of the `bind_cols` function?
+
+
+
+
+
+
+
+**Q13.** What happens if the number of rows do not match when using `bind_cols()`?
+
+
+
+
+
+
+Provide the gif
+
+**Q14.** What could be dangerous with `bind_cols` when working with real data?
+
+
+
+
+
+
+
+
+
+
+**End of the digression**
+
+**Q15.** Which function (`bind_rows` or `bind_cols`) should we use to bind the data frames of the players (MJ, KB, LJ) into 1 data frame?
+
+
+
+
+
+
+**Q16.** Go ahead and bind the data frames together.
+
+
+```{r}
+## Code Here
+```
+
+I intentionally over wrote `nba_goats_df`
+
+```{r}
+glimpse(nba_goats_df)
+```
+
+---
+
+#### Learning Moment 4 - Characters and Factors
+
+**Character/String**: A data type used to store text or strings of characters. It’s ideal for unique identifiers, descriptive labels, or free text.
+
+**Character/String:**
+
+-   **If the values are unique or near-unique** (e.g., names, IDs, or free text).
+-   **When the order or grouping is irrelevant** (e.g., descriptions or unstructured data).
+-   **If you’re performing text manipulation** (e.g., extracting substrings, concatenating values).
+
+**Factor**: A data type used for categorical data with a fixed set of possible values (levels). It’s useful for grouping, ordering, and efficient memory usage in analysis or visualization.
+
+**Factor:**
+
+-   **If the variable represents a category** (e.g., gender, game location, or outcomes like "Win" and "Loss").
+-   **When you need levels to have a specific order** (e.g., "Small", "Medium", "Large").
+-   **To save memory when the variable has repeated values** in large datasets.
+-   **When creating visualizations** where categorical groupings are important (e.g., bar plots grouped by category).
+-   **When running models or analyses that rely on categorical data** (e.g., logistic regression, ANOVA).
+
+### **Quick Guideline**:
+
+-   **Character/String:** Unique identifiers, descriptive text, or unstructured data.
+-   **Factor:** Grouping, categorization, or ordered levels used for analysis or visualization.
+
+**Q17.** When glancing at the data, which variables should be converted into factors to enhance their usefulness for potential analysis?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**Q18.** Let's do 1 variable that should be considered a factor, convert `Name` to a factor, but name it `Name_factor`.
+
+
+
+```{r}
+## Code here
+```
+
+**What are the visible benefits?**
+
+**Version 1:** ANOVA with Default Baseline (`KB`)
+
+By default, R uses the first level of the factor (alphabetically) as the baseline.
+
+```{r}
+# Perform Linear Model with default baseline
+lm_result_default <- lm(PTS ~ Name_Factor, data = mod_1_nba_goats_df)
+
+# View the summary
+summary(lm_result_default)
+```
+
+**Version 2:** Set `MJ` as the Baseline
+
+In order to do this we have to install and load forcats, be sure to install and load this package and place it in the appropriate location in the code. To change the baseline, reorder the levels of the `Name` factor so that `MJ` is the first level.
+
+
+
+```{r}
+## Code here
+```
+
+Let's see what this looks like:
+
+```{r}
+# Perform Linear with MJ as the baseline
+lm_result_mj_baseline <- lm(PTS ~ Name_Factor, data = mod_2_nba_goats_df)
+
+# View the summary
+summary(lm_result_mj_baseline)
+```
+
+------------------------------------------------------------------------
+
+#### Learning Moment 5 - Manipulating Strings & `case_when` in R
+
+Install the `stringr` package in the right location and load the library in the right section of the code.
+
+**Objective:** Rename the `Game_Outcome` values from `"W"` and `"L"` to `"Win"` and `"Loss"`.
+
+
+
+```{r}
+# Rename Game_Outcome using str_replace
+# mod_3_nba_goats_df <- mod_2_nba_goats_df %>%
+#   mutate(
+#     Game_Outcome_Renamed = ______(
+#       ____(Game_Outcome,"W") _ "___",
+#       _____(Game_Outcome,"L") _ "___"
+#   )
+# )
+
+```
+
+
+
+**Q19.** What is the purpose of `str_detect()`?
+
+
+
+
+
+
+
+**Q20.** What is the purpose of `case_when()`?
+
+
+
+
+
+
+**Q21.** What other function could we have used instead of `case_when`? Hint: Think of HW 1.
+
+
+
+------------------------------------------------------------------------
+
+Lets use `case_when` with quantitative data Categorize Points Scored (`PTS`) for Michael Jordan (`MJ`)
+
+**Objective:** Create a new variable that categorizes `PTS` into three levels:
+
+-   `"Low"` for points scored less than 20.
+
+-   `"Medium"` for points between 20 and 30 (inclusive).
+
+-   `"High"` for points greater than 30.
+
+
+
+```{r}
+# # Categorize PTS for MJ
+# mod_4_nba_goats_df <- mod_3_nba_goats_df %>%
+#   ___________________ %>%  # Focus on Michael Jordan's data
+#   mutate(
+#     PTS_Category = case_when(
+#       # Condition 1
+#       # Condition 2
+#       # Condition 3
+#     )
+#   )
+
+```
+
+```{r}
+# View categorized data
+head(select(nba_goats_df, Name, PTS, PTS_Category))
+```
+
+### Visualization
+
+#### **Sub Task 1:** Boxplot & Violin Plot with Mean
+
+-   **Task Description**: Create a combined boxplot and violin plot comparing players against their points scored (`PTS`) during their first season, including mean markers and axis labels (make sure the axis titles are bolded). Interpret the distribution of points scored by each player and identify which player had the highest variability in points.
+
+
+```{r}
+## Student Version
+
+```
+
+**Q22.** What do you notice? Rank them according to their means. Why did Kobe Bryant not perform well during his 1st year in the NBA?
+
+*Let's investigate Kobe a tad bit more.*
+
+#### **Sub Task 2:** Summarized Table for KB
+
+-   **Task Description**: Generate a table summarizing `PTS` for Kobe Bryant (`KB`) during his first 7 seasons. Compute the average, standard deviations points scored by KB across these seasons or identify trends (e.g., season with the highest average). Arrange by highest variability in point to lowest so that we can understand his consistency.
+
+
+
+```{r}
+## Student Version
+
+```
+
+#### **Sub Task 3:** Confidence Intervals with Error Bars
+
+-   **Task Description**: Create a plot displaying confidence intervals with error bars for Kobe Bryant's points across his first seven NBA seasons. Provide an explanation of what the confidence intervals represent and identify which season demonstrates the least overlap between his confidence intervals.
+
+We have to break this up into two steps:
+
+
+
+*Step 1:* Create Lower and Upper Bounds
+
+**Q23.** What do we need to calculate the lower and upper bounds of a confidence interval?
+
+```{r}
+## Student Version
+```
+
+*Step 2:* Create the Visualization
+
+```{r}
+## Student Version
+```
+
+#### **Sub Task 4:** Facet Grid for MP & PTS
+
+-   **Task Description**: Use `facet_grid` to create visualizations comparing Minutes Played (`MP`) and Points (`PTS`) for different players during their first three seasons. Examine how the patterns of Minutes Played and Points Scored vary across season and player, and highlight any players who demonstrate standout performance.
+
+
+
+
+```{r}
+## Student Version
+```
+
+#### **Sub Task 5:** Barplot for Discretized Points
+
+-   **Task Description**: Create a barplot showing the count of points (PTS), categorized into bins as follows: Low (PTS \< 20), Medium (20 ≤ PTS \< 30), and High (PTS ≥ 30). Use forcats to ensure the bins are ordered logically (Low, Medium, High). Compare the counts across player identities during the first season. Analyze which players had the most occurrences in each point range and interpret how the distribution varies among players.
+
+
+```{r}
+## Student Version
+```
+
+
+## Recap
+
+
+Q1. What new libraries did you learn?
+
+
+Q2. What functions within each library did you learn?
+
+
+Q3. Ho did you use each function? Specify whether what part of ETV was the function used for.
