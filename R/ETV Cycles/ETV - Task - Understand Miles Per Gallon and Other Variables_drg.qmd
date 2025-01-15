@@ -133,7 +133,7 @@ Q6. What is the definition of data transformation?
 
 ```{r}
 select_mpg_mtcars_df <- mtcars %>% 
-  select(mpg)
+  select(mpg) 
 ```
 
 `%>%` or `|>` is the pipe operator. It is used to pass the output of one function as an argument to another function. It is used to chain multiple functions together in a sequence.
@@ -322,11 +322,11 @@ mtcars %>%
 ```{r}
 mtcars %>% 
   filter(cyl == 6) %>% 
-  select(mpg, hp) %>% 
-  ggplot(aes(x = hp, y = mpg)) +
-  geom_point() +
-  labs(title = "scatter plot of MPG and HP", x = "HP", y = "MPG" ) +
-  theme_bw() +
+  ggplot(aes(x = mpg, y = hp)) +
+  geom_point(size = 2, color = "red") +
+  labs(title = "scatter plot of MPG and HP", 
+       x = "MPG", 
+       y = "HP" ) +
   theme(plot.title = element_text(hjust = 0.5))
 
 
@@ -347,12 +347,12 @@ filter_wt_lbs_df <- mtcars %>%
  mtcars %>% 
   mutate(wt_lbs = wt * 1000) %>% 
   filter(cyl == 6) %>% 
-  select(mpg, wt_lbs) %>% 
-  ggplot(aes(x = wt_lbs, y = mpg)) +
-  geom_point() + 
+  ggplot(aes(x = mpg, y = wt_lbs)) +
+  geom_point(size = 3, color = "red") + 
   geom_smooth(methd = "lm", se = FALSE) +
-  labs(title = "Scatter plot of MPG and Weight(lbs)", x = "Weight (lbs)", y = "MPG") +
-  theme_bw() +
+  labs(title = "Scatter plot of MPG and Weight(lbs)", 
+       x = "MPG", 
+       y = "Weight (lbs)") +
   theme(plot.title = element_text(hjust = 0.5))
 
 ```
@@ -382,3 +382,13 @@ filter_wt_lbs_df <- mtcars %>%
 <!-- \[Place Answer - End\] -->
 
 ##### Do a `commit` to your branch.
+
+dplyr: Select, filter, mutate
+
+<-
+
+%>% 
+
+ggplot: geom_boxplot, aes, labs, geom_point, geom_density, theme, theme_bw, 
+
++
