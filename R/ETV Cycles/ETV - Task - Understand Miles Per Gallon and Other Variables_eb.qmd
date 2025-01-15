@@ -358,7 +358,7 @@ mtcars %>%
   labs(title = "Scatter Plot of Miles Per Gallon and Weight in lbs for 6 Cylinder Cars",
        x = "Miles Per Gallon",
        y = "Weight in lbs") +
-  theme(plot.title = element_text(hjust = 0.5))git
+  theme(plot.title = element_text(hjust = 0.5))
 
 ```
 
@@ -372,17 +372,27 @@ mtcars %>%
 
 <!-- \[Place Answer - Begin\] -->
 
+-   `data("mtcars")` to gain access to data
+
+-   `str()` and `View()` to display data
+
 <!-- \[Place Answer - End\] -->
 
 2.  **Transformation** (`dplyr`):
 
 <!-- \[Place Answer - Begin\] -->
 
+-   Used `select()`, `filter()`, and `mutate()` functions to subset and manipulate the dataset.
+
 <!-- \[Place Answer - End\] -->
 
 3.  **Visualization (`ggplot2`)**:
 
 <!-- \[Place Answer - Begin\] -->
+
+-   Explored various plot types (histograms, density plots, scatter plots) to examine relationships between variables like `mpg`, `hp`, and `wt`.
+-   Enhanced visualizations with meaningful titles, axis labels, and themes for better communication of insights.
+-   Incorporated filtering (e.g., focusing on cars with 6 cylinders) to refine analyses.
 
 <!-- \[Place Answer - End\] -->
 
