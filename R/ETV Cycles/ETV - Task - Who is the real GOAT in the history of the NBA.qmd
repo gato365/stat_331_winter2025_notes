@@ -30,110 +30,80 @@ This dataset was originally extracted in 2019 as part of a research project I co
 
 Lets Look at the excel file which contains the data of these three players.
 
-
-
 **Q1.** How many tabs are in the excel sheet? What does each one represent?
 
+5 tabs:
 
+MJ
 
+KB
+
+LJ
+
+Variables
+
+Divisions/Conferences
 
 **Q2.** What do you suppose we should analyze to find out who is the real GOAT of all time in the NBA? List some variables and questions you may have based on what you see. There is no right answer here.
 
-
-
----
-
-
-
+------------------------------------------------------------------------
 
 **Here are my ideas on how to compare these players.**
-
 
 **Sub Task 1:** Boxplot & Violin Plot with Mean
 
 -   **Task Description**: Create a combined boxplot and violin plot comparing players against their points scored (`PTS`) during their first season, including mean markers and axis labels (make sure the axis titles are bolded). Interpret the distribution of points scored by each player and identify which player had the highest variability in points.
 
----
+------------------------------------------------------------------------
 
 **Sub Task 2:** Summarized Table for KB
 
 -   **Task Description**: Generate a table summarizing `PTS` for Kobe Bryant (`KB`) during his first seven seasons. Compute the average, standard deviations points scored by KB, and the count of games he scored point, across these seasons or identify trends (e.g., season with the highest average). Arrange by highest variability in point to lowest so that we can understand his consistency.
 
----
+------------------------------------------------------------------------
 
 **Sub Task 3:** Confidence Intervals with Error Bars
 
 -   **Task Description**: Create a plot displaying confidence intervals with error bars for Kobe Bryant's points across his first seven NBA seasons. Provide an explanation of what the confidence intervals represent and identify which player demonstrates the least overlap between their confidence intervals.
 
-
----
-
+------------------------------------------------------------------------
 
 **Sub Task 4:** Facet Grid for MP & PTS
 
 -   **Task Description**: Use `facet_grid` to create visualizations comparing Minutes Played (`MP`) and Points (`PTS`) for different players during their first three seasons. Examine how the patterns of Minutes Played and Points Scored vary across season and player, and highlight any players who demonstrate standout performance.
 
-
----
-
+------------------------------------------------------------------------
 
 **Sub Task 5:** Barplot for Discretized Points
 
 -   **Task Description**: Create a barplot showing the count of points (PTS), categorized into bins as follows: Low (PTS \< 20), Medium (20 ≤ PTS \< 30), and High (PTS ≥ 30). Use forcats to ensure the bins are ordered logically (Low, Medium, High). Compare the counts across player identities during the first season. Analyze which players had the most occurrences in each point range and interpret how the distribution varies among players.
 
-
----
-
-
-
-
+------------------------------------------------------------------------
 
 **Data Ethics:** The data used in this project was scraped from the Sports Reference website, a publicly accessible resource. This data is harmless in its intended use, focusing solely on historical player statistics for educational purposes in data analysis and visualization. However, data ethics should still be considered. For instance, while this data is not sensitive, ensuring proper attribution to the data source is essential to respect intellectual property.
 
 Additionally, when working with data in general, it is important to avoid misrepresentation, maintain transparency about data collection methods, and consider privacy and consent, especially when analyzing personal or sensitive information. Ethical practices ensure that the data is used responsibly and for its intended purpose.
 
-
-
-
-
 ```{r}
 ## Location to install packages
+install.packages(“here”)
+install.packages(“readxl”)
+install.packages(“forcats”)
 
 ```
 
-
-
-
-
-
-
 #### Load Libraries (Empty)
-
-
 
 ```{r}
 ## Locations to load libraries
 
 ```
 
-
-
-
-
-
 ### Extraction
 
-
-
-
-#### Learning Moment 2 -  `here` and `read_xlsx` Packages
-
-
+#### Learning Moment 2 - `here` and `read_xlsx` Packages
 
 **Q3.** State the path to location to *nba_goats.xlsx* using the `here` function.
-
-
-
 
 ```{r}
 ## Code here
@@ -141,20 +111,13 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 **Q4.** Run `path_location_to_nba_file` in the console. What do you see?
 
-
-
-
-
 ```{r}
 # _______ <- read_xlsx(path_location_to_nba_file)
 ```
 
----
-
-
+------------------------------------------------------------------------
 
 **Q5.** What number should be place in sheet to navigate to LeBron's Sheet?
-
 
 ```{r}
 # lj_df <- read_xlsx(path_location_to_nba_file, sheet = ___) ## Provide the number for LJ
@@ -162,10 +125,7 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 *Note 1:* the name of the data frame. I use `_df` to signify that the object is a data frame
 
-
-
 **Q6.** If we wanted to get Michael Jordan's table using his name instead, how do we do that?
-
 
 ```{r}
 ## Provide the function name too
@@ -177,8 +137,6 @@ Additionally, when working with data in general, it is important to avoid misrep
 ```{r}
 
 ```
-
-
 
 **Q8.** Lets look at the data frame of Variables Meanings to get a better sense of the information. What does `GmSc` denote?
 
@@ -197,8 +155,6 @@ From HW 1 you learned to create data frames.
 **Step 1: Create Data Frames**
 
 **Q9.** Below are three data frames that will be used in this Learning Moment. Fill in the appropriate functions to create 3 data frames from vectors.
-
-
 
 ```{r}
 # # Data frame 1: Information about Group A
@@ -229,7 +185,7 @@ From HW 1 you learned to create data frames.
 
 Sometime it is easier to analyze data if multiple data frames are merge in some way. Below we will learn two ways of doing this.
 
----
+------------------------------------------------------------------------
 
 **Step 2: Combine (or just bind) the Data Frames**
 
@@ -247,19 +203,7 @@ print(ex_1_combined_rows)
 
 **Q10.** What is the purpose of the `bind_rows` function?
 
-
-
-
-
-
-
 **Q11.** What happens if the column names do not match when using `bind_rows()`? For example change `score` to `score_ex` in `ex_1_df_b`.
-
-
-
-
-
-
 
 ------------------------------------------------------------------------
 
@@ -275,43 +219,17 @@ print(ex_1_combined_cols)
 
 **Q12.** What is the purpose of the `bind_cols` function?
 
-
-
-
-
-
-
 **Q13.** What happens if the number of rows do not match when using `bind_cols()`?
-
-
-
-
-
 
 Provide the gif
 
 **Q14.** What could be dangerous with `bind_cols` when working with real data?
 
-
-
-
-
-
-
-
-
-
 **End of the digression**
 
 **Q15.** Which function (`bind_rows` or `bind_cols`) should we use to bind the data frames of the players (MJ, KB, LJ) into 1 data frame?
 
-
-
-
-
-
 **Q16.** Go ahead and bind the data frames together.
-
 
 ```{r}
 ## Code Here
@@ -323,7 +241,7 @@ I intentionally over wrote `nba_goats_df`
 glimpse(nba_goats_df)
 ```
 
----
+------------------------------------------------------------------------
 
 #### Learning Moment 4 - Characters and Factors
 
@@ -352,47 +270,7 @@ glimpse(nba_goats_df)
 
 **Q17.** When glancing at the data, which variables should be converted into factors to enhance their usefulness for potential analysis?
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 **Q18.** Let's do 1 variable that should be considered a factor, convert `Name` to a factor, but name it `Name_factor`.
-
-
 
 ```{r}
 ## Code here
@@ -416,8 +294,6 @@ summary(lm_result_default)
 
 In order to do this we have to install and load forcats, be sure to install and load this package and place it in the appropriate location in the code. To change the baseline, reorder the levels of the `Name` factor so that `MJ` is the first level.
 
-
-
 ```{r}
 ## Code here
 ```
@@ -440,8 +316,6 @@ Install the `stringr` package in the right location and load the library in the 
 
 **Objective:** Rename the `Game_Outcome` values from `"W"` and `"L"` to `"Win"` and `"Loss"`.
 
-
-
 ```{r}
 # Rename Game_Outcome using str_replace
 # mod_3_nba_goats_df <- mod_2_nba_goats_df %>%
@@ -454,26 +328,11 @@ Install the `stringr` package in the right location and load the library in the 
 
 ```
 
-
-
 **Q19.** What is the purpose of `str_detect()`?
-
-
-
-
-
-
 
 **Q20.** What is the purpose of `case_when()`?
 
-
-
-
-
-
 **Q21.** What other function could we have used instead of `case_when`? Hint: Think of HW 1.
-
-
 
 ------------------------------------------------------------------------
 
@@ -486,8 +345,6 @@ Lets use `case_when` with quantitative data Categorize Points Scored (`PTS`) for
 -   `"Medium"` for points between 20 and 30 (inclusive).
 
 -   `"High"` for points greater than 30.
-
-
 
 ```{r}
 # # Categorize PTS for MJ
@@ -514,7 +371,6 @@ head(select(nba_goats_df, Name, PTS, PTS_Category))
 
 -   **Task Description**: Create a combined boxplot and violin plot comparing players against their points scored (`PTS`) during their first season, including mean markers and axis labels (make sure the axis titles are bolded). Interpret the distribution of points scored by each player and identify which player had the highest variability in points.
 
-
 ```{r}
 ## Student Version
 
@@ -528,8 +384,6 @@ head(select(nba_goats_df, Name, PTS, PTS_Category))
 
 -   **Task Description**: Generate a table summarizing `PTS` for Kobe Bryant (`KB`) during his first 7 seasons. Compute the average, standard deviations points scored by KB across these seasons or identify trends (e.g., season with the highest average). Arrange by highest variability in point to lowest so that we can understand his consistency.
 
-
-
 ```{r}
 ## Student Version
 
@@ -540,8 +394,6 @@ head(select(nba_goats_df, Name, PTS, PTS_Category))
 -   **Task Description**: Create a plot displaying confidence intervals with error bars for Kobe Bryant's points across his first seven NBA seasons. Provide an explanation of what the confidence intervals represent and identify which season demonstrates the least overlap between his confidence intervals.
 
 We have to break this up into two steps:
-
-
 
 *Step 1:* Create Lower and Upper Bounds
 
@@ -561,9 +413,6 @@ We have to break this up into two steps:
 
 -   **Task Description**: Use `facet_grid` to create visualizations comparing Minutes Played (`MP`) and Points (`PTS`) for different players during their first three seasons. Examine how the patterns of Minutes Played and Points Scored vary across season and player, and highlight any players who demonstrate standout performance.
 
-
-
-
 ```{r}
 ## Student Version
 ```
@@ -572,19 +421,14 @@ We have to break this up into two steps:
 
 -   **Task Description**: Create a barplot showing the count of points (PTS), categorized into bins as follows: Low (PTS \< 20), Medium (20 ≤ PTS \< 30), and High (PTS ≥ 30). Use forcats to ensure the bins are ordered logically (Low, Medium, High). Compare the counts across player identities during the first season. Analyze which players had the most occurrences in each point range and interpret how the distribution varies among players.
 
-
 ```{r}
 ## Student Version
 ```
 
-
 ## Recap
-
 
 Q1. What new libraries did you learn?
 
-
 Q2. What functions within each library did you learn?
-
 
 Q3. Ho did you use each function? Specify whether what part of ETV was the function used for.
