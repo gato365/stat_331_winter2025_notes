@@ -5,7 +5,7 @@ editor: visual
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
 ```
 
 Lets get up to date with our notes:
@@ -79,6 +79,7 @@ Additionally, when working with data in general, it is important to avoid misrep
 install.packages("here")
 install.packages("readxl")
 install.packages("forcats")
+install.packages("stringr")
 ```
 
 #### Load Libraries (Empty)
@@ -88,6 +89,7 @@ install.packages("forcats")
 library(here)    # Data Extraction
 library(readxl)  # Data Extraction
 library(forcats) # Data Transformations
+library(stringr) # Data Transformations
 library(dplyr)   # Data Transformations
 library(ggplot2) # Data Visualization
 ```
@@ -157,29 +159,29 @@ From HW 1 you learned to create data frames.
 
 ```{r}
 # Data frame 1: Information about Group A
-ex_1_df_a <- data.frame(
-  id = c(1, 2, 3),
-  name = c("Alice", "Bob", "Charlie"),
-  score = c(85, 90, 78)
-)
+#ex_1_df_a <- data.frame(
+#  id = c(1, 2, 3),
+#  name = c("Alice", "Bob", "Charlie"),
+#  score = c(85, 90, 78)
+#)
 
 # Data frame 2: Information about Group B
-ex_1_df_b <- data.frame(
-  id = c(4, 5, 6),
-  name = c("David", "Ella", "Fiona"),
-  score = c(88, 92, 81)
-)
+#ex_1_df_b <- data.frame(
+#  id = c(4, 5, 6),
+#  name = c("David", "Ella", "Fiona"),
+#  score = c(88, 92, 81)
+#)
 
 # Data frame 3: Additional details for Group A
-ex_1_df_details <- data.frame(
-  age = c(25, 30, 35),
-  location = c("NY", "CA", "TX")
-)
+#ex_1_df_details <- data.frame(
+#  age = c(25, 30, 35),
+#  location = c("NY", "CA", "TX")
+#)
 
 # Print the data frames to understand their structure
-print(ex_1_df_a)
-print(ex_1_df_b)
-print(ex_1_df_details)
+#print(ex_1_df_a)
+#print(ex_1_df_b)
+#print(ex_1_df_details)
 ```
 
 Sometime it is easier to analyze data if multiple data frames are merge in some way. Below we will learn two ways of doing this.
@@ -331,22 +333,37 @@ Install the `stringr` package in the right location and load the library in the 
 **Objective:** Rename the `Game_Outcome` values from `"W"` and `"L"` to `"Win"` and `"Loss"`.
 
 ```{r}
-# Rename Game_Outcome using str_replace
-# mod_3_nba_goats_df <- mod_2_nba_goats_df %>%
-#   mutate(
-#     Game_Outcome_Renamed = ______(
-#       ____(Game_Outcome,"W") _ "___",
-#       _____(Game_Outcome,"L") _ "___"
-#   )
-# )
-
+# Rename Game_Outcome using str_replace (using case_when)
+mod_3_nba_goats_df <- mod_2_nba_goats_df %>%
+  mutate(
+     Game_Outcome_Renamed = case_when(
+       str_detect(Game_Outcome,"W") ~ "Win",
+       str_detect(Game_Outcome,"L") ~ "Loss"
+  )
+)
 ```
 
 **Q19.** What is the purpose of `str_detect()`?
 
+Given a variable (or column) it looks for a specific sub string (within the character column).
+
 **Q20.** What is the purpose of `case_when()`?
 
+To make new categorical variables based on a condition.
+
 **Q21.** What other function could we have used instead of `case_when`? Hint: Think of HW 1.
+
+We would've used an 'if-else'.
+
+```{r}
+# Another way would be to use if_else
+mod_4_nba_goats_df <- mod_2_nba_goats_df %>%
+  mutate(
+     Game_Outcome_Renamed = if_else(
+       str_detect(Game_Outcome,"W"), "Win", "Loss"
+  )
+)
+```
 
 ------------------------------------------------------------------------
 
@@ -362,21 +379,21 @@ Lets use `case_when` with quantitative data Categorize Points Scored (`PTS`) for
 
 ```{r}
 # # Categorize PTS for MJ
-# mod_4_nba_goats_df <- mod_3_nba_goats_df %>%
-#   ___________________ %>%  # Focus on Michael Jordan's data
-#   mutate(
-#     PTS_Category = case_when(
-#       # Condition 1
-#       # Condition 2
-#       # Condition 3
-#     )
-#   )
+ mod_5_nba_goats_df <- mod_3_nba_goats_df %>%
+   filter(Name == "MJ") %>%  # Focus on Michael Jordan's data
+   mutate(
+     PTS_Category = case_when(
+       PTS < 20 ~ "Low",
+       PTS >= 20 & PTS <= 30 ~ "Medium",
+       PTS > 30 ~ "High"
+     )
+   )
 
 ```
 
 ```{r}
 # View categorized data
-head(select(nba_goats_df, Name, PTS, PTS_Category))
+head(select(mod_5_nba_goats_df, Name, PTS, PTS_Category))
 ```
 
 ### Visualization
@@ -387,10 +404,27 @@ head(select(nba_goats_df, Name, PTS, PTS_Category))
 
 ```{r}
 ## Student Version
-
+nba_goats_df %>%
+  filter(Season == "season_1") %>%
+  select(Name, PTS) %>%
+  ggplot(aes(x = Name, y = PTS)) +
+  geom_violin() + 
+  geom_boxplot(fill = "lightblue", color = "blue") +
+  stat_summary(
+    fun = mean, geom = "point", color = "red"
+  ) + 
+  labs(title = "PTS distribution by player during 1st season",
+       x = "Player Name",
+       y = "Points Per Game") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5), axis.title = element_text(face = "bold"))
 ```
 
 **Q22.** What do you notice? Rank them according to their means. Why did Kobe Bryant not perform well during his 1st year in the NBA?
+
+MJ had the highest, followed by LJ, with KB as last.
+
+KB had a slow start because he had just gotten out of high school and he was not a starter.
 
 *Let's investigate Kobe a tad bit more.*
 
@@ -400,7 +434,13 @@ head(select(nba_goats_df, Name, PTS, PTS_Category))
 
 ```{r}
 ## Student Version
-
+kb_summary_stats_df <- nba_goats_df %>%
+  filter(str_detect(Name, "KB"), Season %in% str_c("season_", 1:7)) %>%
+  group_by(Season) %>%
+  summarise(`Mean KB PTS` = mean(PTS, na.rm = TRUE), 
+            `SD KB PTS` = sd(PTS, na.rm = TRUE),
+            `Number of Games` = n()) %>%
+  arrange(desc(`SD KB PTS`))
 ```
 
 #### **Sub Task 3:** Confidence Intervals with Error Bars
@@ -415,12 +455,21 @@ We have to break this up into two steps:
 
 ```{r}
 ## Student Version
+ci_kb_df <- kb_summary_stats_df %>%
+  mutate(se = `SD KB PTS` / sqrt(`Number of Games`),
+         lower_bound = `Mean KB PTS` - 1.96*se,
+         upper_bound = `Mean KB PTS` + 1.96*se)
 ```
 
 *Step 2:* Create the Visualization
 
 ```{r}
 ## Student Version
+ci_kb_df %>%
+  select(lower_bound, upper_bound, `Mean KB PTS`, Season) %>%
+  ggplot(aes(x = Season, y = `Mean KB PTS`)) +
+  geom_point() + 
+  geom_errorbar(aes(ymin = lower_bound, ymax = upper_bound))
 ```
 
 #### **Sub Task 4:** Facet Grid for MP & PTS
