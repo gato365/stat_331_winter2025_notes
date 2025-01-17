@@ -89,8 +89,9 @@ Additionally, when working with data in general, it is important to avoid misrep
 ```{r}
 ## Location to install packages
 install.packages("here")   ## Locate files
-install.packages("readxl") 
+install.packages("readxl")
 install.packages("forcats")
+install.packages("stringr")
 ```
 
 #### Load Libraries (Empty)
@@ -102,6 +103,7 @@ library(readxl)  ## Data Extraction
 library(dplyr)   ## Data Transfomations
 library(forcats) ## Data Transformation
 library(ggplot2) ## Data Visualizations
+library(stringr) ## Data Transformation
 ```
 
 ### Extraction
@@ -357,21 +359,33 @@ Install the `stringr` package in the right location and load the library in the 
 
 ```{r}
 # Rename Game_Outcome using str_replace
-# mod_3_nba_goats_df <- mod_2_nba_goats_df %>%
-#   mutate(
-#     Game_Outcome_Renamed = ______(
-#       ____(Game_Outcome,"W") _ "___",
-#       _____(Game_Outcome,"L") _ "___"
-#   )
-# )
+mod_3_nba_goats_df <- mod_2_nba_goats_df %>%
+  mutate(
+    Game_Outcome_Renamed = case_when(
+      str_detect(Game_Outcome,"W") ~ "Win",
+      str_detect(Game_Outcome,"L") ~ "Loss"
+  )
+)
 
 ```
 
 **Q19.** What is the purpose of `str_detect()`?
 
+The str_detect() function is used to detect certain substrings in a character column
+
 **Q20.** What is the purpose of `case_when()`?
 
+The case_when() function is used to make new categorical variables based on a condition
+
 **Q21.** What other function could we have used instead of `case_when`? Hint: Think of HW 1.
+
+if_else
+
+```{r}
+mod_4_nba_goats_df <- mod_2_nba_goats_df %>% 
+  mutate(
+    Game_Outcome_Renamed = if_else(str_detect(Game_Outcome,"W"), "Win","Loss"))
+```
 
 ------------------------------------------------------------------------
 
@@ -387,45 +401,67 @@ Lets use `case_when` with quantitative data Categorize Points Scored (`PTS`) for
 
 ```{r}
 # # Categorize PTS for MJ
-# mod_4_nba_goats_df <- mod_3_nba_goats_df %>%
-#   ___________________ %>%  # Focus on Michael Jordan's data
-#   mutate(
-#     PTS_Category = case_when(
-#       # Condition 1
-#       # Condition 2
-#       # Condition 3
-#     )
-#   )
+mod_5_nba_goats_df <- mod_3_nba_goats_df %>%
+  filter(Name == "MJ") %>%  # Focus on Michael Jordan's data
+  mutate(
+    PTS_Category = case_when(
+      PTS < 20 ~ "Low",                  # Condition 1
+      PTS >= 20 & PTS <= 30 ~ "Medium",  # Condition 2
+      TRUE ~ "High"                      # Condition 3
+    )
+  )
 
 ```
 
 ```{r}
 # View categorized data
-head(select(nba_goats_df, Name, PTS, PTS_Category))
+head(select(mod_5_nba_goats_df, Name, PTS, PTS_Category))
 ```
 
 ### Visualization
 
 #### **Sub Task 1:** Boxplot & Violin Plot with Mean
 
--   **Task Description**: Create a combined boxplot and violin plot comparing players against their points scored (`PTS`) during their first season, including mean markers and axis labels (make sure the axis titles are bolded). Interpret the distribution of points scored by each player and identify which player had the highest variability in points.
+-   **Task Description**: Create a combined **boxplot** and **violin plot** comparing players against their points scored (`PTS`) during their first season, including mean markers and axis labels (make sure the axis titles are bolded). Interpret the distribution of points scored by each player and identify which player had the highest variability in points.
 
 ```{r}
 ## Student Version
-
+mod_4_nba_goats_df %>%
+  filter(Season == "season_1") %>%
+  select(Name, PTS) %>%
+  ggplot(aes(x = Name, y = PTS)) +
+  geom_violin() +
+  geom_boxplot(fill = "lightblue", color = "blue") +
+  stat_summary(
+    fun = mean, geom = "point", color = "red"
+  ) +
+  labs(
+    title = "Point Distribution by Player for Season 1",
+    x = "Player Name",
+    y = "Points per Game"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5), axis.title = element_text(face = "bold"))
 ```
 
 **Q22.** What do you notice? Rank them according to their means. Why did Kobe Bryant not perform well during his 1st year in the NBA?
+
+Means (highest to lowest): MJ, LJ, KB
 
 *Let's investigate Kobe a tad bit more.*
 
 #### **Sub Task 2:** Summarized Table for KB
 
--   **Task Description**: Generate a table summarizing `PTS` for Kobe Bryant (`KB`) during his first 7 seasons. Compute the average, standard deviations points scored by KB across these seasons or identify trends (e.g., season with the highest average). Arrange by highest variability in point to lowest so that we can understand his consistency.
+-   **Task Description**: **Generate a table summarizing `PTS` for Kobe Bryant (`KB`) during his first 7 seasons.** Compute the average, standard deviations points scored by KB across these seasons or identify trends (e.g., season with the highest average). Arrange by highest variability in point to lowest so that we can understand his consistency.
 
 ```{r}
 ## Student Version
-
+kb_summary_statistics_df <- 
+  mod_4_nba_goats_df %>%
+  filter(str_detect(Name, "KB"), Season %in% str_c("season_",1:7)) %>% 
+  group_by(Season) %>% 
+  summarise(`Mean KB Points` = mean(PTS, na.rm = TRUE), `SD KB Points` = sd(PTS, na.rm = TRUE), `# of Games` = n()) %>% 
+    arrange(-`SD KB Points`) ## or desc() in place of -
 ```
 
 #### **Sub Task 3:** Confidence Intervals with Error Bars
@@ -440,12 +476,22 @@ We have to break this up into two steps:
 
 ```{r}
 ## Student Version
+ci_kb_df <- kb_summary_statistics_df %>% 
+  mutate(se = `SD KB Points`/sqrt(`# of Games`),
+         lower_bound = `Mean KB Points` - 1.96*se,
+         upper_bound = `Mean KB Points` + 1.96*se
+         )
 ```
 
 *Step 2:* Create the Visualization
 
 ```{r}
 ## Student Version
+ci_kb_df %>% 
+  select(lower_bound, upper_bound, `Mean KB Points`, Season) %>% 
+  ggplot(aes(x = Season, y = `Mean KB Points`)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower_bound, ymax = upper_bound))
 ```
 
 #### **Sub Task 4:** Facet Grid for MP & PTS
