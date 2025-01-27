@@ -115,6 +115,7 @@ library(stringr) ## Data Transformation
 ```{r}
 ## Code here
 path_location_to_nba_file <- here("Data","nba_goats.xlsx")
+#path_location_to_nba_file <- "C:/Users/arian/OneDrive/Desktop/stat_331_winter2025/stat_331_winter2025_notes/Data"
 ```
 
 **Q4.** Run `path_location_to_nba_file` in the console. What do you see?
@@ -500,6 +501,17 @@ ci_kb_df %>%
 
 ```{r}
 ## Student Version
+nba_goats_df %>% 
+  filter(Season %in% str_c("season_",1:3)) %>% 
+  # mutate(Season = str_replace("season_","_"," ")) %>% 
+  ggplot(aes(x = MP, y = PTS, color = Name)) +
+  geom_point() +
+  scale_color_manual(values = c("KB" = "purple","LJ" = "gold","MJ" ="red")) +
+  facet_grid(Season ~ Name) +
+  labs(x = "Minutes Played", y = "Points", title = "Points by Minutes Played", subtitles = "According to Season and Player") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
 ```
 
 #### **Sub Task 5:** Barplot for Discretized Points
@@ -508,6 +520,19 @@ ci_kb_df %>%
 
 ```{r}
 ## Student Version
+first_season_nba_goats_df <- nba_goats_df %>% 
+  filter(Season == "season_1") %>% 
+  mutate(PTS_Category = case_when(
+      PTS < 20 ~ "Low",                  # Condition 1
+      PTS >= 20 & PTS <= 30 ~ "Medium",  # Condition 2
+      TRUE ~ "High")) %>%                # Condition 3
+  filter(!is.na(PTS_Category))
+
+
+first_season_nba_goats_df %>% 
+  select(Name,PTS_Category) %>% 
+  ggplot(aes(x = Name, fill = PTS_Category)) +
+  geom_bar(position = "dodge")
 ```
 
 ## Recap
@@ -517,3 +542,9 @@ Q1. What new libraries did you learn?
 Q2. What functions within each library did you learn?
 
 Q3. Ho did you use each function? Specify whether what part of ETV was the function used for.
+
+```{r}
+ggplot(data = mod_5_nba_df, aes(x = MP, y = PTS)) +
+  geom_point() +
+  theme_bw()
+```
