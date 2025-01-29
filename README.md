@@ -6,6 +6,7 @@ To access the latest weekly notes and video materials, follow these steps **ever
 ### **Final Revised Instructions for README**
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Here’s how the updated section of your README should look:
 
 ---
@@ -52,6 +53,8 @@ To get the latest class materials, follow these steps **every week**:
 
 
 =======
+=======
+>>>>>>> 94dc048 (merge)
 ### **Step 1: Ensure You Are on Your Branch**
 Before pulling any updates, confirm you are on your personal branch (e.g., `your_name`).
 
@@ -146,6 +149,56 @@ git branch
 ```
 2. **Do Not Work on `main`**: Never edit or commit directly to the `main` branch.
 3. **Pull Updates Weekly**: Make it a habit to pull updates from `main` every week to get the latest materials.
+<<<<<<< HEAD
 >>>>>>> main
+=======
+=======
+Here’s how the updated section of your README should look:
+
+---
+
+## **How to Get Weekly Updates**
+
+To get the latest class materials, follow these steps **every week**:
+
+1. **Switch to `main`**:
+   ```bash
+   git checkout main
+   ```
+
+2. **Pull Updates from the Remote Repository**:
+   ```bash
+   git pull origin main
+   ```
+
+3. **Switch Back to Your Personal Branch**:
+   ```bash
+   git checkout full_name
+   ```
+
+4. **Merge Updates from `main` into Your Branch**:
+   ```bash
+   git merge main
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> c62eed1 (Added libraries for data transformation and visualization)
+>>>>>>> 94dc048 (merge)
 
 
