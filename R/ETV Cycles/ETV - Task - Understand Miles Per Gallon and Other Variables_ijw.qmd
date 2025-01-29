@@ -43,8 +43,9 @@ You only need to install the packages once. After installing the packages, you c
 ##### Load Libraries (Empty)
 
 ```{r}
-library(dplyr)   ## Data Transformation
-library(ggplot2) ## Data Visualization
+
+library(dplyr)     ## Data Transformation
+library(ggplot2)   ## Data Visualization
 
 ```
 
@@ -116,6 +117,11 @@ str(mtcars)
 
 ```
 
+
+```{r}
+
+```
+
 <!-- \[Place Answer - End\] -->
 
 ##### Do a `commit` to your branch.
@@ -157,7 +163,7 @@ Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
-The select() function is used to select columns from a data frame
+The select() fucntion is used to select columns from a data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -200,7 +206,7 @@ Q9. What are other operators that can be used with the `filter()` function?
 
 ```{r}
 mutate_kmpl_mtcars_df <- mtcars %>% 
-  mutate(kmpl = mpg * 0.425144)
+  mutate(kmpl = mpg * 0.425144, new_var = 1)
 
 ```
 
@@ -228,7 +234,7 @@ Go AHEAD and create your 1st plot in R.
 
 ```{r}
 ggplot(data = mtcars, aes(x = mpg)) +
-  geom_boxplot() 
+  geom_dotplot()
 ```
 
 **Lets explain this code**
@@ -257,9 +263,16 @@ Data visualziations is the graphical representation of Data. It is used to commu
 
 ```{r}
 mtcars %>% 
+<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
   select(mpg) %>% 
   ggplot(aes(x = mpg)) + 
   geom_histogram()
+=======
+  # select(mpg) %>% 
+  ggplot(aes(x = mpg)) + 
+  geom_histogram()
+
+>>>>>>> origin/immanuel_williams:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
 ```
 
 *Note 1:*
@@ -290,6 +303,10 @@ p1 <- mtcars %>%
 p1 +
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
+<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
+=======
+  
+>>>>>>> origin/immanuel_williams:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
 ```
 
 <!-- \[Place Answer - End\] -->
@@ -301,13 +318,19 @@ p1 +
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
 mtcars %>% 
   select(mpg,hp) %>% 
   ggplot(aes(x = hp, y = mpg)) +
   geom_point(color = "red", size =2) +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
+  mtcars %>% 
+  select(mpg,hp) %>% 
+  ggplot(aes(x = hp, y = mpg)) +
+  geom_point(color = "red", size =2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
+
 
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
