@@ -26,7 +26,7 @@ git checkout full_name
 
 ---
 
-### **Step 2: Pull Updates from `main`**
+### **Step 2: Pull Updates from `main` (Current Notes)**
 
 To get the latest notes added by the instructor:
 1. Ensure you are on your branch:
@@ -35,20 +35,28 @@ To get the latest notes added by the instructor:
 git branch
 ```
  - The active branch should be your personal branch (e.g., `full_name`).
+ 
+ 
+ 2. Move to the `main` branch
+ 
+```bash
+git checkout main
+``` 
+ 
 
-2. Pull updates from the `main` branch into your branch:
+3. Pull updates from the `main` branch into your branch:
    
 ```bash
 git pull origin main
 ```
 
-3. Move the updates from the main branch to your branch `full_name`
+4. Move the updates from the main branch to your branch `full_name`
 
 ```bash
 git checkout full_name
 ```
 
-4. Update your branch
+5. Update your branch
 
 ```bash
 git merge main
