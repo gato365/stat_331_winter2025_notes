@@ -32,16 +32,6 @@ Lets Look at the excel file which contains the data of these three players.
 
 **Q1.** How many tabs are in the excel sheet? What does each one represent?
 
--   MJ
-
--   LJ
-
--   KB
-
--   Variable names
-
--   Conferences
-
 **Q2.** What do you suppose we should analyze to find out who is the real GOAT of all time in the NBA? List some variables and questions you may have based on what you see. There is no right answer here.
 
 ------------------------------------------------------------------------
@@ -85,14 +75,9 @@ Additionally, when working with data in general, it is important to avoid misrep
 ```{r}
 ## Location to install packages
 ## install.packages("here")
-```
-
-```{r}
-install.packages("readxl")
-```
-
-```{r}
-install.packages("forcats")
+## install.packages("readxl")
+## install.packages("forcats")
+## install.packages("stringr")
 ```
 
 #### Load Libraries (Empty)
@@ -106,6 +91,10 @@ library(dplyr)
 library(forcats)
 ```
 
+```{r}
+library(stringr)
+```
+
 ### Extraction
 
 #### Learning Moment 2 - `here` and `read_xlsx` Packages
@@ -114,7 +103,7 @@ library(forcats)
 
 ```{r}
 ## Code here
-path_location_to_nba_file <- here("Data_1", "nba_goats.xlsx")
+path_location_to_nba_file <- here("Data", "nba_goats.xlsx")
 ```
 
 **Q4.** Run `path_location_to_nba_file` in the console. What do you see?
@@ -140,7 +129,7 @@ lj_df <- read_xlsx(path_location_to_nba_file, sheet = 2) ## Provide the number f
 mj_df <- read_xlsx(path_location_to_nba_file, sheet = 3) ## Provide the number for MJ
 ```
 
-**Q7.** Get Kobe Bryant and the variable names in anyway you would like.
+**Q7.** Get LeBron James and the variable names in anyway you would like.
 
 ```{r}
 kb_df <- read_xlsx(path_location_to_nba_file, sheet = "KB")
@@ -151,7 +140,7 @@ variable_names_df <- read_xlsx(path_location_to_nba_file, sheet = "variable_name
 **Q8.** Lets look at the data frame of Variables Meanings to get a better sense of the information. What does `GmSc` denote?
 
 ```{r}
-View(variables_df)
+View(variable_names_df)
 ```
 
 ------------------------------------------------------------------------
@@ -213,10 +202,6 @@ print(ex_1_combined_rows)
 
 **Q10.** What is the purpose of the `bind_rows` function?
 
-'bind_rows()' combines data frames by stacking them vertically.
-
-Very useful when they have the same variable names (fields)
-
 **Q11.** What happens if the column names do not match when using `bind_rows()`? For example change `score` to `score_ex` in `ex_1_df_b`.
 
 ------------------------------------------------------------------------
@@ -233,13 +218,9 @@ print(ex_1_combined_cols)
 
 **Q12.** What is the purpose of the `bind_cols` function?
 
-Combines data frames by adding columns side by side. It is useful when we have the same number of rows in each data frame
-
 **Q13.** What happens if the number of rows do not match when using `bind_cols()`?
 
-```{r}
-
-```
+Provide the gif
 
 **Q14.** What could be dangerous with `bind_cols` when working with real data?
 
@@ -294,7 +275,8 @@ glimpse(nba_goats_df)
 ```{r}
 ## Code here
 mod_1_nba_goats_df <- nba_goats_df %>% 
-  mutate(Name_Factor = as_factor(Name))
+  mutate(Name_Factor = as_factor(Name)) %>% 
+  mutate(Na = Name)
 ```
 
 **What are the visible benefits?**
@@ -342,21 +324,34 @@ Install the `stringr` package in the right location and load the library in the 
 
 ```{r}
 # Rename Game_Outcome using str_replace
-# mod_3_nba_goats_df <- mod_2_nba_goats_df %>%
-#   mutate(
-#     Game_Outcome_Renamed = ______(
-#       ____(Game_Outcome,"W") _ "___",
-#       _____(Game_Outcome,"L") _ "___"
-#   )
-# )
+mod_3_nba_goats_df <- mod_2_nba_goats_df %>%
+  mutate(
+    Game_Outcome_Renamed = case_when(
+      str_detect(Game_Outcome,"W") ~ "Win",
+      str_detect(Game_Outcome,"L") ~ "Loss"
+  )
+)
 
 ```
 
 **Q19.** What is the purpose of `str_detect()`?
 
+str_detect() function is used to detect specific sub strings in a character column
+
 **Q20.** What is the purpose of `case_when()`?
 
+case_when() function is used to make new categorical variables based on a condition.
+
 **Q21.** What other function could we have used instead of `case_when`? Hint: Think of HW 1.
+
+```{r}
+mod_4_df <- mod_2_nba_goats_df %>% 
+  mutate(
+    Outcome_Renamed = if_else(
+      str_detect(Game_Outcome, "W"), "Win", "loss"
+    )
+  )
+```
 
 ------------------------------------------------------------------------
 
@@ -372,21 +367,38 @@ Lets use `case_when` with quantitative data Categorize Points Scored (`PTS`) for
 
 ```{r}
 # # Categorize PTS for MJ
-# mod_4_nba_goats_df <- mod_3_nba_goats_df %>%
-#   ___________________ %>%  # Focus on Michael Jordan's data
-#   mutate(
-#     PTS_Category = case_when(
-#       # Condition 1
-#       # Condition 2
-#       # Condition 3
-#     )
-#   )
-
+mod_5_nba_goats_df <- mod_3_nba_goats_df %>%
+  filter(Name == "MJ") %>%  # Focus on Michael Jordan's data
+  mutate(
+    PTS_Category = case_when(
+      PTS < 20 ~ "Low",
+      PTS >= 20 & PTS <= 30 ~ "Medium",
+      PTS > 30 ~ "High"
+    )
+  )
 ```
 
 ```{r}
+# mod_5_nba_goats_df <- mod_3_nba_goats_df %>%
+  filter(Name == "MJ") %>%  # Focus on Michael Jordan's data
+  mutate(
+    PTS_Category = case_when(
+      PTS < 20 ~ "Low",
+      PTS >= 20 & PTS <= 30 ~ "Medium",
+      TRUE ~ "High"
+    )
+  )
+```
+
+Gives the same output as the above chunk.
+
+Means everything else –\> (\>30) gets assigned "High"
+
+```{r}
 # View categorized data
-head(select(nba_goats_df, Name, PTS, PTS_Category))
+head(select(mod_5_nba_goats_df, Name, PTS, PTS_Category))
+
+
 ```
 
 ### Visualization
@@ -394,11 +406,35 @@ head(select(nba_goats_df, Name, PTS, PTS_Category))
 #### **Sub Task 1:** Boxplot & Violin Plot with Mean
 
 -   **Task Description**: Create a combined boxplot and violin plot comparing players against their points scored (`PTS`) during their first season, including mean markers and axis labels (make sure the axis titles are bolded). Interpret the distribution of points scored by each player and identify which player had the highest variability in points.
+-   group_by Name
+-   Find out where the first season stops
+    -   calculate mean, sd, number of games played, total points ...
+-   Plot based on the previous group_by summary
+-   Figure out how to add a box plot and a violin plot on the same output
+-   Do Axis titles (bolded)
 
 ```{r}
 ## Student Version
+nba_goats_df %>% 
+  filter(Season == "season_1") %>% 
+  select(Name, PTS) %>% 
+  ggplot(aes(x = Name, y = PTS)) +
+  geom_violin() + 
+  geom_boxplot(fill = "lightblue", color = "blue") + 
+  stat_summary(
+    fun = mean, geom = "point", color = "red"
+  ) + 
+  labs(
+    title = "Point Distribution by Player for Season 1", 
+    x = "Player Name", 
+    y = "Points Per Game"
+  ) + 
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5), axis.title = element_text(face = "bold"))
 
 ```
+
+axis.text refers to KB, LJ, and MJ while axis.title refers to Player Name.
 
 **Q22.** What do you notice? Rank them according to their means. Why did Kobe Bryant not perform well during his 1st year in the NBA?
 
@@ -410,7 +446,11 @@ head(select(nba_goats_df, Name, PTS, PTS_Category))
 
 ```{r}
 ## Student Version
-
+kb_summary_statistics_df <- nba_goats_df %>% 
+  filter(str_detect(Name, "KB"), Season %in% str_c("season_", 1:7)) %>% 
+  group_by(Season) %>% 
+  summarise(`Mean KB PTS` = mean(PTS, na.rm = TRUE), `SD` = sd(PTS, na.rm = TRUE), `Number of Games` = n()) %>% 
+  arrange(desc(`SD`))   # could also use -`SD`
 ```
 
 #### **Sub Task 3:** Confidence Intervals with Error Bars
@@ -425,12 +465,23 @@ We have to break this up into two steps:
 
 ```{r}
 ## Student Version
+ci_kb_df <- kb_summary_statistics_df %>% 
+  mutate(se = `SD`/sqrt(`Number of Games`),
+         lower_bound = `Mean KB PTS` - 1.96*se,
+         upper_bound = `Mean KB PTS` + 1.96*se
+  )
 ```
 
 *Step 2:* Create the Visualization
 
 ```{r}
 ## Student Version
+ci_kb_df %>% 
+  select(lower_bound, upper_bound, `Mean KB PTS`, Season) %>% 
+  ggplot(aes(x = Season, y = `Mean KB PTS`)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower_bound, ymax = upper_bound))
+  
 ```
 
 #### **Sub Task 4:** Facet Grid for MP & PTS
@@ -439,6 +490,18 @@ We have to break this up into two steps:
 
 ```{r}
 ## Student Version
+nba_goats_df %>%
+  filter(Season %in% str_c("season_", 1:3)) %>% 
+  mutate(Season = str_replace(Season,"_"," ")) %>% 
+  ggplot(aes(x = MP, y = PTS, color = Name))+ 
+  geom_point() + 
+  scale_color_manual(values = c("KB" = "purple", "LJ" = "gold", "MJ" = "red")) +
+  facet_grid(Season ~ Name) + 
+  labs(x = "Minutes Played", y = "Points", title = "Points by Minutes Played", subtitle = "According to Season and Player") +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+  
 ```
 
 #### **Sub Task 5:** Barplot for Discretized Points
@@ -447,7 +510,25 @@ We have to break this up into two steps:
 
 ```{r}
 ## Student Version
+first_season_df <- nba_goats_df %>%
+  filter(Season == "season_1") %>% 
+  mutate(new_PTS = case_when(
+    PTS < 20 ~ "Low",
+    PTS >= 20 & PTS <= 30 ~ "Medium",
+    PTS > 30 ~ "High"
+  )) %>% 
+  filter(!is.na(new_PTS))
+
 ```
+
+```{r}
+first_season_df %>% 
+  select(Name, new_PTS) %>% 
+  ggplot(aes(x = Name, fill = new_PTS)) +
+  geom_bar(position = "dodge")
+```
+
+"fill" fills the frequency of the occurrences
 
 ## Recap
 
@@ -456,3 +537,38 @@ Q1. What new libraries did you learn?
 Q2. What functions within each library did you learn?
 
 Q3. Ho did you use each function? Specify whether what part of ETV was the function used for.
+
+```{r}
+df_a <- data.frame(
+  ID = c(1, 2, 3),
+  Name = c("Alice", "Bob", "Charlie")
+)
+
+df_b <- data.frame(
+  Age = c(25, 30, 35),
+  City = c("New York", "Los Angeles", "Chicago")
+)
+
+df_c <-  data.frame(
+  ID = c(4, 5),
+  Name = c("David", "Ella"),
+  Age = c(40, 28),
+  City = c("Houston", "Phoenix")
+)
+```
+
+```{r}
+# Bind columns of a and b
+df_ab <- bind_cols(df_a, df_b)
+
+# Bind rows of b and c
+df_bc <- bind_rows(df_b, df_c)
+
+df_all <- bind_rows(df_a, df_b, df_c)
+```
+
+```{r}
+ggplot(data = nba_goats_df, aes(x = MP, y = PTS)) + 
+  geom_point() + 
+  theme()
+```
