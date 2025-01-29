@@ -43,8 +43,13 @@ You only need to install the packages once. After installing the packages, you c
 ##### Load Libraries (Empty)
 
 ```{r}
+<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
 library(dplyr)   ## Data Transformation
 library(ggplot2) ## Data Visualization
+=======
+library(dplyr)     ## Data Transformation
+library(ggplot2)   ## Data Visualization
+>>>>>>> c62eed1 (Added libraries for data transformation and visualization):R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
 
 ```
 
