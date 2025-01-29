@@ -1,9 +1,12 @@
 Version: 1.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 ProjectId: 63dc12bc-3dce-45a3-9813-4a1f05adc56a
 =======
 ProjectId: 34dfbd60-ecf9-4f7b-a0e8-17e7250c31b2
 >>>>>>> refs/remotes/origin/main
+=======
+>>>>>>> e502c66 (Week 3 material)
 
 RestoreWorkspace: Default
 SaveWorkspace: Default
