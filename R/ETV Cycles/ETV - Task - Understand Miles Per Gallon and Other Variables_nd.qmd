@@ -247,8 +247,8 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
-
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_histogram()
 ```
 
 *Note 1:*
@@ -264,7 +264,10 @@ Q11. What is the definition of data visualization?
 <!-- \[Place Answer - Begin\] -->
 
 ```{r}
-
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_density() +
+  labs(title = "Distribution of Miles per Gallon",
+       x = "Miles per Gallon")
 ```
 
 *Note 3:*
