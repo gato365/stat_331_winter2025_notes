@@ -1,0 +1,413 @@
+---
+title: "ETV - Task - Understand Miles Per Gallon and Other Variables"
+format: html
+editor: visual
+---
+
+## Description
+
+This task leverages the `mtcars` dataset to introduce key concepts in data transformation and visualizationusing R. Students will engage in a series of subtasks that reinforce their understanding of data manipulation, filtering, and visualization. The subtasks emphasize the **ETV framework** (Extraction, Transformation, Visualization) to simulate real-world data analysis processes. These exercises highlight how to explore relationships between variables while encouraging critical thinking through interpretation of results.
+
+Background Info:
+
+The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+**Sub Task 1:** Create histogram of miles per gallon `mpg`. Describe your findings.
+
+**Sub Task 2:** Create a density plot of miles per gallon `mpg`. Add a better name to the x-axis and a better title. Describe your findings.
+
+**Sub Task 3:** Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Add labels to the x and y axis as well as title. Describe your findings.
+
+**Sub Task 4:** Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Filter the data to only include cars with 6 cylinders. Describe your findings.
+
+**Sub Task 5:** Create a new variable named `wt_lbs`. Create a scatter plot of miles per gallon `mpg` and weight in lbs `wt_lbs`. Filter the data to only include cars with 6 cylinders. Add a trend line. Describe your findings.
+
+**Data Ethics:** This data is from the mtcars dataset in R. The mtcars dataset is a built-in dataset in R that contains information about 32 different cars. The data is used for educational purposes and is freely available for use in R. It is important to verify the data before using it for analysis.
+
+#### Learning Moment 1 - Packages and Libraries
+
+**Packages** are collections of functions in R that are bundled together. They are used to extend the functionality of R. In this case, we will be using the `dplyr` and `ggplot2` packages. The `dplyr` package is used for data transformation, while the `ggplot2` package is used for data visualization.
+
+##### Install Packages
+
+```{r}
+## Uncomment the following lines to install the packages
+# install.packages("dplyr")
+# install.packages("ggplot2")
+```
+
+You only need to install the packages once. After installing the packages, you can load them using the `library()` function.
+
+**Libraries** are used to load functions that are not part of the base R package. In this case, we will be using the `dplyr` and `ggplot2` libraries. The `dplyr` library is used for data transformation, while the `ggplot2` library is used for data visualization.
+
+##### Load Libraries (Empty)
+
+```{r}
+library(dplyr)    ## Data Transformation
+library(ggplot2)  ## Data Visualization
+```
+
+------------------------------------------------------------------------
+
+### Extraction
+
+Q1. What is the definition of data extraction?
+
+\[Delete this - Begin\]
+
+*Solution*: is to bring data from some source into your working environment.
+
+```{r}
+data("mtcars")
+```
+
+\[Delete this - End\]
+
+#### Learning Moment 2 - tidy data
+
+Q2. What is the definition of tidy data?
+
+\[Delete this - Begin\]
+
+*Solution:* undefined
+
+1.  Each variable is stored in its own column.
+2.  Each observation is stored in its own row.
+3.  Each type of observational unit forms its own table.
+
+\[Delete this - End\]
+
+#### Learning Moment 3 - Data Types, Data Frame, and View Data Frame
+
+Q3. What are three common data types in R?
+
+\[Delete this - Begin\]
+
+*Solution:* The three common data types in R are
+
+-   numeric (Quantitative data)
+
+-   character (categorical or categorical binary)
+
+-   logical (Boolean Logic)
+
+\[Delete this - End\]
+
+Q4. What is the definition of a data frame?
+
+\[Delete this - Begin\]
+
+*Solution:* A data frame is a table or a two-dimensional array-like structure in which each column contains values of one variable and each row contains one set of values from each column.
+
+\[Delete this - End\]
+
+Q5. How can we view the tidy data frame `mtcars`?
+
+\[Delete this - Begin\] *Method 1*
+
+```{r}
+View(mtcars)
+```
+
+*Method 2*
+
+```{r}
+str(mtcars)
+```
+
+\[Delete this - End\]
+
+------------------------------------------------------------------------
+
+### Transformation
+
+Q6. What is the definition of data transformation?
+
+\[Delete this - Begin\]
+
+*Solution:* Data transformation is the process of converting data from one format or structure into another format or structure. It is a fundamental step in data pre-processing and data wrangling. Data transformation is used to clean, filter, and modify data to make it more suitable for analysis.
+
+\[Delete this - End\]
+
+#### Learning Moment 4 - `select()`
+
+```{r}
+select_mpg_mtcars_df <- mtcars %>% 
+  select(mpg)
+```
+
+`%>%` or `|>` is the pipe operator. It is used to pass the output of one function as an argument to another function. It is used to chain multiple functions together in a sequence.
+
+`<-` is the assignment operator. It is used to assign the output of a function to a variable.
+
+
+
+Q6a. Go ahead and use `str()` on the `select_mpg_mtcars_df`
+
+
+
+\[Delete this - Begin\]
+
+```{r}
+str(select_mpg_mtcars_df)
+```
+
+\[Delete this - End\]
+
+Q7. What is the definition of the `select()` function?
+
+\[Delete this - Begin\]
+
+*Solution:* The `select()` function is used to select columns from a data frame. It is a function from the dplyr package in R. The `select()` function is used to subset or filter columns from a data frame based on column names or column indices.
+
+\[Delete this - End\]
+
+#### Learning Moment 5 - `filter()`
+
+```{r}
+filter_wt_mtcars_df <- mtcars %>% 
+  filter(wt > 2)
+```
+
+```{r}
+View(filter_wt_mtcars_df)
+```
+
+Q8. What is the definition of the `filter()` function?
+
+\[Delete this - Begin\]
+
+*Solution:* The `filter()` function is used to filter rows from a data frame based on a logical condition. It is a function from the dplyr package in R. The `filter()` function is used to subset or filter rows from a data frame based on a logical condition or a set of logical conditions.
+
+\[Delete this - End\]
+
+Q9. What are other operators that can be used with the `filter()` function?
+
+\[Delete this - Begin\]
+
+*Solution:* Other operators that can be used with the `filter()` function include the logical operators:
+
+-   `==` (equal to)
+-   `!=` (not equal to)
+-   `>` (greater than)
+-   `<` (less than)
+-   `>=` (greater than or equal to)
+-   `<=` (less than or equal to)
+
+There are others as well. Which we will learn throughout the course.
+
+\[Delete this - End\]
+
+#### Learning Moment 6 - `mutate()`
+
+```{r}
+mutate_kmpl_mtcars_df <- mtcars %>% 
+  mutate(kmpl = mpg * 0.425144)
+
+```
+
+`kmpl` is defined as miles per gallon `mpg` multiplied by 0.425144 to convert miles per gallon to kilometers per liter.
+
+```{r}
+View(mutate_kmpl_mtcars_df)
+```
+
+Q10. What is the definition of the `mutate()` function?
+
+\[Delete this - Begin\]
+
+*Solution:* The `mutate()` function is used to create new variables or modify existing variables in a data frame. It is a function from the dplyr package in R. The `mutate()` function is used to add new columns or modify existing columns in a data frame based on a set of rules or calculations.
+
+\[Delete this - End\]
+
+------------------------------------------------------------------------
+
+### Visualization
+
+Go AHEAD and create your 1st plot in R.
+
+```{r}
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_boxplot() 
+```
+
+**Lets explain this code**
+
+`data =`: mtcars specifies the data frame to use for the plot.
+
+`aes()`: aes() specifies the aesthetic mappings for the plot. In this case, x = mpg specifies that the x-axis should represent the miles per gallon variable.
+
+`+`: The + operator is used to add layers to the plot. In this case, geom_boxplot() specifies that a box plot should be added to the plot.
+
+`geom_boxplot()`: geom_boxplot() is a function from the ggplot2 package that is used to create a box plot.
+
+Q11. What is the definition of data visualization?
+
+\[Delete this - Begin\]
+
+*Solution:* Data visualization is the graphical representation of data. It is used to communicate information clearly and efficiently through graphical means. Data visualization is an important tool for data analysis, as it allows us to explore and understand data, identify patterns and trends, and communicate insights to others.
+
+\[Delete this - End\]
+
+#### Sub Task 1
+
+*Sub Task 1:* Create histogram of miles per gallon `mpg`. Describe your findings.
+
+\[Delete this - Begin\]
+
+```{r}
+mtcars %>% 
+  select(mpg) %>%
+  ggplot(aes(x = mpg)) +
+  geom_histogram()
+
+```
+
+*Note 1:* I am using the `select()` function to select the `mpg` column from the `mtcars` data frame. I do this so that understand which column I am working with. I am going to always do this so that I know what we are working with.
+
+*Note 2:* I am using mtcars and `select()` outside of the ggplot to illustrate that the data is being passed to the ggplot function.
+
+\[Delete this - End\]
+
+#### Sub Task 2
+
+**Sub Task 2:** Create a density plot of miles per gallon `mpg`. Add a better name to the x-axis and a better title. Describe your findings.
+
+\[Delete this - Begin\]
+
+```{r}
+mtcars %>% 
+  select(mpg) %>%
+  ggplot(aes(x = mpg)) +
+  geom_density() +
+  labs(title = "Density Plot of Miles Per Gallon",
+       x = "Miles Per Gallon")
+
+
+```
+
+*Note 3:* We just changed the layer from `geom_histogram()` to `geom_density()` to create a density plot.
+
+*Note 4:* The title is left-adjusted. We can change this, **you want to do this???**
+
+```{r}
+mtcars %>% 
+  select(mpg) %>%
+  ggplot(aes(x = mpg)) +
+  geom_density() +
+  labs(title = "Density Plot of Miles Per Gallon",
+       x = "Miles Per Gallon") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+\[Delete this - End\]
+
+#### Sub Task 3
+
+*Sub Task 3:* Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Add labels to the x and y axis as well as title. Describe your findings.
+
+\[Delete this - Begin\]
+
+```{r}
+
+mtcars %>% 
+  ggplot(aes(x = mpg, y = hp)) +
+  geom_point() +
+  labs(title = "Scatter Plot of Miles Per Gallon and Horsepower",
+       x = "Miles Per Gallon",
+       y = "Horsepower") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+*Note 5:* We are using `geom_point()` to create a scatter plot.
+
+*Note 6:* `x=mpg` and `y=hp` are global aesthetics in that we can modify them in the `ggplot()` function or in the `geom_point()` function. We can change the size and color of the points in the `geom_point()` function.
+
+```{r}
+mtcars %>% 
+  ggplot(aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "red") +
+  labs(title = "Scatter Plot of Miles Per Gallon and Horsepower",
+       x = "Miles Per Gallon",
+       y = "Horsepower") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+\[Delete this - End\]
+
+#### Sub Task 4
+
+*Sub Task 4:* Create a scatter plot of miles per gallon `mpg` and horsepower `hp`. Filter the data to only include cars with 6 cylinders. Describe your findings. Describe your findings.
+
+```{r}
+
+mtcars %>% 
+  filter(cyl == 6) %>%
+  ggplot(aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "red") +
+  labs(title = "Scatter Plot of Miles Per Gallon and Horsepower for 6 Cylinder Cars",
+       x = "Miles Per Gallon",
+       y = "Horsepower") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Sub Task 5
+
+*Sub Task 5:* Create a new variable named `wt_lbs`. Create a scatter plot of miles per gallon `mpg` and weight in lbs `wt_lbs`. Filter the data to only include cars with 6 cylinders. Add a trend line. Describe your findings.
+
+```{r}
+mtcars %>% 
+  mutate(wt_lbs = wt * 1000) %>%
+  ggplot(aes(x = mpg, y = wt_lbs)) +
+  geom_point(size = 3, color = "red") +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Scatter Plot of Miles Per Gallon and Weight in lbs for 6 Cylinder Cars",
+       x = "Miles Per Gallon",
+       y = "Weight in lbs") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+------------------------------------------------------------------------
+
+## Recap
+
+1.  **Extraction**: The `mtcars` dataset was introduced as the foundation for this task. Students practiced loading and inspecting the dataset, setting the stage for transformations and visualizations.
+
+\[Delete this - Begin\]
+
+-   `data("mtcars")` to gain access to data
+
+-   `str()` and `View()` to display data
+
+\[Delete this - End\]
+
+2.  **Transformation** (`dplyr`):
+
+\[Delete this - Begin\]
+
+```         
+-   Used `select()`, `filter()`, and `mutate()` functions to subset and manipulate the dataset.
+```
+
+\[Delete this - End\]
+
+3.  **Visualization (`ggplot2`)**:
+
+\[Delete this - Begin\]
+
+```         
+-   Explored various plot types (histograms, density plots, scatter plots) to examine relationships between variables like `mpg`, `hp`, and `wt`.
+-   Enhanced visualizations with meaningful titles, axis labels, and themes for better communication of insights.
+-   Incorporated filtering (e.g., focusing on cars with 6 cylinders) to refine analyses.
+```
+
+\[Delete this - End\]
+
+4.  **Critical Thinking**:
+
+    -   Each subtask required students to describe their findings, reinforcing their ability to interpret and articulate insights.
+    -   By connecting the tasks to broader concepts, students gained a deeper understanding of data visualization and its role in the analytical workflow.
+
+\[NEED\]

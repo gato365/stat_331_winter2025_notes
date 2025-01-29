@@ -196,10 +196,10 @@ Now that we have created the data frames, let’s bring them together for analys
 
 ```{r}
 # Combine Group A and Group B
-ex_1_combined_rows <- bind_rows(ex_1_df_a, ex_1_df_b)
+#ex_1_combined_rows <- bind_rows(ex_1_df_a, ex_1_df_b)
 
 # Print the combined data frame
-print(ex_1_combined_rows)
+#print(ex_1_combined_rows)
 ```
 
 **Q10.** What is the purpose of the `bind_rows` function?
@@ -217,10 +217,10 @@ It creates a new column and creates empty cells for where they don't have a valu
 
 ```{r}
 # Add additional details to Group A
-ex_1_combined_cols <- bind_cols(ex_1_df_a, ex_1_df_details)
+#ex_1_combined_cols <- bind_cols(ex_1_df_a, ex_1_df_details)
 
 # Print the combined data frame
-print(ex_1_combined_cols)
+#print(ex_1_combined_cols)
 ```
 
 **Q12.** What is the purpose of the `bind_cols` function?
@@ -478,6 +478,17 @@ ci_kb_df %>%
 
 ```{r}
 ## Student Version
+nba_goats_df %>%
+  filter(Season %in% str_c("season_", 1:3)) %>%
+  # mutate(Season = str_replace(Season, "_", " ")) %>% 
+  ggplot(aes(x = MP, y = PTS, color = Name)) +
+  geom_point() + 
+  scale_fill_manual(values = c("KB" = "purple","LJ" = "gold","MJ" = "red")) + 
+  facet_grid(Season ~ Name) + 
+  labs(x = "Minutes Played", y = "Points", title = "Pionts by Minutes Played", subtitle = "According to Season and Player") + 
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5), 
+        plot.subtitle = element_text(hjust = 0.5))
 ```
 
 #### **Sub Task 5:** Barplot for Discretized Points
@@ -486,6 +497,16 @@ ci_kb_df %>%
 
 ```{r}
 ## Student Version
+nba_goats_df %>%
+  filter(Season == "season_1") %>%
+  mutate(PTS_Category = case_when(
+    PTS < 20 ~ "Low",
+    PTS >= 20 & PTS < 30 ~ "Medium",
+    PTS >= 30 ~ "High"
+  )) %>%
+  filter(!is.na(PTS_Category)) %>%
+  ggplot(aes(x = Name, fill = PTS_Category)) + 
+  geom_bar(position = "dodge")
 ```
 
 ## Recap
