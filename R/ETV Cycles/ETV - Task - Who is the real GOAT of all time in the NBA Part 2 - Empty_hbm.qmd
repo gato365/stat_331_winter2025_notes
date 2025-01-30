@@ -189,13 +189,15 @@ identical_data
 ##### Full Join
 
 ```{r}
-# full_join_df <- _______(names_df, _______, _______)
+full_join_df <- full_join(names_df, scores_df, by = "ID")
 # print(_______)
 ```
 
 **Q8.** What is the purpose of the `full_join` function?
 
 \[Place Solution - Begin\]
+
+It keeps all rows from both data frames
 
 \[Place Solution - End\]
 
@@ -205,18 +207,22 @@ identical_data
 
 \[Place Solution - Begin\]
 
+All rows from both data frames are including in the resulting table, regardless of if there is a match
+
 \[Place Solution - End\]
 
 ##### Semi Join (Not in SQL)
 
 ```{r}
-# semi_join_df <- ______(______, ______, ______)
+semi_join_df <- semi_join(names_df, scores_df, by = "ID")
 # print(______)
 ```
 
 **Q10.** What is the purpose of the `semi_join` function?
 
 \[Place Solution - Begin\]
+
+Keeps rows from names_df that had a match in scores_df but does not keep columns from scores_df. It is a filtering function.
 
 \[Place Solution - End\]
 
@@ -226,17 +232,24 @@ identical_data
 
 \[Place Solution - Begin\]
 
+In a semi join, only the rows from the 1st data frame (on the left) that have a match in the second data frame (right) are included in the resulting table. Unlike other join, the semi join does not include any columns from the second data frame.
+
 \[Place Solution - End\]
 
 ##### Anti Join (Not in SQL)
 
 ```{r}
-# anti_join_df 
+anti_join_df <- names_df %>% 
+  anti_join(scores_df, by = "ID")
 ```
 
 **Q12.** What is the purpose of the `anti_join` function?
 
 \[Place Solution - Begin\]
+
+Joins where there is not a match across data frames –\> opposite of semi_join
+
+In an anti_join, the resulting table includes only rows from the 1st data frames on the left that do not match in the 2nd data frame. This join filters out any row in the 1st data frame that share a key with the second data frame.
 
 \[Place Solution - End\]
 
@@ -356,6 +369,10 @@ Think through these..
 
 ```{r}
 ## Join The Data Frame
+left_j_mj <- left_join(mj_df, div_df, by = c("Opp" = "Abbreviation"))
+
+inner_j_mj <- inner_join(mj_df, div_df, by = c("Opp" = "Abbreviation"))
+
 ```
 
 #### Learning Moment 2 - Pivots (Another Digression)
