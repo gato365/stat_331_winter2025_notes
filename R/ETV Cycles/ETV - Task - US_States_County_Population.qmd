@@ -1,0 +1,543 @@
+---
+title: "ETV - Task - US States County Population"
+format: html
+editor: visual
+---
+
+## Description
+
+Extracting county population data from Wikipedia provides a practical approach to measuring the size of the United States in an **informal census**, offering insights into **population distribution and density**. By leveraging web scraping techniques with R, we can systematically collect population data for each county across all 50 states. This process involves identifying structured tables on Wikipedia, extracting relevant columns—such as county names and population figures—and standardizing the data for analysis. Since county population figures are regularly updated, this method provides a **near real-time snapshot** of demographic patterns without relying on official census releases.  
+
+The purpose of this informal census is to assess **population density trends**, compare regional distributions, and explore variations in urban versus rural areas. By aggregating county-level data, we can better understand how population is concentrated across states, which is useful for studies in **resource allocation, infrastructure planning, and socioeconomic analysis**. While this approach does not replace official census data, it serves as a valuable **exploratory tool** for estimating and analyzing demographic shifts across the United States.
+
+Data Ethics:
+
+When extracting county population data from Wikipedia, it is essential to consider the **ethical implications** surrounding web scraping, data usage, and interpretation. While Wikipedia is an open-source platform that allows public access to information, web scraping should be conducted **responsibly** to avoid excessive server requests that could disrupt website performance. Adhering to respectful data collection practices—such as adding time delays between requests and checking the website’s **robots.txt** file—ensures that data extraction aligns with ethical guidelines and does not impose an undue burden on the platform. Additionally, since Wikipedia is a **crowdsourced** knowledge repository, it is crucial to verify the accuracy of extracted data by cross-referencing with official government sources like the **U.S. Census Bureau**.  
+
+Beyond ethical data collection, the **use and interpretation of extracted data** also carry important responsibilities. Population data can influence **policy discussions, economic decisions, and social analyses**, making it essential to avoid **misrepresentation or misuse** of the information. Researchers and analysts should be transparent about the **limitations** of web-scraped data, especially considering that Wikipedia figures may not always be up-to-date or methodologically rigorous. Furthermore, when analyzing population density or demographic trends, it is critical to **avoid biases** that could lead to misleading conclusions about regional disparities or socioeconomic conditions. Ethical data practices require that insights drawn from informal sources like Wikipedia be presented **with context, transparency, and acknowledgment of potential inaccuracies**, ensuring responsible and meaningful contributions to public discourse.
+
+
+
+## Tasks:
+
+**Subtask 1:**
+To analyze the distribution of county population sizes across the United States, create a histogram using ggplot2, applying a log10 transformation to the population data. Given that county populations vary dramatically—from low-density rural areas to highly populated urban centers—log transformation helps normalize the data, making patterns more interpretable. The histogram should reveal how counties are distributed across different population scales, highlighting whether the data is skewed, if most counties have smaller populations, or if there are outliers with significantly higher populations. This visualization offers insights into population density trends, helping to distinguish between predominantly rural and highly urbanized counties.
+
+
+Run the following code to install the `devtools` and `purrr` packages:  
+
+```{r}
+# 
+```
+
+Then, use **devtools** to install the **htmltab** package from GitHub:  
+
+```{r}
+# devtools::install_github("crubba/htmltab", force = TRUE)
+```
+
+The **htmltab** package provides a function that simplifies extracting HTML tables from Wikipedia pages.
+
+
+
+#### Load Libraries 
+
+
+
+```{r}
+
+```
+
+
+
+
+
+### Extraction
+
+
+The url we want to use is https://en.wikipedia.org/wiki/List_of_counties_in_California.
+
+```{r}
+url <- ""
+```
+
+
+
+
+```{r}
+## Use the `htmltab` function to extract the data from the Wikipedia page. 
+```
+
+**Q1.** What is the primary purpose of the `htmltab` function? What does the `which` argument do?
+
+
+
+
+
+
+
+
+
+
+### Transformation
+
+
+Let's Focus on County, Population, and Area 
+
+
+
+```{r}
+# mod_1_ca_df <- ca_df %>% 
+ 
+```
+
+
+
+**Q2.** What do you notice when you run `glimpse(mod_1_ca_df)` regarding the `Population(2023)` column?
+
+[Delete this - Begin]
+
+
+
+[Delete this - End]
+
+
+**Now, let's remove the commas from the `Population(2023)` column.**
+
+
+
+
+```{r}
+# mod_2_ca_df <- mod_1_ca_df %>% 
+#  mutate(`Population(2023)` = _______________(`Population(2023)`, ",", ""))
+```
+
+
+
+
+
+**Q3.** What do we still need to do regarding the `Population(2023)` column?
+
+[Delete this - Begin]
+
+
+[Delete this - End]
+
+
+**Now, let's convert the `Population(2023)` column to a numeric column.**
+
+
+
+```{r}
+# mod_3_ca_df <- mod_2_ca_df %>% 
+#   mutate(`Population(2023)` = ___________(`Population(2023)`))  
+
+```
+
+I do not like the column names being upper case and the parentheses in `Population(2023)` is distracting. Let's fix that.
+
+
+
+
+
+
+
+```{r}
+# mod_4_ca_df <- mod_3_ca_df %>% 
+#  
+```
+
+
+
+**Q4.** Now run `glimpse(mod_4_ca_df)` to see the changes. When do you notice about area column?
+
+[Delete this - Begin]
+
+
+
+[Delete this - End]
+
+
+**Now, let's separate the `Area` column into `square_miles` and `square_kilometers` columns.**
+
+
+
+
+```{r}
+# mod_5_ca_df <- mod_4_ca_df %>% 
+#
+```
+
+
+
+
+Well that helped but the square miles and square kilometers columns are still character columns. 
+
+We also have some unwanted text in both columns. We need to convert them to numeric columns. 
+
+This is quite a bit of work. 
+
+Let's do it in steps. 
+
+**Steps:**
+
+[Delete this - Begin]
+
+
+
+[Delete this - End]
+
+
+
+```{r}
+# mod_6_ca_df <- mod_5_ca_df %>%
+```
+
+
+
+Now do that for all 50 states in the United States with "one" line of code.
+
+
+
+#### **Learning Moment 1 - Conditional Statements in R (Digression)**  
+
+1. **if-else Statements**  
+   - *Example:*  
+```{r}
+x <- 10
+if (x > 5) {
+ print("x is greater than 5")
+} else {
+ print("x is 5 or less")
+}
+```
+   
+2. **Nested if-else Statements** 
+
+
+   - *Example:*  
+
+
+```{r}
+x <- 10
+if (x > 10) {
+ print("Greater than 10")
+} else if (x == 10) {
+ print("Exactly 10")
+} else {
+ print("Less than 10")
+}
+```
+
+3. **Logical Operators in Conditionals**  
+   - *Example:*  
+```{r}
+x <- 7
+if (x > 5 & x < 10) {
+ print("x is between 5 and 10")
+}
+```
+
+4. **Vectorized ifelse() Function**  
+
+   - *Example:*  
+```{r}
+numbers <- c(1, 5, 10, 15)
+result <- ifelse(numbers > 5, "Greater than 5", "5 or less")
+print(result)
+```
+
+5. **switch() Function for Multiple Cases**  
+   - *Example:*  
+```{r}
+day <- "Monday"
+activity <- switch(day,
+ "Monday" = "Start the week",
+ "Friday" = "Prepare for the weekend",
+ "Sunday" = "Relax",
+ "Unknown day"
+)
+print(activity)
+```
+
+**Questions:**  
+
+
+**Q5.** What is the difference between using `if-else` and `ifelse()` in R?  
+
+[Delete this - Begin]
+
+
+
+[Delete this - End]
+
+
+**Q6.** How does the `switch()` function differ from using multiple `if-else` statements?
+
+
+[Delete this - Begin]
+
+
+
+[Delete this - End]
+
+
+**Q7.** What is the purpose of conditional statements in data analysis?
+
+[Delete this - Begin]
+
+
+
+
+[Delete this - End]
+
+---
+
+#### **Learning Moment 2 - Iterations in R (Digression)**  
+
+1. **for Loops**  
+   - *Example:*  
+```{r}
+for (i in 1:5) {
+ print(paste("Iteration:", i))
+}
+```
+
+2. **while Loops**  
+   - *Example:*  
+```{r}
+x <- 1
+while (x <= 5) {
+ print(x)
+ x <- x + 1
+}
+```
+
+3. **repeat Loops with break Statements**  
+   - *Example:*  
+```{r}
+x <- 1
+repeat {
+ print(x)
+ x <- x + 1
+ if (x > 5) break
+}
+```
+
+
+4. **Using next to Skip Iterations**  
+   - *Example:*  
+```{r}
+for (i in 1:5) {
+ if (i == 3) next
+ print(i)
+}
+```
+
+**Questions:**  
+
+**Q8.** How does `repeat` differ from `while`, and when would you use it?  
+
+[Delete this - Begin]
+
+
+
+
+[Delete this - End]
+
+
+---
+
+#### **Learning Moment 3 - Functions in R (Digression)**  
+
+
+1. **Basic Function Definition**  
+   - *Example:*  
+```{r}
+add_numbers <- function(a, b) {
+ return(a + b)
+}
+print(add_numbers(3, 5))
+```
+
+2. **Default Parameter Values**  
+   - *Example:*  
+```{r}
+
+greet <- function(name = "User") {
+ return(paste("Hello,", name))
+}
+
+print(greet())
+
+print(greet("Alice"))
+```
+
+3. **Returning Multiple Values (Lists)**  
+   - *Example:*  
+```{r}
+stats <- function(x) {
+ list(mean = mean(x), median = median(x))
+}
+print(stats(c(1, 2, 3, 4, 5)))
+```
+
+
+
+4. **Higher-Order Functions (Functions as Arguments)**  
+   - *Example:*  
+```{r}
+apply_function <- function(f, x) {
+ return(f(x))
+}
+print(apply_function(sqrt, 16))
+```
+
+**Questions:**  
+**Q9.** Create a function that takes two arguments, `a` and `b`, and returns the product of `a` and `b`. Allow the default value of `b` to be 3. Test it out when a = 4.
+
+[Delete this - Begin]
+
+Solution:  
+```{r}
+
+```
+
+[Delete this - End]
+
+---
+
+#### **Learning Moment 4 - Using purrr in R (Digression)**  
+
+1. **Using map() for Iteration**  
+   - *Example:* 
+   
+
+
+
+```{r}
+# numbers <- list(1, 2, 3, 4, 5)        ## Demonstration Change to vector
+# squared <- _____________________      ## Demonstration Change to map_dbl
+# print(squared)
+```
+
+
+
+
+
+**Q10.** What is the purpose of `map()` in the purrr package?
+
+[Delete this - Begin]
+
+
+
+[Delete this - End]
+
+
+**Q11.** What does the `~` symbol represent in the `map()` function?
+
+[Delete this - Begin]
+
+
+
+[Delete this - End]
+
+
+
+
+
+
+
+
+
+2. **map2() for Pairwise Iteration**  
+   - *Example:* 
+   
+
+
+
+```{r}
+# result <- _____(c(1, 2, 3), c(4, 5, 6), ________)
+# print(result)
+```
+
+
+**Q12.** What is the purpose of `map2()` in the purrr package?
+
+[Delete this - Begin]
+
+
+[Delete this - End]
+
+
+**Q13.** What does the "." in the `map2()` function?
+
+[Delete this - Begin]
+
+
+[Delete this - End]
+
+
+
+
+
+
+
+3. **pmap() for Iterating Over Multiple Inputs**  
+   - *Example:*  
+   
+
+
+
+```{r}
+# df <- data.frame(a = 1:3, b = 4:6, c = 7:9)
+# result <- ____(df, sum)
+# print(result)
+```
+
+
+**Q14.** What is the purpose of `pmap()` in the purrr package?
+
+[Delete this - Begin]
+
+
+
+[Delete this - End]
+
+
+**Questions:**  
+
+**Q15.** How does `map()` improve over traditional `for` loops in R?  
+
+[Delete this - Begin]
+
+
+
+[Delete this - End]
+
+
+
+**Done with digressions.**
+
+
+Lets using what we learned to create a function that extracts and transforms data from Wikipedia pages for all states in the United States.
+
+
+
+
+
+Some Steps
+
+
+
+### Visualization
+
+#### Subtask 1:
+To analyze the distribution of county population sizes across the United States, create a histogram using ggplot2, applying a log10 transformation to the population data. Given that county populations vary dramatically—from low-density rural areas to highly populated urban centers—log transformation helps normalize the data, making patterns more interpretable. The histogram should reveal how counties are distributed across different population scales, highlighting whether the data is skewed, if most counties have smaller populations, or if there are outliers with significantly higher populations. This visualization offers insights into population density trends, helping to distinguish between predominantly rural and highly urbanized counties.
+
+
+
+
+## Recap
+
+
