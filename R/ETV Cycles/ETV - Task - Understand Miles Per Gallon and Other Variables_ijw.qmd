@@ -43,19 +43,8 @@ You only need to install the packages once. After installing the packages, you c
 ##### Load Libraries (Empty)
 
 ```{r}
-<<<<<<< HEAD
-<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
-library(dplyr)   ## Data Transformation
-library(ggplot2) ## Data Visualization
-=======
 library(dplyr)     ## Data Transformation
 library(ggplot2)   ## Data Visualization
->>>>>>> c62eed1 (Added libraries for data transformation and visualization):R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
-=======
-
-library(dplyr)     ## Data Transformation
-library(ggplot2)   ## Data Visualization
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
 
 ```
 
@@ -98,16 +87,7 @@ Q3. What are three common data types in R?
 -   numeric (quantitative)
 
 -   character (categorical, categorical binary)
-
-<<<<<<< HEAD
-<<<<<<< HEAD
--   Logical (Boolean Logic)
-=======
 -    Logical (Boolean Logic)
->>>>>>> cfb4078 (Viewing data and data extraction - ijw)
-=======
--   Logical (Boolean Logic)
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
 
 <!-- \[Place Answer - End\] -->
 
@@ -135,20 +115,13 @@ str(mtcars)
 
 ```
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
+
+
 ```{r}
 
 ```
 
-<<<<<<< HEAD
->>>>>>> cfb4078 (Viewing data and data extraction - ijw)
-=======
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
 <!-- \[Place Answer - End\] -->
 
 ##### Do a `commit` to your branch.
@@ -190,15 +163,8 @@ Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 The select() function is used to select columns from a data frame
-=======
-The select() fucntion is used to select columns from a data frame
->>>>>>> a1aa993 (Learned about Data transformations with R functions)
-=======
-The select() fucntion is used to select columns from a data frame
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
 
 <!-- \[Place Answer - End\] -->
 
@@ -255,15 +221,8 @@ Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 the mutate function is used to create a new variable or modify an existing variable in the data frame
-=======
-mutate function is used to create a new variable or modify an existing variable in the data frame
->>>>>>> a1aa993 (Learned about Data transformations with R functions)
-=======
-the mutate function is used to create a new variable or modify an existing variable in the data frame
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
+
 
 <!-- \[Place Answer - End\] -->
 
@@ -306,24 +265,10 @@ Data visualziations is the graphical representation of Data. It is used to commu
 
 ```{r}
 mtcars %>% 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
   select(mpg) %>% 
   ggplot(aes(x = mpg)) + 
   geom_histogram()
-=======
-  # select(mpg) %>% 
-  ggplot(aes(x = mpg)) + 
-  geom_histogram()
 
-<<<<<<< HEAD
->>>>>>> b4df34b (CHange some elements of code for class)
-=======
->>>>>>> origin/immanuel_williams:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
 ```
 
 *Note 1:*
@@ -354,17 +299,7 @@ p1 <- mtcars %>%
 p1 +
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  
->>>>>>> b4df34b (CHange some elements of code for class)
-=======
-<<<<<<< HEAD:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables.qmd
-=======
-  
->>>>>>> origin/immanuel_williams:R/ETV Cycles/ETV - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
+
 ```
 
 <!-- \[Place Answer - End\] -->
@@ -382,28 +317,12 @@ mtcars %>%
   geom_point(color = "red", size =2) +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
-<<<<<<< HEAD
-=======
   mtcars %>% 
   select(mpg,hp) %>% 
   ggplot(aes(x = hp, y = mpg)) +
   geom_point(color = "red", size =2) +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
->>>>>>> refs/remotes/origin/cameron_mcclure-coleman
-
-<<<<<<< HEAD
-mtcars %>% 
-  select(mpg,hp) %>% 
-  ggplot(aes(x = hp, y = mpg)) +
-  geom_point(color = "red", size =2) +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
-=======
-  theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5)) 
->>>>>>> b4df34b (CHange some elements of code for class)
-
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
 ```
