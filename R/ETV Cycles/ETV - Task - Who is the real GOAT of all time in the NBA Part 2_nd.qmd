@@ -10,7 +10,7 @@ MJ, LJ, and KB are often regarded as the three most popular players in NBA histo
 
 **Background Information:**
 
-This datas et was originally extracted in 2019 as part of a research project. Since the data was sourced from an HTML webpage, it underwent extensive cleaning to prepare it for analysis. In this class, we will use MJ's data set to explore and apply various ETV (Extraction, Transformation, Visualization) methods, while gaining practical skills for working with real-world data.
+This dataset was originally extracted in 2019 as part of a research project. Since the data was sourced from an HTML webpage, it underwent extensive cleaning to prepare it for analysis. In this class, we will use MJ's data set to explore and apply various ETV (Extraction, Transformation, Visualization) methods, while gaining practical skills for working with real-world data.
 
 **Sub Task 1: Create Stage Variable**
 
@@ -40,29 +40,32 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 ```{r}
 ## Install required packages
+install.packages("tidyr")
 ```
-
-
 
 ```{r}
 ## Enter Libraries
-
+library(here)     # Data extraction
+library(readxl)   # Data extraction
+library(dplyr)    # Data transformation
+library(tidyr)    # Data transformation
+library(stringr)  # Data transformation
+library(ggplot2)  # Data Visualization
 ```
-
-
 
 ### Extraction
 
 **Q2.** Define the path to the `nba_goats.xlsx` file. Ensure the correct path to the file is assigned. Extract only the "MJ" (save as `mj_df`) and "divisions" (save as `div_df`) sheets from the `nba_goats.xlsx` file into RStudio. Use the provided code to specify the file path and read the sheets into separate data frames.
 
-
-
 ```{r}
 ## Specify Path
+nba_goats_file_path <- here("Data", "nba_goats.xlsx")
 ```
 
 ```{r}
 ## Read in Sheets
+mj_df <- read_xlsx(nba_goats_file_path, sheet = "MJ")
+div_df <- read_xlsx(nba_goats_file_path, sheet = "divisions")
 ```
 
 ### Transformation
@@ -77,35 +80,32 @@ We want to do two things:
 
 Creation of sample data frames for the following examples:
 
-
-
 ```{r}
-# # Sample Data Frame 1
-# names_df <- ___________(
-#   ID = c(1, 2, 3, 4),
-#   Name = c("Alice", "Bob", "Charlie", "David")
-# )
-# 
-# # Sample Data Frame 2
-# scores_df <- ___________(
-#   ID = c(3, 4, 5, 6),
-#   Score = c(85, 90, 78, 88)
-# )
+# Sample Data Frame 1
+names_df <- data.frame(
+  ID = c(1, 2, 3, 4),
+  Name = c("Alice", "Bob", "Charlie", "David")
+)
+
+# Sample Data Frame 2
+scores_df <- data.frame(
+  ID = c(3, 4, 5, 6),
+  Score = c(85, 90, 78, 88)
+)
 ```
 
 ##### Inner Join
 
-
-
 ```{r}
-# inner_join_df <- _____________(names_df, scores_df, by = _________)
-# print( _____________)
+inner_join_df <- inner_join(names_df, scores_df, by = "ID")
+print(inner_join_df)
 ```
 
 **Q3.** What is the purpose of the `inner_join` function?
 
 \[Place Solution - Begin\]
 
+Returns rows with matching IDs in both data frames.
 
 \[Place Solution - End\]
 
@@ -115,7 +115,7 @@ Creation of sample data frames for the following examples:
 
 \[Place Solution - Begin\]
 
-
+You can see in the visualization above that the rows move to the resulting table only when there is a match in both data frames based on the shared key.
 
 \[Place Solution - End\]
 
@@ -123,20 +123,18 @@ Creation of sample data frames for the following examples:
 
 ##### Left Join/Right Join
 
-
-
 ```{r}
-# left_join_df <- names_df %>% 
-#   ___________(scores_df, ___________)
-# 
-# print( _____________)
+left_join_df <- names_df %>%
+  left_join(scores_df, by = "ID")
+
+print(left_join_df)
 ```
 
 **Q5.** What is the purpose of the `left_join` function?
 
 \[Place Solution - Begin\]
 
-
+Keeps all the rows from the left data frame (`names_df` in this case) and matches rows from the right data frame (`scores_df`).
 
 \[Place Solution - End\]
 
@@ -146,15 +144,18 @@ Creation of sample data frames for the following examples:
 
 \[Place Solution - Begin\]
 
-
+From the visualization above, you can see that all the rows from the left data frame remain in the resulting table, regardless of if there's a match in the right data frame. If there is a match in the right data frame, the values from the right data frame is included, but otherwise the values from the right data frame are filled with NA.
 
 \[Place Solution - End\]
 
 **Q7.** Modify the code to perform a right join, ensuring the resulting data matches the structure and logic of the previous left join. Name this data frame `right_join_df`.
 
-
 ```{r}
 ## Create the Right Join
+right_join_df <- scores_df %>%
+  right_join(names_df, by = "ID")
+
+print(right_join_df)
 ```
 
 ###### Checking if Data Frames are equivalent
@@ -188,17 +189,16 @@ identical_data
 
 ##### Full Join
 
-
 ```{r}
-# full_join_df <- _______(names_df, _______, _______)
-# print(_______)
+full_join_df <- full_join(names_df, scores_df, by = "ID")
+print(full_join_df)
 ```
 
 **Q8.** What is the purpose of the `full_join` function?
 
 \[Place Solution - Begin\]
 
-
+Keeps all rows in both data frames.
 
 \[Place Solution - End\]
 
@@ -208,23 +208,22 @@ identical_data
 
 \[Place Solution - Begin\]
 
-
+In the full join, all rows from both data frames are included in the resulting table, regardless of if there is a match. The matching rows are matched together.
 
 \[Place Solution - End\]
 
 ##### Semi Join (Not in SQL)
 
-
 ```{r}
-# semi_join_df <- ______(______, ______, ______)
-# print(______)
+semi_join_df <- semi_join(names_df, scores_df, by = "ID")
+print(semi_join_df)
 ```
 
 **Q10.** What is the purpose of the `semi_join` function?
 
 \[Place Solution - Begin\]
 
-
+Keeps rows from the left data frame (`names_df` in this case) that have a match in the right data frame (`scores_df`) but does not keep columns from the right data frame (`scores_df`). It is a filtering function.
 
 \[Place Solution - End\]
 
@@ -234,23 +233,23 @@ identical_data
 
 \[Place Solution - Begin\]
 
-
+In a semi join, only the rows from the 1st data frame (on the left) that have a match in the second data frame (on the right) are included in the resulting table. Unlike other joins, the semi join does not include any columns from the second data frame.
 
 \[Place Solution - End\]
 
 ##### Anti Join (Not in SQL)
 
-
-
 ```{r}
-# anti_join_df 
+# anti_join_df
+anti_join_df <- anti_join(names_df, scores_df, by = "ID")
+print(anti_join_df)
 ```
 
 **Q12.** What is the purpose of the `anti_join` function?
 
 \[Place Solution - Begin\]
 
-
+In an anti join, the resulting table includes only rows from the left data frame that do not have matches in the right data frame.
 
 \[Place Solution - End\]
 
@@ -260,7 +259,7 @@ identical_data
 
 \[Place Solution - Begin\]
 
-
+The rows are matched to see which rows on the left have matching rows on the right, based on the shared key. However, unlike semi join, only the rows from the left data frame that **don't** have a match in the right data frame are included in the final data frame. Similar to the semi join, no columns from the right data frame are included in the final data frame.
 
 \[Place Solution - End\]
 
@@ -268,7 +267,7 @@ Here are real-life examples for each type of join and when you might want to use
 
 ------------------------------------------------------------------------
 
-Think through these..
+Think through these
 
 **1. Inner Join**
 
@@ -370,91 +369,123 @@ Think through these..
 
 **Q14.** Which join function would be the most efficient to join `mj_df` and `divisions_df`?
 
+```{r}
+# Players Data Frame
+players <- data.frame(
+  player_id = c(101, 102, 103, 104, 105),
+  player_name = c("Alice", "Bob", "Charlie", "David", "Eve"),
+  team_id = c(1, 2, 2, 3, 1),
+  age = c(24, 27, 22, 29, 26)
+)
+
+# Teams Data Frame
+teams <- data.frame(
+  team_id = c(1, 2, 3, 4),
+  team_name = c("Lions", "Tigers", "Bears", "Sharks"),
+  city = c("New York", "Chicago", "Los Angeles", "Miami")
+)
+
+# Games Data Frame
+games <- data.frame(
+  game_id = c(201, 202, 203, 204, 205),
+  home_team_id = c(1, 2, 3, 1, 2),
+  away_team_id = c(2, 3, 1, 4, 3),
+  home_score = c(95, 88, 102, 99, 84),
+  away_score = c(90, 92, 97, 101, 80)
+)
+```
+
+```{}
+```
 
 ```{r}
 ## Join The Data Frame
+left_j_mj_df <- left_join(mj_df, div_df, by = c("Opp" = "Abbreviation"))
+
+inner_j_mj_df <- inner_join(mj_df, div_df, by = c("Opp" = "Abbreviation"))
+
+mod_1_mj_df <- inner_join(mj_df, div_df, by = c("Opp" = "Abbreviation"))
 ```
 
 #### Learning Moment 2 - Pivots (Another Digression)
 
 Create sample Data Frames for the following examples:
 
-
 ```{r}
-# # Sample Wide Data Frame
-# wide_df <- ___________(
-#   Name = c("Alice", "Bob", "Charlie"),
-#   Math = c(90, 85, 78),
-#   Science = c(88, 92, 81)
-# )
-# # Long-format Data Frame
-# long_df <- ___________(
-#   Student = c("Alice", "Alice", "Alice", 
-#               "Bob", "Bob", "Bob", 
-#               "Charlie", "Charlie", "Charlie"),
-#   Subject = c("Math", "Science", "History", 
-#               "Math", "Science", "History", 
-#               "Math", "Science", "History"),
-#   Score = c(88, 92, 85, 
-#             79, 85, 80, 
-#             91, 94, 89)
-# )
-
+# Sample Wide Data Frame
+wide_df <- data.frame(
+  Name = c("Alice", "Bob", "Charlie"),
+  Math = c(90, 85, 78),
+  Science = c(88, 92, 81)
+)
+# Long-format Data Frame
+long_df <- data.frame(
+  Student = c("Alice", "Alice", "Alice",
+              "Bob", "Bob", "Bob",
+              "Charlie", "Charlie", "Charlie"),
+  Subject = c("Math", "Science", "History",
+              "Math", "Science", "History",
+              "Math", "Science", "History"),
+  Score = c(88, 92, 85,
+            79, 85, 80,
+            91, 94, 89)
+)
 ```
 
 ##### Pivot Longer
 
-
-
 ```{r}
 ## Use Pivot Longer on wide_df
+longer_df <- pivot_longer(
+  data = wide_df,
+  cols = c(Math, Science),
+  names_to = "Stats",
+  values_to = "Scores"
+  )
 ```
 
 **Q15.** What is the purpose of the `pivot_longer` function?
 
 \[Place Solution - Begin\]
 
-
+The purpose of `pivot_longer()` is to transform a wide data frame into a "longer" data frame in which the selected variables are the keys and each selected variable's corresponding values make up the values. It essentially converts the selected columnsa key-value pair of columns.
 
 \[Place Solution - End\]
 
-**Q16.** When pivoting a data frame to a longer format, what columns serve as the keys and what columns contain the values? Explain how this distinction helps structure the data for analysis.
+**Q16.** When pivoting a data frame to a longer format, what are the keys and what are the values? Explain how this distinction helps structure the data for analysis.
 
 \[Place Solution - Begin\]
 
-
+The keys are the selected columns' names. The values are the selected columns' elements.
 
 \[Place Solution - End\]
 
 ##### Pivot Wider
 
-
 ```{r}
 ## Use Pivot Wider on long_df
+wider_df <- pivot_wider(
+  data = long_df,
+  names_from = Subject,
+  values_from = Score
+)
 ```
-
-
 
 **Q17.** What is the purpose of the `pivot_wider` function?
 
 \[Place Solution - Begin\]
 
-
+The purpose of `pivot_wider()` is to transform a long formatted data frame so that each key has a column to denote that key's name and values.
 
 \[Place Solution - End\]
-
 
 **Q18.** Based on the transformation, explain how the resulting wider_df structure differs from the original long_df. Include details about the number of rows, columns, and how the data is organized in your explanation.
 
 \[Place Solution - Begin\]
 
-
+The `wider_df` structure allows you to have each row represent a particular observation, rather than the long formatted data frame, where an observation is represented over multiple rows.
 
 \[Place Solution - End\]
-
-
-
-
 
 **Q19.** Again look at this gif for more understanding. What do you notice?
 
@@ -462,38 +493,58 @@ Create sample Data Frames for the following examples:
 
 \[Place Solution - Begin\]
 
-
-
 \[Place Solution - End\]
 
 **Q20.** Which type of pivot would be most appropriate to analyze trends over time, such as comparing different variables like points, rebounds, and assists across MJ’s 15 seasons?
 
-
-
 ```{r}
 # Pivot mod_1_mj_df 
+lng_mj_stats_df <- mod_1_mj_df %>%
+  select(PTS, TRB, AST, number_game) %>%
+  pivot_longer(
+    cols = c(PTS, TRB, AST),
+    names_to = "Stats",
+    values_to = "Values"
+  )
 ```
 
-
+```{r}
+wide_mj_stat_df <- lng_mj_stats_df %>%
+  pivot_wider(
+    names_from = "Stats",
+    values_from = "Values"
+  )
+```
 
 #### Sub Task 1: Create Stage Variable
 
 Create a new variable, Stage, that categorizes MJ's career into three distinct phases based on his playing seasons. The first five seasons (1–5) are labeled as "Early Career," the next five seasons (6–10) are categorized as "Intermediate," and the final five seasons (11–15) are labeled as "Veteran." This grouping allows for a clear analysis of MJ's performance trends and evolution throughout his career, making it easier to compare his contributions during different stages of his playing years.
 
-
-
 ```{r}
 ## Begin Work Here
+st1_mj_df <- mod_1_mj_df %>%
+  mutate(Stage = case_when(
+    Season %in% str_c("season_", 1:5) ~ "Early Career",
+    Season %in% str_c("season_", 6:10) ~ "Intermediate",
+    Season %in% str_c("season_", 11:15) ~ "Veteran"
+  ))
 ```
 
 #### Sub Task 2: Create a Summary Table
 
 To analyze MJ's performance across divisions and stages of his career effectively, create a summary table that calculates his average points (`PTS`), total rebounds (`TRB`), and assists (`AST`) for each division during different stages of his career. Then, group the data by division and stage. Use `summarise` to calculate the average performance metrics for each combination of division and stage. Finally, restructure the table using `pivot_longer`. By organizing the performance metrics (`PTS`, `TRB`, `AST`) into a single column, the table becomes more flexible for detailed analysis, easier to filter or focus on specific metrics, and ideal for creating visualizations that compare trends across divisions and stages. This format simplifies identifying patterns and highlights differences in performance over time.
 
-
-
 ```{r}
 ## Begin Work Here
+st2_mj_df <- st1_mj_df %>%
+  group_by(Division, Stage) %>%
+  summarize(pts_mean = mean(PTS, na.rm = TRUE),
+            trb_mean = mean(TRB, na.rm = TRUE),
+            ast_mean = mean(AST, na.rm = TRUE),
+            .groups = "drop") %>%
+  pivot_longer(cols = c(pts_mean, trb_mean, ast_mean),
+               names_to = "Stat",
+               values_to = "Value")
 ```
 
 ### Visualization
@@ -502,14 +553,30 @@ To analyze MJ's performance across divisions and stages of his career effectivel
 
 Explore MJ's performance trends across the three career stages—Early Career, Intermediate, and Veteran—by focusing on his scoring (`PTS`) and minutes played (`MP`). Specifically, identify the division within each stage where MJ scored the highest total points. After determining the divisions with peak scoring performances, examine the relationship between `PTS` and `MP` for games played in these divisions during the respective stages. This analysis highlights patterns in MJ's workload and scoring efficiency and provides insights into divisions where he consistently excelled. Consider the competitiveness of the divisions and notable match-ups during these peak performances. The final visualization provides a detailed comparison of `PTS` and `MP` across these divisions and career stages, showcasing how MJ's role and performance evolved over time.
 
-
-
 ```{r}
 ## Begin Work Here - Transformation
+
+## Find total points for each division and stage
+## Max total points for each stage
+st3_mj_df_step_1 <- st1_mj_df %>%
+  group_by(Division, Stage) %>%
+  summarize(totalpts = sum(PTS, na.rm = TRUE), .groups='drop') %>%
+  group_by(Stage) %>%
+  filter(totalpts == max(totalpts))
+  
+## Join data so that you max the points according to stage
+st3_mj_df <- st3_mj_df_step_1 %>%
+  inner_join(st1_mj_df, by = c("Stage", "Division")) %>%
+  mutate(Stage_Division = str_c(Stage, Division, sep = " - "))
 ```
 
 ```{r}
 ## Begin Work Here - Visualization
+st3_mj_df %>%
+  select(MP, PTS, Stage_Division) %>%
+  ggplot(aes(x = MP, y = PTS)) +
+  geom_point() +
+  facet_wrap(~Stage_Division, nrow=1)
 ```
 
 ## Recap
