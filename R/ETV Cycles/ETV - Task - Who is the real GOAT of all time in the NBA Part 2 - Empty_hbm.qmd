@@ -40,7 +40,8 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 ```{r}
 ## Install required packages
-install.packages("tidyr")
+# install.packages("tidyr")
+# install.packages("tidyverse")
 ```
 
 ```{r}
@@ -50,6 +51,8 @@ library(readxl)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(stringr)
+#library(tidyverse)
 ```
 
 ### Extraction
@@ -381,23 +384,23 @@ Create sample Data Frames for the following examples:
 
 ```{r}
 # # Sample Wide Data Frame
-# wide_df <- ___________(
-#   Name = c("Alice", "Bob", "Charlie"),
-#   Math = c(90, 85, 78),
-#   Science = c(88, 92, 81)
-# )
-# # Long-format Data Frame
-# long_df <- ___________(
-#   Student = c("Alice", "Alice", "Alice", 
-#               "Bob", "Bob", "Bob", 
-#               "Charlie", "Charlie", "Charlie"),
-#   Subject = c("Math", "Science", "History", 
-#               "Math", "Science", "History", 
-#               "Math", "Science", "History"),
-#   Score = c(88, 92, 85, 
-#             79, 85, 80, 
-#             91, 94, 89)
-# )
+wide_df <- data.frame(
+  Name = c("Alice", "Bob", "Charlie"),
+  Math = c(90, 85, 78),
+  Science = c(88, 92, 81)
+)
+# Long-format Data Frame
+long_df <- data.frame(
+  Student = c("Alice", "Alice", "Alice", 
+              "Bob", "Bob", "Bob", 
+              "Charlie", "Charlie", "Charlie"),
+  Subject = c("Math", "Science", "History", 
+              "Math", "Science", "History", 
+              "Math", "Science", "History"),
+  Score = c(88, 92, 85, 
+            79, 85, 80, 
+            91, 94, 89)
+)
 
 ```
 
@@ -405,11 +408,19 @@ Create sample Data Frames for the following examples:
 
 ```{r}
 ## Use Pivot Longer on wide_df
+pivot_longer(
+  data = wide_df,
+  cols = c(Math,Science), 
+  names_to = "Stats",
+  values_to = "Scores"
+  )
 ```
 
 **Q15.** What is the purpose of the `pivot_longer` function?
 
 \[Place Solution - Begin\]
+
+To transform a wide data frame at which the selected variables are the key and their specified elements are the values
 
 \[Place Solution - End\]
 
@@ -417,23 +428,32 @@ Create sample Data Frames for the following examples:
 
 \[Place Solution - Begin\]
 
+Keys are the selected columns names
+
+Values are the selected columns elements
+
 \[Place Solution - End\]
 
 ##### Pivot Wider
 
 ```{r}
 ## Use Pivot Wider on long_df
+pivot_wider(data = long_df, names_from = "Subject", values_from = "Score")
 ```
 
 **Q17.** What is the purpose of the `pivot_wider` function?
 
 \[Place Solution - Begin\]
 
+Is to transform a long formatted data frame so that each key has a column to denote the variable that it values
+
 \[Place Solution - End\]
 
 **Q18.** Based on the transformation, explain how the resulting wider_df structure differs from the original long_df. Include details about the number of rows, columns, and how the data is organized in your explanation.
 
 \[Place Solution - Begin\]
+
+Allows us to reshape the data in which each row represents a particular observation
 
 \[Place Solution - End\]
 
@@ -449,6 +469,18 @@ Create sample Data Frames for the following examples:
 
 ```{r}
 # Pivot mod_1_mj_df 
+long_mj_df <- left_j_mj %>% 
+  pivot_longer(
+    cols = c(PTS, TRB, AST, number_game),
+    names_to = "Stats",
+    values_to = "Values"
+  )
+```
+
+```{r}
+wide_mj_stat_df <- long_mj_df %>% 
+  pivot_wider(names_from = "Stats", 
+              values_from = "Values")
 ```
 
 #### Sub Task 1: Create Stage Variable
@@ -457,6 +489,20 @@ Create a new variable, Stage, that categorizes MJ's career into three distinct p
 
 ```{r}
 ## Begin Work Here
+task_df <- left_j_mj %>% 
+  mutate(Stage = case_when(
+    Season %in% str_c("season_", 1:5) ~ "Early Career",
+    Season %in% str_c("season_", 6:10) ~ "Intermediate",
+    Season %in% str_c("season_", 11:15) ~ "Veteran"
+  ))
+```
+
+```{r}
+summary_df <- task_df %>% 
+  select(Stage, Season) %>% 
+  group_by(Stage, Season) %>% 
+  summarise(n(),
+            .groups = "drop")
 ```
 
 #### Sub Task 2: Create a Summary Table
@@ -465,6 +511,18 @@ To analyze MJ's performance across divisions and stages of his career effectivel
 
 ```{r}
 ## Begin Work Here
+task_2_summary_df <- task_df %>%
+  group_by(Division, Stage) %>% 
+  summarise(avg_pts = mean(PTS, na.rm = TRUE),
+            avg_trb = mean(TRB, na.rm = TRUE),
+            avg_ast = mean(AST, na.rm = TRUE),
+            .groups = "drop")
+```
+
+```{r}
+long_mj_task <- task_2_summary_df %>% 
+  pivot_longer(cols = c(avg_pts, avg_trb, avg_ast),
+               names_to = "Mean Stats", values_to = "Values")
 ```
 
 ### Visualization
@@ -475,6 +533,11 @@ Explore MJ's performance trends across the three career stages—Early Career, I
 
 ```{r}
 ## Begin Work Here - Transformation
+# Find total points for each Division and Stage
+# Find Max Total Points for each stage
+# Join Data so that you Max the Points according to Stage
+task_df %>% 
+  
 ```
 
 ```{r}
