@@ -52,6 +52,7 @@ library(readxl)   # Data Extraction
 library(dplyr)    # Data Transformation
 library(tidyr)    # Data Transformation
 library(ggplot2)  # Data Visualization
+library(stringr)
 ```
 
 ### Extraction
@@ -333,7 +334,7 @@ Think through these..
 
 ```{r}
 ## Join The Data Frame
-left_j_mj_df <- left_join(mj_df, div_df, by = c("Opp"="Abbreviation"))
+mod_1_mj_df <- left_join(mj_df, div_df, by = c("Opp"="Abbreviation"))
 
 inner_j_mj_df <- inner_join(mj_df, div_df, by = c("Opp"="Abbreviation"))
 
@@ -345,62 +346,60 @@ full_j_mj_df <- full_join(mj_df, div_df, by = c("Opp"="Abbreviation"))
 Create sample Data Frames for the following examples:
 
 ```{r}
-# # Sample Wide Data Frame
-# wide_df <- ___________(
-#   Name = c("Alice", "Bob", "Charlie"),
-#   Math = c(90, 85, 78),
-#   Science = c(88, 92, 81)
-# )
-# # Long-format Data Frame
-# long_df <- ___________(
-#   Student = c("Alice", "Alice", "Alice", 
-#               "Bob", "Bob", "Bob", 
-#               "Charlie", "Charlie", "Charlie"),
-#   Subject = c("Math", "Science", "History", 
-#               "Math", "Science", "History", 
-#               "Math", "Science", "History"),
-#   Score = c(88, 92, 85, 
-#             79, 85, 80, 
-#             91, 94, 89)
-# )
-
+# Sample Wide Data Frame
+wide_df <- data.frame(
+  Name = c("Alice", "Bob", "Charlie"),
+  Math = c(90, 85, 78),
+  Science = c(88, 92, 81)
+  )
+# Long-format Data Frame
+long_df <- data.frame(
+  Student = c("Alice", "Alice", "Alice", 
+               "Bob", "Bob", "Bob", 
+               "Charlie", "Charlie", "Charlie"),
+  Subject = c("Math", "Science", "History", 
+               "Math", "Science", "History", 
+               "Math", "Science", "History"),
+  Score = c(88, 92, 85, 
+             79, 85, 80, 
+             91, 94, 89)
+ )
 ```
 
 ##### Pivot Longer
 
 ```{r}
 ## Use Pivot Longer on wide_df
+pivot_longer(data = wide_df, 
+             cols = c(Math,Science), 
+             names_to = "Stats", 
+             values_to = "scores")
 ```
 
 **Q15.** What is the purpose of the `pivot_longer` function?
 
-\[Place Solution - Begin\]
-
-\[Place Solution - End\]
+The purpose of pivot_longer is to transform a wide dataframe at which the selected variables are the key and their specified elements are the values.
 
 **Q16.** When pivoting a data frame to a longer format, what columns serve as the keys and what columns contain the values? Explain how this distinction helps structure the data for analysis.
 
-\[Place Solution - Begin\]
-
-\[Place Solution - End\]
+Keys are the selected columns and values are the selected column's elements
 
 ##### Pivot Wider
 
 ```{r}
 ## Use Pivot Wider on long_df
+pivot_wider(data = long_df, 
+             names_from = "Subject", 
+             values_from = "Score")
 ```
 
 **Q17.** What is the purpose of the `pivot_wider` function?
 
-\[Place Solution - Begin\]
-
-\[Place Solution - End\]
+It can transform a long formatted data frame so that each key has a column to denote the variable and its values
 
 **Q18.** Based on the transformation, explain how the resulting wider_df structure differs from the original long_df. Include details about the number of rows, columns, and how the data is organized in your explanation.
 
-\[Place Solution - Begin\]
-
-\[Place Solution - End\]
+allows us to reshape the data in which each row represents a particular observation
 
 **Q19.** Again look at this gif for more understanding. What do you notice?
 
@@ -414,6 +413,24 @@ Create sample Data Frames for the following examples:
 
 ```{r}
 # Pivot mod_1_mj_df 
+lng_mj_stat_df <- mod_1_mj_df %>%
+  select(Name, Season, PTS, TRB, AST, number_game) %>% 
+  pivot_longer(
+    cols = c(PTS, TRB, AST),
+    names_to = "STATS",
+    values_to = "VALUES"
+  )
+View(lng_mj_stat_df)
+
+```
+
+```{r}
+wide_mj_stat_df <- lng_mj_stat_df %>% 
+  pivot_wider(
+    names_from = "STATS",
+    values_from = "VALUES"
+  )
+View(wide_mj_stat_df)
 ```
 
 #### Sub Task 1: Create Stage Variable
@@ -422,6 +439,23 @@ Create a new variable, Stage, that categorizes MJ's career into three distinct p
 
 ```{r}
 ## Begin Work Here
+mod_2_mj_df <- mod_1_mj_df %>% mutate(
+  Stage = case_when(
+  Season %in% str_c("season_",1:5) ~ "Early Career",
+  Season %in% str_c("season_",6:10) ~ "Intermediate",
+  Season %in% str_c("season_",11:15) ~ "Veteran")
+  )
+
+View(mod_2_mj_df)
+```
+
+```{r}
+summary_table_df <- mod_2_mj_df %>%
+  select(Stage, Season) %>%
+  group_by(Stage, Season) %>%
+  summarise(n())
+
+View(summary_table_df)
 ```
 
 #### Sub Task 2: Create a Summary Table
@@ -430,6 +464,22 @@ To analyze MJ's performance across divisions and stages of his career effectivel
 
 ```{r}
 ## Begin Work Here
+summary_table <- mod_2_mj_df %>%
+  group_by(Division, Stage) %>%
+  summarise(
+    Avg_PTS = mean(PTS, na.rm = TRUE),
+    Avg_TRB = mean(TRB, na.rm = TRUE),
+    Avg_AST = mean(AST, na.rm = TRUE),
+    .groups = "drop"
+  )
+summary_long <- summary_table %>%
+  pivot_longer(
+    cols = starts_with("Avg_"), 
+    names_to = "Mean_Stats", 
+    values_to = "Value")
+
+#summary_table
+summary_long
 ```
 
 ### Visualization
@@ -440,6 +490,13 @@ Explore MJ's performance trends across the three career stages—Early Career, I
 
 ```{r}
 ## Begin Work Here - Transformation
+#mod_3_mj_df <- mod_2_mj_df %>%
+
+# Find total pts for each division and stage
+  
+# Max total pts for stage
+  
+# Join data so that you max the pts according to stage
 ```
 
 ```{r}
