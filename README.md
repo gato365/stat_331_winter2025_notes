@@ -33,24 +33,6 @@ To get the latest class materials, follow these steps **every week**:
    ```bash
    git merge main
    ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 =======
 ### **Step 1: Ensure You Are on Your Branch**
 Before pulling any updates, confirm you are on your personal branch (e.g., `your_name`).

@@ -1,7 +1,8 @@
 ---
-title: "ETV - Task - US States County Population"
-format: html
-editor: visual
+# ---
+# title: "ETV - Task - US States County Population"
+# format: html
+# editor: visual
 ---
 
 ## Description
@@ -23,13 +24,16 @@ Beyond ethical data collection, the **use and interpretation of extracted data**
 Run the following code to install the `devtools` and `purrr` packages:
 
 ```{r}
-# 
+install.packages("devtools")
+install.packages("purrr")
+install.packages("devtools")
+install.packages("remotes")
 ```
 
 Then, use **devtools** to install the **htmltab** package from GitHub:
 
 ```{r}
-# devtools::install_github("crubba/htmltab", force = TRUE)
+devtools::install_github("crubba/htmltab", force = TRUE)
 ```
 
 The **htmltab** package provides a function that simplifies extracting HTML tables from Wikipedia pages.
@@ -37,7 +41,22 @@ The **htmltab** package provides a function that simplifies extracting HTML tabl
 #### Load Libraries
 
 ```{r}
+library(htmltab) # Data extraction
 
+library(dplyr) # Data transformation
+library(stringr) # Data transformation
+library(purrr) # Data transformation
+library(tidyr) # Data transformation
+
+library(ggplot2) # Data visualization
+
+library(devtools)
+library(remotes)
+
+```
+
+```{r}
+library(htmltab) # Data extraction
 ```
 
 ### Extraction
@@ -45,21 +64,25 @@ The **htmltab** package provides a function that simplifies extracting HTML tabl
 The url we want to use is https://en.wikipedia.org/wiki/List_of_counties_in_California.
 
 ```{r}
-url <- ""
+url <- "https://en.wikipedia.org/wiki/List_of_counties_in_California"
 ```
 
 ```{r}
-## Use the `htmltab` function to extract the data from the Wikipedia page. 
+## Use the `htmltab` function to extract the data from the Wikipedia page.
+ca_df <- htmltab(doc = url, which = 2, rm_nodata_cols = FALSE)
 ```
 
 **Q1.** What is the primary purpose of the `htmltab` function? What does the `which` argument do?
+
+Extract HTML tables from websites and the which argument to specify with table you would like
 
 ### Transformation
 
 Let's Focus on County, Population, and Area
 
 ```{r}
-# mod_1_ca_df <- ca_df %>% 
+mod_1_ca_df <- ca_df %>% 
+  select(County, `Population(2023)`, Area)
  
 ```
 
@@ -67,47 +90,53 @@ Let's Focus on County, Population, and Area
 
 \[Delete this - Begin\]
 
+Population, is a character, it has commas in it
+
 \[Delete this - End\]
 
 **Now, let's remove the commas from the `Population(2023)` column.**
 
 ```{r}
-# mod_2_ca_df <- mod_1_ca_df %>% 
-#  mutate(`Population(2023)` = _______________(`Population(2023)`, ",", ""))
+mod_2_ca_df <- mod_1_ca_df %>% 
+  mutate(`Population(2023)` = str_replace_all(`Population(2023)`, ",", ""))
 ```
 
 **Q3.** What do we still need to do regarding the `Population(2023)` column?
 
 \[Delete this - Begin\]
 
+Change it to be a numeric variable
+
 \[Delete this - End\]
 
 **Now, let's convert the `Population(2023)` column to a numeric column.**
 
 ```{r}
-# mod_3_ca_df <- mod_2_ca_df %>% 
-#   mutate(`Population(2023)` = ___________(`Population(2023)`))  
+mod_3_ca_df <- mod_2_ca_df %>% 
+  mutate(`Population(2023)` = as.numeric(`Population(2023)`))  
 
 ```
 
 I do not like the column names being upper case and the parentheses in `Population(2023)` is distracting. Let's fix that.
 
 ```{r}
-# mod_4_ca_df <- mod_3_ca_df %>% 
-#  
+mod_4_ca_df <- mod_3_ca_df %>%
+  rename(county = County, population = `Population(2023)`, area = Area)
 ```
 
-**Q4.** Now run `glimpse(mod_4_ca_df)` to see the changes. When do you notice about area column?
+**Q4.** Now run `glimpse(mod_4_ca_df)` to see the changes. What do you notice about area column?
 
 \[Delete this - Begin\]
+
+It has two variables in it and a bunch of text
 
 \[Delete this - End\]
 
 **Now, let's separate the `Area` column into `square_miles` and `square_kilometers` columns.**
 
 ```{r}
-# mod_5_ca_df <- mod_4_ca_df %>% 
-#
+mod_5_ca_df <- mod_4_ca_df %>% 
+  separate(col = area, into = c("square_miles", "square_kilometers"), sep = "sq")
 ```
 
 Well that helped but the square miles and square kilometers columns are still character columns.
@@ -122,10 +151,24 @@ Let's do it in steps.
 
 \[Delete this - Begin\]
 
+1.  replace all commas with empty strings
+2.  trim any leading or trailing white space
+3.  remove any unwanted text
+4.  convert columns into numeric
+
 \[Delete this - End\]
 
 ```{r}
-# mod_6_ca_df <- mod_5_ca_df %>%
+mod_6_ca_df <- mod_5_ca_df %>%
+  mutate(square_miles = str_replace_all(square_miles, ",",""),
+         square_miles = str_trim(square_miles),
+         square_miles = as.numeric(square_miles)
+         ) %>%
+    mutate(square_kilometers = str_replace_all(square_kilometers, ",|, |km|mi\\(|\\)",""),
+         square_kilometers = str_trim(square_kilometers),
+         square_kilometers = as.numeric(square_kilometers), 
+         state = "California"
+         )
 ```
 
 Now do that for all 50 states in the United States with "one" line of code.
@@ -200,21 +243,15 @@ if (x > 10) {
 
 **Q5.** What is the difference between using `if-else` and `ifelse()` in R?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+The if-else statement is used for conditional execution of code based on a single condition, while the ifelse() is vectorized function that is applies a condition to each element of a vector
 
 **Q6.** How does the `switch()` function differ from using multiple `if-else` statements?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+The if-else statement is used for conditional execution of code based on a single condition, while the switch() function is used to select one of several alternatives based on a single value
 
 **Q7.** What is the purpose of conditional statements in data analysis?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+Used to control the flow of a program based on specified conditions. They allow you to execute different code blocks based on where a condition is true or false
 
 ------------------------------------------------------------------------
 
@@ -270,9 +307,7 @@ if (x > 10) {
 
 **Q8.** How does `repeat` differ from `while`, and when would you use it?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+The repeat loop is an infinite loop that continues executing until a break statement is encountered. Whereas, a while statement is an infinite loop that continues until a condition is satisfied.
 
 ------------------------------------------------------------------------
 
@@ -301,7 +336,7 @@ if (x > 10) {
 
     print(greet())
 
-    print(greet("Alice"))
+    print(greet("Arianne"))
     ```
 
 3.  **Returning Multiple Values (Lists)**
@@ -312,7 +347,8 @@ if (x > 10) {
     stats <- function(x) {
      list(mean = mean(x), median = median(x))
     }
-    print(stats(c(1, 2, 3, 4, 5)))
+    stats_info <- stats(c(1, 2, 3, 4, 5))
+    class(stats_info)
     ```
 
 4.  **Higher-Order Functions (Functions as Arguments)**
@@ -334,7 +370,10 @@ if (x > 10) {
 Solution:
 
 ```{r}
-
+numbers_product <- function(a, b = 3) {
+  a*b
+}
+print(numbers_product(4))
 ```
 
 \[Delete this - End\]
@@ -347,71 +386,101 @@ Solution:
     -   *Example:*
 
 ```{r}
-# numbers <- list(1, 2, 3, 4, 5)        ## Demonstration Change to vector
-# squared <- _____________________      ## Demonstration Change to map_dbl
-# print(squared)
+numbers <- c(1, 2, 3, 4, 5)        ## Demonstration Change to vector
+squared <- map_dbl(numbers,~.x^2)      ## Demonstration Change to map_dbl
+print(squared)
+class(squared)
 ```
 
 **Q10.** What is the purpose of `map()` in the purrr package?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+It is used to iterate over elements of a list or vector and apply the function to each element, returning a list
 
 **Q11.** What does the `~` symbol represent in the `map()` function?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+It allows you to define an anonymous function (lambda function) in R. It allows you to create a function on the fly without explicitly defining it
 
 2.  **map2() for Pairwise Iteration**
     -   *Example:*
 
 ```{r}
-# result <- _____(c(1, 2, 3), c(4, 5, 6), ________)
-# print(result)
+result <- map2(c(1, 2, 3), c(4, 5, 6), ~ .x + .y)
+print(result)
 ```
 
 **Q12.** What is the purpose of `map2()` in the purrr package?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+Iterate over two input vectors in parallel and apply a function to corresponding elements
 
 **Q13.** What does the "." in the `map2()` function?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+To refer to elements of the input vectors being iterated over in the map2 function
 
 3.  **pmap() for Iterating Over Multiple Inputs**
     -   *Example:*
 
 ```{r}
-# df <- data.frame(a = 1:3, b = 4:6, c = 7:9)
-# result <- ____(df, sum)
-# print(result)
+df <- data.frame(a = 1:3, b = 4:6, c = 7:9)
+result <- pmap(df, sum)
+print(result)
 ```
 
 **Q14.** What is the purpose of `pmap()` in the purrr package?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+The `pmap()` function in the **purrr** package applies a function to multiple parallel vectors (or lists) by iterating over their elements simultaneously. It is useful when you need to pass multiple arguments to a function, as it processes each set of elements from the inputs together.
 
 **Questions:**
 
 **Q15.** How does `map()` improve over traditional `for` loops in R?
 
-\[Delete this - Begin\]
-
-\[Delete this - End\]
+map() from the purrr package improves over traditional for loops in R by making code more concise, readable, and functional. It eliminates the need for explicit loop indexing, automatically returns a list (or other specified type with map\_\*() variants), and often results in cleaner and more efficient vectorized operations.
 
 **Done with digressions.**
 
 Lets using what we learned to create a function that extracts and transforms data from Wikipedia pages for all states in the United States.
 
-Some Steps
+```{r}
+base_url <- "https://en.wikipedia.org/wiki/List_of_counties_in_"
+
+states_urls <- str_c(base_url, state.name)
+```
+
+```{r}
+get_wiki_data <- function(url, state_name){
+  df <- htmltab(doc = url, which = 2, rm_nodata_cols = FALSE)
+  
+  mod_1_df <- df %>% 
+    rename_with(~ "population", any_of(c("Population","Population(2023)", "Pop.", "Pop. (2023)"))) %>%
+    rename_with(~ "area", contains("Area")) %>%
+    #select(County, Area, `Population(2023)`) %>%
+    #rename(county = County, area = Area, population = `Population(2023)`) %>%
+    rename(county = County) %>%
+    select(county, area, population)
+}
+```
+
+```{r}
+i = 5
+get_wiki_data(url = states_urls[i], state_name = state.name[i])
+```
+
+```{r}
+states_full_df <- data.frame()
+error_log_df <- data.frame()
+
+for (i in 1:length(states_urls)){
+  tryCatch({
+  state_df <- get_wiki_data(states_urls[i], state.name[i])
+  
+  states_full_df <- bind_rows(states_full_df, state_df)
+  }, error = function(e){
+    message <- paste("Error extracting data for", state.name[i],":", e$message)
+    print(message)
+    
+    error_log_df <- bind_rows(error_log_df, data.frame(state = state.name[i], error_message = e$message))
+  })
+  }
+```
 
 ### Visualization
 
