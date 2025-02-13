@@ -1,0 +1,204 @@
+---
+title: "ETV - Task - Analyze the World's GDP per Capita"
+format: html
+editor: visual
+---
+
+## Description
+
+The purpose of this ETV (Extract, Transform, Visualize) activity is to help students explore global economic disparities by analyzing GDP per capita across different countries. By extracting GDP and population data from Wikipedia, transforming it to calculate GDP per capita, and visualizing the results, students gain hands-on experience in data wrangling, statistical analysis, and effective visualization techniques. This exercise encourages critical thinking about economic inequality, regional development, and global wealth distribution, while reinforcing practical skills in data science and programming. Through this structured ETv approach, students learn to derive meaningful insights from real-world data.
+
+### Data Ethics:
+
+In this activity, data ethics plays a crucial role in both **how the data is gathered** and **how it is used**. Since the data is being extracted from Wikipedia, a publicly editable source, it is important to recognize that while it is widely used, it may not always be completely accurate or up to date. Ethical data usage requires verifying the credibility of sources, cross-referencing with official economic reports (such as from the **World Bank or IMF**), and acknowledging the **limitations** of web-scraped data. Additionally, when analyzing GDP per capita, it is essential to present the data **objectively**, avoiding misleading conclusions about economic status without considering **contextual factors** like cost of living, resource distribution, and economic policy. By ensuring transparency and responsible interpretation, students learn the importance of ethical data handling in real-world analysis.
+
+## Part 2
+
+```{r}
+library(htmltab) # Data extraction
+library(dplyr) # Data transformation
+library(stringr) # Data transformation
+library(purrr) # Data transformation
+library(tidyr) # Data transformation
+library(ggplot2) # Data visualization
+library(devtools)
+library(remotes)
+library(htmltab) # Data extraction
+library(snakecase)
+library(readr)
+```
+
+#### 1️⃣ Extract (E) - Collecting Data
+
+Students will retrieve GDP and population data from the following Wikipedia tables:\
+- GDP (Nominal) by Country: [Wikipedia GDP List](https://en.wikipedia.org/wiki/List_of_countries_by_GDP_%28nominal%29)\
+- Population by Country: [Wikipedia Population List](https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population)
+
+Task:\
+- Use `htmltab` to extract both tables into R. - Ensure that relevant columns (Country, GDP, Population) are properly identified.
+
+```{r}
+countries_gdp_url <-"https://en.wikipedia.org/wiki/List_of_countries_by_GDP_%28nominal%29"
+population_countries_url <- "https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population"
+```
+
+```{r}
+gdp_df <- htmltab(doc = countries_gdp_url, which = 3, rm_nodata_cols = FALSE)
+pop_df <- htmltab(doc = population_countries_url, which = 1, rm_nodata_cols = FALSE)
+```
+
+#### 2️⃣ Transform (T) - Data Cleaning and Processing
+
+Students will clean and transform the data to calculate GDP per capita .
+
+Task:\
+- Convert GDP and Population values into numeric format (remove commas).\
+- Merge the two datasets by Country .\
+- Create a new variable: GDP_per_capita - Handle missing values or inconsistencies.
+
+```{r}
+mod_1_pop_df <- pop_df %>% 
+  select("Location", "Population") %>%
+  rename(country = Location, population = Population) %>%
+  mutate(population = str_replace_all(population, ",", "")) %>%
+  mutate(population = as.numeric(population)) %>%
+  mutate(country = str_trim(country)) %>%
+  mutate(country = str_replace_all(country, "\\s*\\(^\\)",""))
+mod_1_pop_df
+```
+
+```{r}
+mod_1_gdp_df <- gdp_df %>%
+  select("Country/Territory","IMF >> Forecast") %>%
+  rename(country = `Country/Territory`, gdp = `IMF >> Forecast`) %>%
+  mutate(gdp = str_replace_all(gdp, ",", "")) %>%
+  mutate(gdp = as.numeric(gdp, na.rm = TRUE)) %>%
+  mutate(country = str_trim(country))%>%
+  mutate(country = str_replace_all(country, "\\s*\\(^\\)","")) #%>%
+  # mutate(country = case_when(
+  #   str_detect(country,"Congo") ~ "Republic of the Congo",
+  #   str_detect(country,"DR Congo") ~ "Democratic Republic of the Congo"))
+mod_1_gdp_df
+```
+
+```{r}
+gdp_pop_df <- mod_1_gdp_df %>%
+  left_join(mod_1_pop_df, by = "country") %>%
+  filter(gdp != "-") %>% 
+  mutate(gdp = parse_number(gdp),
+         population = parse_number(population)) %>% 
+  mutate(gdp_capita = gdp/population) %>%
+  filter(country != "World")
+gdp_pop_df
+```
+
+```{r}
+gdp_pop_df <- mod_1_gdp_df %>%
+  left_join(mod_1_pop_df, by = "country") %>%
+  mutate(gdp = as.character(gdp),
+         population = as.character(population)) %>%  # Ensure character type
+  mutate(gdp = ifelse(gdp == "-", NA, gdp),
+         population = ifelse(population == "-", NA, population)) %>%
+  mutate(gdp = parse_number(gdp),
+         population = parse_number(population)) %>%
+  filter(!is.na(gdp), !is.na(population)) %>%
+  mutate(gdp_capita = ifelse(population > 0, gdp / population, NA)) %>%
+  filter(country != "World")
+
+gdp_pop_df
+```
+
+```{r}
+do_not_match_df <- mod_1_gdp_df %>%
+  anti_join(mod_1_pop_df, by = "country")
+do_not_match_df
+```
+
+#### 3️⃣ Visualize (V) - Histogram of GDP per Capita
+
+Students will create a histogram to understand the distribution of GDP per capita across countries.
+
+Task:\
+- Use ggplot2 to plot a histogram of `log10(GDP_per_capita)`.\
+- Adjust the binwidth to improve readability.\
+- Label the axes and add a title. - Add two lines to denote the mean and median of the GDP \`\`\`r
+
+```{r}
+
+gdp_mean <- mean(log10(gdp_pop_df$gdp_capita), na.rm = TRUE)
+gdp_median <- median(log10(gdp_pop_df$gdp_capita), na.rm = TRUE)
+
+gdp_pop_df %>%
+  ggplot(aes(x = log10(gdp_capita))) +
+  geom_histogram(binwidth = 0.2, fill = "steelblue", color = "black", alpha = 0.7) +
+  geom_vline(xintercept = gdp_mean, color = "red", linetype = "dashed", linewidth = 1.2, 
+             show.legend = TRUE) +
+  geom_vline(xintercept = gdp_median, color = "green", linetype = "solid", linewidth = 1.2, 
+             show.legend = TRUE) +
+  labs(title = "Distribution of log10(GDP per Capita)", 
+       x = "log10(GDP per Capita)", 
+       y = "Count") +
+  theme_minimal() +
+  annotate("text", x = gdp_mean, y = 10, label = "Mean", color = "red", hjust = -0.1, size = 5) +
+  annotate("text", x = gdp_median, y = 12, label = "Median", color = "green", hjust = -0.1, size = 5)
+
+```
+
+```         
+####   Discussion Questions 1   
+1.  What does the histogram reveal about GDP per capita distribution?   
+ - Are most countries low or high GDP per capita?  
+ - Are there outliers? Which countries might they be?  
+
+2.  Why is log transformation necessary for this data?   
+ - What happens if we plot GDP per capita without log transformation?  
+
+3.  How do GDP and population affect a country’s ranking?   
+ - Can two countries with similar GDP have very different GDP per capita? Why?  
+
+
+## Part 1
+1.  A scatter plot for the top 20 countries by GDP per capita   
+2.  A scatter plot for the bottom 20 countries by GDP per capita   
+
+Both visualizations will use  points instead of bars , and the axes should be switched ( GDP per capita on the x-axis, country names on the y-axis ) to improve readability.
+
+---
+
+###  Task 1: Transform the Data   
+- Ensure that GDP and Population values are properly cleaned and used to calculate GDP per capita:
+```r
+```
+
+------------------------------------------------------------------------
+
+### Task 2: Create the Visualizations
+
+#### 🔹 Visualization 1: Top 20 Countries by GDP per Capita
+
+``` r
+```
+
+#### 🔹 Visualization 2: Bottom 20 Countries by GDP per Capita
+
+``` r
+```
+
+------------------------------------------------------------------------
+
+#### Discussion Questions 2:
+
+1.  What trends do you notice in the top 20 countries?\
+
+-   Are they clustered in certain regions?\
+-   Do they have small or large populations?
+
+2.  What similarities do the bottom 20 countries share?\
+
+-   Are they mostly in developing regions?\
+-   What factors might contribute to their lower GDP per capita?
+
+3.  Why do we use points instead of bars for this visualization?\
+
+-   Does this improve readability?\
+-   How does reordering the y-axis enhance clarity?

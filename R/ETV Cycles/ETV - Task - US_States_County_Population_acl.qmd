@@ -435,6 +435,45 @@ The `pmap()` function in the **purrr** package applies a function to multiple pa
 
 map() from the purrr package improves over traditional for loops in R by making code more concise, readable, and functional. It eliminates the need for explicit loop indexing, automatically returns a list (or other specified type with map\_\*() variants), and often results in cleaner and more efficient vectorized operations.
 
+**Learning Moment 5**
+
+-   For loops
+
+-   tryCatch()
+
+-   Storing the errors
+
+```{r}
+safe_divide <- function(a,b) {
+  if (b == 0){
+    stop("Dividing by 0 is not allowed")
+  } else {
+    return(a/b)
+  }
+}
+```
+
+```{r}
+numerator <- 10
+denominator <- c(5,2,0,4,0,8)
+results <- vector()
+errors <- vector()
+for (i in 1:length(denominator)){
+  results[i] <- tryCatch(
+    safe_divide(numerator,denominator[i]),
+    error = function(e){
+      errors[i] <<- e$message
+      return(NA)
+    }
+  )
+} 
+```
+
+```{r}
+results
+errors
+```
+
 **Done with digressions.**
 
 Lets using what we learned to create a function that extracts and transforms data from Wikipedia pages for all states in the United States.
