@@ -87,10 +87,13 @@ Q3. What are three common data types in R?
 -   numeric (quantitative)
 
 -   character (categorical, categorical binary)
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 -   Logical (Boolean Logic)
 =======
+=======
+>>>>>>> refs/remotes/origin/cameron_mcclure-coleman
 -    Logical (Boolean Logic)
 >>>>>>> cfb4078 (Viewing data and data extraction - ijw)
 
@@ -120,6 +123,18 @@ str(mtcars)
 
 ```
 
+<<<<<<< HEAD
+=======
+
+
+
+```{r}
+
+```
+
+<!-- \[Place Answer - End\] -->
+
+>>>>>>> refs/remotes/origin/cameron_mcclure-coleman
 ##### Do a `commit` to your branch.
 
 ------------------------------------------------------------------------
@@ -159,7 +174,8 @@ Q7. What is the definition of the `select()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
-The select() fucntion is used to select columns from a data frame
+
+The select() function is used to select columns from a data frame
 
 <!-- \[Place Answer - End\] -->
 
@@ -216,7 +232,8 @@ Q10. What is the definition of the `mutate()` function?
 
 <!-- \[Place Answer - Begin\] -->
 
-mutate function is used to create a new variable or modify an existing variable in the data frame
+the mutate function is used to create a new variable or modify an existing variable in the data frame
+
 
 <!-- \[Place Answer - End\] -->
 
@@ -293,6 +310,10 @@ p1 <- mtcars %>%
 p1 +
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/cameron_mcclure-coleman
 ```
 
 <!-- \[Place Answer - End\] -->
@@ -310,6 +331,15 @@ mtcars %>%
   geom_point(color = "red", size =2) +
   geom_smooth(method = "lm", se = FALSE) +
   labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
+<<<<<<< HEAD
+=======
+  mtcars %>% 
+  select(mpg,hp) %>% 
+  ggplot(aes(x = hp, y = mpg)) +
+  geom_point(color = "red", size =2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Scatter Plot of MPG and HP", x = "HP", y = "MPG")  +
+>>>>>>> refs/remotes/origin/cameron_mcclure-coleman
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) 
 ```

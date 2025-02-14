@@ -74,6 +74,10 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 ```{r}
 ## Location to install packages
+# install.packages("ggplot2")
+# install.packages("dplyr")
+# install.packages("here")
+# install.packages("readxl")
 
 ```
 
@@ -81,6 +85,10 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 ```{r}
 ## Locations to load libraries
+# library(ggplot2) ## Data Visualization
+# library(dplyr)   ## Data Transformation
+# library(here)    ## File Paths
+# library(readxl)  ## Read Excel Files
 
 ```
 
@@ -92,21 +100,22 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 ```{r}
 ## Code here
-
+path_location_to_nba_file <- here("data", "nba_goats.xlsx")
 ```
 
 **Q4.** Run `path_location_to_nba_file` in the console. What do you see?
-
+the absolute path to the file
 ```{r}
-# _______ <- read_xlsx(path_location_to_nba_file)
+ath_location_to_nba_file
 ```
 
 ------------------------------------------------------------------------
 
 **Q5.** What number should be place in sheet to navigate to LeBron's Sheet?
+LeBron's sheet in the excel file is the 2nd sheet.
 
 ```{r}
-# lj_df <- read_xlsx(path_location_to_nba_file, sheet = ___) ## Provide the number for LJ
+lj_df <- read_xlsx(path_location_to_nba_file, sheet = 2) ## Provide the number for LJ
 ```
 
 *Note 1:* the name of the data frame. I use `_df` to signify that the object is a data frame
@@ -115,13 +124,13 @@ Additionally, when working with data in general, it is important to avoid misrep
 
 ```{r}
 ## Provide the function name too
-# mj_df <- _______(path_location_to_nba_file, sheet = ____) ## Provide the number for MJ
+mj_df <- read_xlsx(path_location_to_nba_file, sheet = 3) ## Provide the number for MJ
 ```
 
 **Q7.** Get LeBron James and the variable names in anyway you would like.
 
 ```{r}
-
+kobe_df <- read_xlsx(path_location_to_nba_file, sheet = 1) ## Provide the number for KB
 ```
 
 **Q8.** Lets look at the data frame of Variables Meanings to get a better sense of the information. What does `GmSc` denote?
