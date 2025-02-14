@@ -30,10 +30,15 @@ The data was extracted from the 1974 *Motor Trend* US magazine, and comprises fu
 
 ##### Install Packages
 
-```{r}
+```{r setup}
+#install.packages("installr")
+library(installr)
+updateR()
+
 ## Uncomment the following lines to install the packages
 # install.packages("dplyr")
-# install.packages("ggplot2")
+install.packages("gtable")
+install.packages("ggplot2")
 ```
 
 You only need to install the packages once. After installing the packages, you can load them using the `library()` function.
@@ -45,7 +50,6 @@ You only need to install the packages once. After installing the packages, you c
 ```{r}
 library(dplyr)     ## Data Transformation
 library(ggplot2)   ## Data Visualization
-
 ```
 
 ##### Do a `commit` to your branch.
@@ -88,7 +92,7 @@ Q3. What are three common data types in R?
 
 -   character (categorical, categorical binary)
 
--    Logical (Boolean Logic)
+-   Logical (Boolean Logic)
 
 <!-- \[Place Answer - End\] -->
 
@@ -110,10 +114,6 @@ View(mtcars)
 
 ```{r}
 str(mtcars)
-```
-
-```{r}
-
 ```
 
 ```{r}
