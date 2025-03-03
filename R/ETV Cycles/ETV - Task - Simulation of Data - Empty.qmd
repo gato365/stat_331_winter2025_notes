@@ -1,0 +1,300 @@
+---
+title: "ETV - Task - Simulation and Analysis of Data"
+format: html
+editor: visual
+---
+
+## Description
+
+In this lesson, we explore how simulation can be a powerful tool for understanding real-world data patterns and testing hypotheses without needing actual datasets. Using R, we follow the **ETV (Extraction, Transformation, Visualization) framework**, where we first extract synthetic data using `rnorm()` for continuous variables and `rbinom()` for categorical variables, allowing us to generate realistic scenarios like weight loss outcomes or student quiz scores.
+
+We then transform this data by applying statistical models with `modelr`, helping us compare different groups and analyze trends. Finally, we use `ggplot2` to visualize the results, making patterns more interpretable and insightful. Through this process, we not only strengthen our technical skills in R but also develop a deeper understanding of how simulated data can be used to explore statistical concepts, make informed comparisons, and support decision-making in research and business applications.
+
+Many ways up a mountain... ____________
+
+Many ways up a mountain... ____________
+
+### Data Ethics:
+
+While simulation is a valuable technique for learning and analysis, it is important to recognize its ethical implications and limitations. Simulated data is not real and should never be misrepresented as factual evidence; rather, it provides a controlled way to test ideas and observe trends under specific assumptions. Using `set.seed()` ensures reproducibility, but the parameters we choose—such as averages, probabilities, or sample sizes—can introduce biases that may mislead interpretations if not carefully considered. Additionally, while simulated data does not contain real individuals' information, it can still reflect sensitive real-world patterns, requiring thoughtful selection of variables to avoid reinforcing stereotypes or incorrect assumptions. By approaching simulation with transparency, fairness, and ethical awareness, we can use it responsibly to support learning, research, and decision-making without misrepresenting its limitations or potential impacts.
+
+## Subtasks:
+
+**Subtask 1: Weight Loss Program Simulation**
+
+A fitness study is being conducted to evaluate the effectiveness of a new weight loss program, and to do so, we need to create a structured dataset that captures weight changes for 100 participants. Before generating weight loss data, each participant will be assigned a unique identifier to track their individual progress. We will set the amount of expected mean for the weight before the weight loss program to be 160 lbs. and fluctuation at a standard deviation of 2. To establish a baseline, an initial weight will be generated for each participant, ensuring a realistic range of starting weights. The expected weight after completing the program will then be determined based on a predefined relationship between initial weight and the expected average weight loss, incorporating a consistent intercept ($\beta_0 = -2$) and slope ($\beta_1 = 0.9$) to model the general trend of weight reduction.
+
+Since individual results will naturally vary due to factors like metabolism, diet adherence, and exercise habits, variability will be introduced by allowing weight changes to deviate around the expected trend, ensuring that some individuals lose more weight while others lose less. Once the final weights are determined, the difference between initial and final weight will be computed to explicitly quantify the weight loss for each participant. This dataset will provide a structured way to analyze the effectiveness of the weight loss program, allowing comparisons across participants and identifying whether the intervention consistently leads to meaningful changes.
+
+**Subtask 2: Student Answer Simulation**
+
+A school is testing two different teaching methods to see which one leads to better student performance on a 100-question quiz. Before generating data, each student will be assigned a unique identifier to track their quiz results. The first teaching method is traditional, with no additional strategies to enhance learning, while the second method incorporates innovative techniques to improve student understanding and retention. To compare the effectiveness of these methods, we need to simulate quiz results for a class of 60 students under each teaching style. The first method assumes that students have an equal chance of answering a question correctly or incorrectly, while the second method incorporates additional learning strategies designed to improve understanding and retention. Let's assume the second method increases this rate to 70% due to enhanced teaching techniques. Generate the responses for each student under both teaching methods. Then find the total score for each student. This simulated dataset will help us measure differences in success rates between the two approaches, giving insight into whether the enhanced teaching strategy provides a meaningful advantage.
+
+#### Load Libraries (Empty)
+
+```{r}
+
+
+
+
+```
+
+### Extraction
+
+#### Learning Moment 1: Generating Synthetic Data with `rnorm()` and `rbinom()`
+
+**Understanding Simulation in R:** Simulation in R involves generating synthetic data that imitates real-world patterns. This is a powerful technique in statistical programming because it allows us to **represent variability** and **test scenarios** without needing actual datasets. By simulating data, we can perform hypothetical experiments and explore outcomes that help with **hypothesis testing and modeling**. In essence, simulation provides a sandbox to investigate questions under controlled conditions, which is especially useful when theoretical analysis is complex or when real data are limited.
+
+**Key Functions for Data Extraction:** R provides convenient built-in functions to generate random data from common distributions, enabling the extraction of synthetic datasets:
+
+-   **`rnorm(n, mean, sd)`** – Generates `n` random values from a normal (Gaussian) distribution with specified mean and standard deviation. This produces the classic “bell curve” shape (most values near the mean). *Example:* Simulating weight loss program results – use `rnorm()` to create a dataset of weight changes for participants, assuming weight loss follows a roughly normal distribution around an average value.
+
+**Example 1:** Generate 100 random values from a standard normal distribution (mean = 0, sd = 1).
+
+```{r}
+# Example 1: Generate 100 random values from a standard normal distribution
+
+
+
+
+
+```
+
+
+
+
+-   **`rbinom(n, size, prob)`** – Generates `n` random values from a binomial distribution with given number of trials (`size`) and success probability (`prob`) . Each value represents the count of “successes” in the specified number of trials. *Example:* Simulating student quiz responses – use `rbinom()` to model the number of correct answers (successes) out of 10 questions for a group of students under a new teaching method (with `prob` = expected probability of a student answering any question correctly). In statistics, it’s common to simulate such yes/no outcomes using `rbinom()`.
+
+
+
+**Example 2: Simulating Individual Binary Outcomes (Bernoulli Trials)**\
+In this case, each trial is **independent** and represents a single question (or event) with a **70% probability of success**. Since `size = 1`, the output consists of **1000 individual trials**, each returning either 0 (failure) or 1 (success).
+
+```{r}
+
+
+
+
+```
+
+**Example 3: Simulating Quiz Scores (Binomial Outcomes)**\
+In this case, each student **attempts 10 questions**, and the function records the **total number of correct answers per student**. Since `size = 10`, each of the 1000 generated values represents a quiz score **between 0 and 10**, where higher numbers indicate more correct responses.
+
+```{r}
+
+
+
+
+
+
+```
+
+-   **`dnorm(x, mean, sd)`** and **`dbinom(k, size, prob)`** – These are density functions (for continuous normal) and mass functions (for discrete binomial) respectively. They return the theoretical probability density (for `dnorm`) or probability mass (for `dbinom`) at a given value. In practice, we use them to **understand the distribution** of our simulated data. For instance, `dnorm()` can tell us the expected relative likelihood of a particular weight loss value, and `dbinom()` can tell us the probability of exactly *k* correct answers in our quiz scenario. These functions help describe the shape of the distribution that `rnorm()` or `rbinom()` is drawing from.
+
+-   **`pnorm(x, mean, sd)`** and **`pbinom(k, size, prob)`** – These are cumulative distribution functions (CDFs) for normal and binomial distributions. They return the probability of observing a value less than or equal to `x` (for `pnorm`) or the probability of observing *k* or fewer successes (for `pbinom`). These functions are useful for **calculating cumulative probabilities** and understanding the likelihood of certain outcomes in our simulations.
+
+-   There are qnorm(), qbinom(), and other quantile functions that are inverses of the cumulative distribution functions. These functions are useful for finding quantiles or critical values associated with specific probabilities in a distribution. For instance, `qnorm(0.95, mean = 0, sd = 1)` gives the 95th percentile of a standard normal distribution, which is approximately 1.645. These quantile functions are essential for **calculating confidence intervals** or identifying critical values in hypothesis testing.
+
+-   There are also other distribution functions in R (like `rexp()` for exponential distribution, `rpois()` for Poisson distribution, etc.) that can be used for different simulation scenarios. The choice of function depends on the type of data being simulated and the underlying assumptions of the model.
+
+#### **Subtask 1: Weight Loss Program Simulation**
+
+
+
+A fitness study is being conducted to evaluate the effectiveness of a new weight loss program, and to do so, we need to create a structured dataset that captures weight changes for 100 participants. Before generating weight loss data, each participant will be assigned a unique identifier to track their individual progress. We will set the amount of expected mean for the weight before the weight loss program to be 160 lbs. and fluctuation at a standard deviation of 2. To establish a baseline, an initial weight will be generated for each participant, ensuring a realistic range of starting weights. The expected weight after completing the program will then be determined based on a predefined relationship between initial weight and the expected average weight loss, incorporating a consistent intercept ($\beta_0 = -2$) and slope ($\beta_1 = 0.9$) to model the general trend of weight reduction.
+
+Since individual results will naturally vary due to factors like metabolism, diet adherence, and exercise habits, variability will be introduced by allowing weight changes to deviate around the expected trend, ensuring that some individuals lose more weight while others lose less. Once the final weights are determined, the difference between initial and final weight will be computed to explicitly quantify the weight loss for each participant. This dataset will provide a structured way to analyze the effectiveness of the weight loss program, allowing comparisons across participants and identifying whether the intervention consistently leads to meaningful changes.
+
+
+**Step 1: Generate Participant IDs**
+
+```{r}
+
+
+
+
+
+```
+
+**Step 2: Generate Initial Weight**
+
+```{r}
+
+
+
+
+
+```
+
+**Step 3: Define Weight Loss Model**
+
+```{r}
+
+
+
+```
+
+**Step 4: Calculate Weight Change** (Transformation of the data)
+
+```{r}
+
+```
+
+
+**Step 5: Pivot Data for Visualization**
+
+```{r}
+
+
+
+
+```
+
+
+
+
+
+
+
+### Visualization & Analysis
+
+####  Visualization 1: Boxplot of Weight Before and After Program
+```{r}
+# ____ %>% 
+#   ggplot(aes(x = ____, y = ____, fill = ____)) +
+#   geom_boxplot(alpha = 0.7) +
+#   labs(title = "Weight Distribution Before and After the Program",
+#        x = "Time Period",
+#        y = "Weight (lbs)") +
+#   theme_minimal() +
+#   theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+#### Visualization 2: Scatterplot with Linear Regression (Weight Change vs. Initial Weight)
+
+```{r}
+____ %>% 
+  ggplot( aes(x = ____, y = ____)) +
+  geom_point(color = "blue", alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(title = "Relationship Between Initial Weight and Weight Change",
+       x = "Weight Before (lbs)",
+       y = "Weight Change (lbs)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+**Analysis: Using `lm`**
+```{r}
+
+```
+
+
+
+
+#### **Subtask 2: Student Answer Simulation**
+
+A school is testing two different teaching methods to see which one leads to better student performance on a 100-question quiz. Before generating data, each student will be assigned a unique identifier to track their quiz results. The first teaching method is traditional, with no additional strategies to enhance learning, while the second method incorporates innovative techniques to improve student understanding and retention. To compare the effectiveness of these methods, we need to simulate quiz results for a class of 60 students under each teaching style. The first method assumes that students have an equal chance of answering a question correctly or incorrectly, while the second method incorporates additional learning strategies designed to improve understanding and retention. Let's assume the second method increases this rate to 70% due to enhanced teaching techniques. Generate the responses for each student under both teaching methods. Then find the total score for each student. This simulated dataset will help us measure differences in success rates between the two approaches, giving insight into whether the enhanced teaching strategy provides a meaningful advantage.
+
+
+##### **Version 1: Binomial Simulation for Quiz Scores**
+
+
+**Step 1: Define Quiz Parameters and Simulate Scores**
+
+```{r}
+
+```
+
+
+**Step 2: Combine Scores and Create Data Frame**
+
+```{r}
+
+
+```
+
+
+
+##### **Version 2: Bernoulli Simulation for Individual Questions**
+
+**Step 1: Simulate Individual Question Responses**
+
+
+```{r}
+
+```
+
+
+**Step 2: Generate Responses for Traditional and Enhanced Methods**
+
+```{r}
+
+
+```
+
+
+
+**Step 3: Convert Responses to Data Frames and Rename Columns**
+
+```{r}
+## Convert responses to data frames and rename columns
+# traditional_df <- as.data.frame(____) %>% 
+#   rename_with(~ paste0("Q", 1:num_questions)) %>% 
+#   mutate(method = "Traditional")
+# enhanced_df <- as.data.frame(____) %>% 
+#   rename_with(~ paste0("Q", 1:num_questions)) %>%
+#   mutate(method = "Enhanced") 
+#   
+
+
+# View(traditional_df)
+```
+
+
+**Step 4: Combine Data Frames and Add Student IDs**
+
+```{r}
+
+
+
+```
+
+
+**Step 5: Calculate Total Score for Each Student (Transformation)**
+```{r}
+
+
+```
+
+
+
+
+
+### Visualization & Analysis
+
+**Visualization: Boxplot of using version 1**
+```{r}
+# ____ %>% 
+#   ggplot(aes(x = ____, fill = ____)) +
+#   geom_histogram(alpha = 0.6, bins = 15, position = "identity") +
+#   geom_vline(aes(xintercept = mean(scores)), color = "red", linetype = "dashed", size = 1) +
+#   labs(title = "Histogram of Quiz Scores by Teaching Method",
+#        x = "Quiz Score",
+#        y = "Count") +
+#   theme_minimal() +
+#   theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+**Analysis: Using `lm`**
+```{r}
+
+```
+
+
+
+
+

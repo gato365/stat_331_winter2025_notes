@@ -88,7 +88,7 @@ Q3. What are three common data types in R?
 
 -   character (categorical, categorical binary)
 
--    Logical (Boolean Logic)
+-   Logical (Boolean Logic)
 
 <!-- \[Place Answer - End\] -->
 

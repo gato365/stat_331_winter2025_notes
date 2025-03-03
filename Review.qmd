@@ -1,0 +1,52 @@
+---
+title: "Review"
+format: html
+editor: visual
+---
+
+
+# Review
+
+
+ETV - 1 - Task - Understand Miles Per Gallon and Other Variables_ijw.qmd  
+
+- dplyr: 5 Verbs - select, filter, mutate, group_by/summarize, arrange/desc
+- ggplot2: ggplot, layers (geom_*), aes
+
+
+HW 1
+
+- Base R: lists, data.frame, vectors
+- dplyr: if_else/case_when
+
+
+ETV - 2 - Task - Who is the real GOAT in the history of the NBA.qmd" 
+
+- readxl: read_xlsx
+- here: here
+- dplyr: bind_rows, bind_cols
+- forcats: fct_*, as_factor
+- stringr: str_*
+
+
+
+ETV - 3 - Task - Who is the real GOAT of all time in the NBA Part 2 _ijw.qmd"
+
+
+- dplyr: joins (left, right, full, anti, semi, inner)
+- tidyr: pivot (wider, longer)
+- ggplot2: facet wrap
+
+
+
+[4] "ETV - 4 - Task - US_States_County_Population_(Solutions).qmd"
+
+- htmltab: htmltab
+- Base R: Conditional Statement & For Loop - if/else if/ else, switch, for, while, repeat
+- Base R: Functions
+- purrr: map, map2, pmap 
+
+
+[6] "ETV - 6 - Task - World GDP per Capita (Solutions).qmd"   
+
+- snakecase: to_snake_case

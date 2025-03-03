@@ -540,19 +540,31 @@ Explore MJ's performance trends across the three career stages—Early Career, I
 ## Begin Work Here - Transformation
 
 ##Find Total Points for each Division and Stage
-mod_2_mj_df %>% 
+mod_3_mj_df <- mod_2_mj_df %>% 
   group_by(Division, Stage) %>% 
-  summarise(totalpts = sum(PTS,na.rm = TRUE))
+  summarise(totalpts = sum(PTS,na.rm = TRUE)) %>% 
+  group_by(Stage) %>% 
+  filter(totalpts == max(totalpts))
 
-## Max Total Points for stage
 
-## Join Data so that you Max the Points according to Stage
+
+
+mod_4_mj_df <- mod_2_mj_df %>% 
+  inner_join(mod_3_mj_df, by = c("Stage", "Division")) %>% 
+  mutate(Stage_Division = str_c(Stage, Division, sep = " - "))
 
 
 ```
 
 ```{r}
 ## Begin Work Here - Visualization
+mod_4_mj_df %>% 
+  select(MP, PTS, Stage_Division) %>% 
+  ggplot(aes(x = MP, y=PTS)) +
+  geom_point() + 
+  facet_wrap(~Stage_Division, nrow=1)
+  
+
 ```
 
 ## Recap
