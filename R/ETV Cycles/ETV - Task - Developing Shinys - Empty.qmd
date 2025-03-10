@@ -1,0 +1,245 @@
+---
+title: "ETV Organization of Shiny In-Class"
+author: "Instructor"
+date: "03/11/2025"
+format: html
+editor: visual
+---
+
+# Description
+
+Shiny is an R package that makes it easy to build interactive web applications directly from R. Shiny apps allow users to manipulate data and visualize results dynamically, making them particularly useful for exploratory data analysis and dash boarding. Shiny is important because it bridges the gap between static reports and fully-fledged web applications, providing a powerful tool for data scientists to communicate insights interactively.
+
+# Data Ethics
+
+When developing Shiny applications, it is crucial to consider data ethics. This includes understanding where the data originates, ensuring user privacy, and handling sensitive information responsibly. In this session, we will use open datasets, such as the `mtcars` dataset, to illustrate Shiny functionalities without ethical concerns related to private data.
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+# Open Default
+
+The default structure of an R Shiny application consists of a **UI (User Interface)** and a **server** function, which interact to create a dynamic user experience. The UI defines how the app appears to the user, while the server function processes data and generates outputs based on user inputs.
+
+# Components of R Shiny
+
+## UI (Widgets & Plots)
+
+-   Widgets allow users to input data dynamically (e.g., sliders, text fields, dropdown menus).
+-   Plots are dynamically updated visual representations of data.
+
+## Server (Backend Code)
+
+-   The server function processes inputs and renders outputs based on user interactions.
+-   This is where data wrangling, transformations, and visualizations occur.
+
+## Bringing UI and Server Together
+
+-   A Shiny app requires both components to function properly.
+-   The `shinyApp(ui, server)` function is used to run the application.
+
+# Developing Static Visualizations First
+
+A best practice in Shiny development is to first create static visualizations outside of Shiny and ensure they work correctly before integrating them into an interactive app.
+
+## Static Plots in an R Script
+
+### A: Scatter Plot with Selectable Quantitative Variables
+
+Q1. Using the `mtcars` dataset, create a scatter plot of `mpg` vs. `hp` with a title.
+
+
+```{r}
+
+```
+
+### B: Boxplot with Three Variables (Facet, Categorical X-axis, Quantitative Y-axis)
+
+Q2. Convert the `cyl` and `gear` columns in the `mtcars` dataset to factors and create a boxplot of `hp` by `cyl` faceted by `gear`.
+
+```{r}
+
+```
+
+### C: Display Table
+
+```{r}
+## Cannot do this here, it needs to dynamic
+```
+
+
+
+# Developing R Shiny for Each Plot
+
+## A: Scatter Plot Shiny App
+
+Create an R Shinyt app that allows users to select the X and Y variables for a scatter plot using the `mtcars` dataset. Make sure the select widget only displays quantitative variables.
+
+```{r}
+## We will do the work in another file
+```
+
+## B: Boxplot Shiny App
+
+Create an R Shiny app that allows users to select the X and Y variables for a boxplot using the `mtcars` dataset. Additionally, allow users to facet the boxplot by a categorical variable. (This is going to be interesting!!)
+
+
+
+
+
+```{r}
+## We will do the work in another file
+```
+
+## C: Display Text Output in Shiny
+
+```{r}
+## We will do the work in another file
+```
+
+## D: Conditional Code to Combine A-C
+
+```{r}
+library(shiny)
+library(ggplot2)
+library(forcats)
+library(dplyr)
+library(DT)
+
+## Define variable lists
+cat_vars <- c("vs", "am", "gear", "carb", "cyl")  # Categorical variables
+quant_vars <- c("mpg", "disp", "hp", "drat", "wt", "qsec")  # Quantitative variables
+
+ui <- fluidPage(
+  titlePanel("Dynamic Shiny App"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("plot_type", "Select Plot Type:", 
+                  choices = c("Scatter Plot", "Boxplot", "Data Table")),
+      
+      conditionalPanel(
+        condition = "input.plot_type == 'Scatter Plot'",
+        selectInput("scatter_x", "Select X Variable:", choices = quant_vars),
+        selectInput("scatter_y", "Select Y Variable:", choices = quant_vars)
+      ),
+      
+      conditionalPanel(
+        condition = "input.plot_type == 'Boxplot'",
+        selectInput("box_x", "Select X Variable:", choices = cat_vars),
+        selectInput("box_y", "Select Y Variable:", choices = quant_vars),
+        selectInput("box_facet", "Facet by:", choices = cat_vars),
+        textInput("box_title", "Enter Title:", value = "My Boxplot")
+      ),
+      
+      conditionalPanel(
+        condition = "input.plot_type == 'Data Table'",
+        selectInput("dataset", "Choose a dataset:", choices = c("mtcars", "iris")),
+        actionButton("refresh", "Refresh Table")
+      )
+    ),
+    
+    mainPanel(
+      conditionalPanel(
+        condition = "input.plot_type == 'Scatter Plot'",
+        plotOutput("scatterPlot")
+      ),
+      
+      conditionalPanel(
+        condition = "input.plot_type == 'Boxplot'",
+        plotOutput("boxPlot")
+      ),
+      
+      conditionalPanel(
+        condition = "input.plot_type == 'Data Table'",
+        DTOutput("table")
+      )
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  
+  ## Scatter Plot Logic
+  output$scatterPlot <- renderPlot({
+    ggplot(mtcars, aes(x = !!sym(input$scatter_x), y = !!sym(input$scatter_y))) +
+      geom_point()
+  })
+  
+  ## Boxplot Logic
+  output$boxPlot <- renderPlot({
+    plot_data <- mtcars %>%
+      mutate(
+        !!sym(input$box_x) := as_factor(!!sym(input$box_x)),
+        !!sym(input$box_facet) := as_factor(!!sym(input$box_facet))
+      )
+    
+    ggplot(plot_data, aes(x = !!sym(input$box_x), y = !!sym(input$box_y))) +
+      geom_boxplot() +
+      labs(title = input$box_title, x = input$box_x, y = input$box_y) + 
+      facet_wrap(as.formula(paste("~", input$box_facet)))
+  })
+  
+  ## Data Table Logic
+  datasetInput <- reactive({
+    switch(input$dataset,
+           "mtcars" = mtcars,
+           "iris" = iris)
+  })
+  
+  output$table <- renderDT({
+    input$refresh  # Dependency to refresh table
+    datatable(datasetInput(), options = list(pageLength = 10))
+  })
+}
+
+shinyApp(ui, server)
+
+```
+
+
+
+
+------------------------------------------------------------------------
+
+# Student Activity: Shiny App for Oregon, Washington, and California Counties
+
+### **Instructions for Your Shiny App Task**  
+
+**Task:**  
+Create an interactive **R Shiny app** that allows users to select a **state (Oregon, Washington, or California)** and dynamically view **county-level data**. Users should be able to **filter counties by population size** and choose to display the data as either a **table** or a **histogram** using `ggplot2`.  
+
+---
+
+### **Steps to Complete the Task:**  
+
+1. **Obtain County Data**  
+   - Use the `htmltab` package to **scrape county-level data** for Oregon, Washington, and California.  
+   - Extract **county name** and **population** for each state.  
+   - Merge all three states into a **single dataframe** and clean the data.  
+
+2. **Create User Inputs in the UI**  
+   - A **dropdown menu** (`selectInput()`) for users to choose a **state**.  
+   - A **slider input** (`sliderInput()`) to filter counties **by population size**.  
+   - A **radio button** (`radioButtons()`) for users to choose between viewing a **table** or a **histogram**.  
+
+3. **Implement Conditional Outputs**  
+   - If the user selects `"Table"`, display a **`DT::datatable()`** with county-level information.  
+   - If the user selects `"Histogram"`, plot a **`ggplot2` histogram** showing the distribution of county populations.  
+
+---
+
+### **Requirements for Submission:**  
+✅ The app must **dynamically update** the displayed data based on user selections.  
+✅ The **table or histogram should only appear based on the selected display type**.  
+✅ The **population filter should affect both the table and histogram**.  
+✅ The app should be **clean and user-friendly**.  
+
+--
+
+

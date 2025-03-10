@@ -10,9 +10,9 @@ In this lesson, we explore how simulation can be a powerful tool for understandi
 
 We then transform this data by applying statistical models with `modelr`, helping us compare different groups and analyze trends. Finally, we use `ggplot2` to visualize the results, making patterns more interpretable and insightful. Through this process, we not only strengthen our technical skills in R but also develop a deeper understanding of how simulated data can be used to explore statistical concepts, make informed comparisons, and support decision-making in research and business applications.
 
-Many ways up a mountain... ____________
+Many ways up a mountain... Choose 1
 
-Many ways up a mountain... ____________
+Many ways up a mountain... Know many
 
 ### Data Ethics:
 
@@ -33,9 +33,10 @@ A school is testing two different teaching methods to see which one leads to bet
 #### Load Libraries (Empty)
 
 ```{r}
-
-
-
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
 
 ```
 
@@ -54,27 +55,29 @@ A school is testing two different teaching methods to see which one leads to bet
 ```{r}
 # Example 1: Generate 100 random values from a standard normal distribution
 
+random_normal_vec <-rnorm(n = 100, mean = 0, sd = 1)
 
 
+hist(random_normal_vec)
 
 
 ```
 
-
-
-
 -   **`rbinom(n, size, prob)`** – Generates `n` random values from a binomial distribution with given number of trials (`size`) and success probability (`prob`) . Each value represents the count of “successes” in the specified number of trials. *Example:* Simulating student quiz responses – use `rbinom()` to model the number of correct answers (successes) out of 10 questions for a group of students under a new teaching method (with `prob` = expected probability of a student answering any question correctly). In statistics, it’s common to simulate such yes/no outcomes using `rbinom()`.
-
-
 
 **Example 2: Simulating Individual Binary Outcomes (Bernoulli Trials)**\
 In this case, each trial is **independent** and represents a single question (or event) with a **70% probability of success**. Since `size = 1`, the output consists of **1000 individual trials**, each returning either 0 (failure) or 1 (success).
 
 ```{r}
+randonm_binom_vec <- rbinom(n = 1000, size = 1, prob = 0.7)
+table(randonm_binom_vec)
 
 
+```
 
-
+```{r}
+random_binom_vec <- rbinom(n = 1000,size = 10, prob = 0.7)
+table(random_binom_vec)
 ```
 
 **Example 3: Simulating Quiz Scores (Binomial Outcomes)**\
@@ -82,10 +85,10 @@ In this case, each student **attempts 10 questions**, and the function records t
 
 ```{r}
 
+random_binom_vec <- rbinom(n = 1000, size = 10, prob = 0.5)
 
 
-
-
+table(random_binom_vec)
 
 ```
 
@@ -99,37 +102,47 @@ In this case, each student **attempts 10 questions**, and the function records t
 
 #### **Subtask 1: Weight Loss Program Simulation**
 
-
-
 A fitness study is being conducted to evaluate the effectiveness of a new weight loss program, and to do so, we need to create a structured dataset that captures weight changes for 100 participants. Before generating weight loss data, each participant will be assigned a unique identifier to track their individual progress. We will set the amount of expected mean for the weight before the weight loss program to be 160 lbs. and fluctuation at a standard deviation of 2. To establish a baseline, an initial weight will be generated for each participant, ensuring a realistic range of starting weights. The expected weight after completing the program will then be determined based on a predefined relationship between initial weight and the expected average weight loss, incorporating a consistent intercept ($\beta_0 = -2$) and slope ($\beta_1 = 0.9$) to model the general trend of weight reduction.
 
 Since individual results will naturally vary due to factors like metabolism, diet adherence, and exercise habits, variability will be introduced by allowing weight changes to deviate around the expected trend, ensuring that some individuals lose more weight while others lose less. Once the final weights are determined, the difference between initial and final weight will be computed to explicitly quantify the weight loss for each participant. This dataset will provide a structured way to analyze the effectiveness of the weight loss program, allowing comparisons across participants and identifying whether the intervention consistently leads to meaningful changes.
 
-
 **Step 1: Generate Participant IDs**
 
 ```{r}
+set.seed(42)
+
+num_participants <- 100
+begin_weight_mean <- 160
+begin_weight_sd <- 2
+
+participants_df <- data.frame(id = 1:num_participants)
 
 
 
-
-
+View(participants_df)
 ```
 
 **Step 2: Generate Initial Weight**
 
 ```{r}
 
+mod_1_participants_df <- participants_df %>% 
+  mutate(before_weight = rnorm(n = num_participants, 
+                               mean = begin_weight_mean,
+                               sd = begin_weight_sd))
 
-
-
+View(mod_1_participants_df)
 
 ```
 
 **Step 3: Define Weight Loss Model**
 
 ```{r}
+beta_0 <- -2
+beta_1 <- 0.9
 
+mod_2_participants_df <-  mod_1_participants_df %>% 
+  mutate(after_weight = beta_0 + beta_1 * before_weight + rnorm(n = n(), 0, 1 ) )
 
 
 ```
@@ -137,45 +150,42 @@ Since individual results will naturally vary due to factors like metabolism, die
 **Step 4: Calculate Weight Change** (Transformation of the data)
 
 ```{r}
-
+mod_3_participants_df <- mod_2_participants_df %>% 
+  mutate(weight_change = before_weight - after_weight)
 ```
-
 
 **Step 5: Pivot Data for Visualization**
 
 ```{r}
 
-
+long_participants_df <- mod_3_participants_df %>% 
+  pivot_longer(cols = c(before_weight,after_weight),
+               names_to = "time",
+               values_to = "weight")
 
 
 ```
-
-
-
-
-
-
 
 ### Visualization & Analysis
 
-####  Visualization 1: Boxplot of Weight Before and After Program
-```{r}
-# ____ %>% 
-#   ggplot(aes(x = ____, y = ____, fill = ____)) +
-#   geom_boxplot(alpha = 0.7) +
-#   labs(title = "Weight Distribution Before and After the Program",
-#        x = "Time Period",
-#        y = "Weight (lbs)") +
-#   theme_minimal() +
-#   theme(plot.title = element_text(hjust = 0.5))
-```
+#### Visualization 1: Boxplot of Weight Before and After Program
 
+```{r}
+long_participants_df %>%
+  ggplot(aes(x = time, y = weight, fill = time)) +
+  geom_boxplot(alpha = 0.7) +
+  labs(title = "Weight Distribution Before and After the Program",
+       x = "Time Period",
+       y = "Weight (lbs)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
 
 #### Visualization 2: Scatterplot with Linear Regression (Weight Change vs. Initial Weight)
 
 ```{r}
-____ %>% 
-  ggplot( aes(x = ____, y = ____)) +
+mod_3_participants_df %>% 
+  ggplot( aes(x = before_weight, y = weight_change)) +
   geom_point(color = "blue", alpha = 0.7) +
   geom_smooth(method = "lm", se = TRUE, color = "red") +
   labs(title = "Relationship Between Initial Weight and Weight Change",
@@ -185,48 +195,74 @@ ____ %>%
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-
-**Analysis: Using `lm`**
 ```{r}
-
+mod_3_participants_df %>% 
+  ggplot( aes(x = before_weight, y = after_weight)) +
+  geom_point(color = "blue", alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(title = "Relationship Between Initial Weight and After Weight",
+       x = "Weight Before (lbs)",
+       y = "Weight After (lbs)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
+**Analysis: Using `lm`**
 
+```{r}
+slr_model <- lm(after_weight ~ before_weight, data = mod_2_participants_df)
 
+summary(slr_model)
+```
 
 #### **Subtask 2: Student Answer Simulation**
 
 A school is testing two different teaching methods to see which one leads to better student performance on a 100-question quiz. Before generating data, each student will be assigned a unique identifier to track their quiz results. The first teaching method is traditional, with no additional strategies to enhance learning, while the second method incorporates innovative techniques to improve student understanding and retention. To compare the effectiveness of these methods, we need to simulate quiz results for a class of 60 students under each teaching style. The first method assumes that students have an equal chance of answering a question correctly or incorrectly, while the second method incorporates additional learning strategies designed to improve understanding and retention. Let's assume the second method increases this rate to 70% due to enhanced teaching techniques. Generate the responses for each student under both teaching methods. Then find the total score for each student. This simulated dataset will help us measure differences in success rates between the two approaches, giving insight into whether the enhanced teaching strategy provides a meaningful advantage.
 
-
 ##### **Version 1: Binomial Simulation for Quiz Scores**
-
 
 **Step 1: Define Quiz Parameters and Simulate Scores**
 
 ```{r}
+num_students <- 60
+num_questions <- 100
+traditional_prob <- 0.5
+enhanced_prob <- 0.7
+
+
+traditional_vec <- rbinom(n = num_students, size = num_questions, prob = traditional_prob)
+
+enhanced_vec <- rbinom(n = num_students, size = num_questions, prob = enhanced_prob)
 
 ```
-
 
 **Step 2: Combine Scores and Create Data Frame**
 
 ```{r}
-
-
+id = 1:(2*num_students)
+scores <- c(traditional_vec,enhanced_vec)
+class_type <- rep(c("Traditional","Enhanced"), each = num_students)
+scores_df <- data.frame(id, class_type, scores)
 ```
-
-
 
 ##### **Version 2: Bernoulli Simulation for Individual Questions**
 
 **Step 1: Simulate Individual Question Responses**
 
-
 ```{r}
+num_students <- 60
+num_questions <- 100
+traditional_responses_df <- replicate(num_questions,  rbinom(num_students, size = 1, prob = 0.5)) %>% 
+  as.data.frame() %>% 
+  rename_with(~str_c("Q", 1:num_questions )) %>% 
+  mutate(method = "traditional")
 
+
+enhanced_responses_df <- replicate(num_questions,  rbinom(num_students, size = 1, prob = 0.7)) %>% 
+  as.data.frame() %>% 
+  rename_with(~str_c("Q", 1:num_questions )) %>% 
+  mutate(method = "enhanced")
 ```
-
 
 **Step 2: Generate Responses for Traditional and Enhanced Methods**
 
@@ -234,8 +270,6 @@ A school is testing two different teaching methods to see which one leads to bet
 
 
 ```
-
-
 
 **Step 3: Convert Responses to Data Frames and Rename Columns**
 
@@ -253,48 +287,42 @@ A school is testing two different teaching methods to see which one leads to bet
 # View(traditional_df)
 ```
 
-
 **Step 4: Combine Data Frames and Add Student IDs**
 
 ```{r}
-
+quiz_responses_df <- bind_rows(enhanced_responses_df,traditional_responses_df)
 
 
 ```
-
 
 **Step 5: Calculate Total Score for Each Student (Transformation)**
+
 ```{r}
 
-
+mod_1_quiz_responses_df <- quiz_responses_df %>% 
+  mutate(total_score = rowSums(select(., starts_with("Q")))) %>% 
+  mutate(student_id = 1:(2*num_students))
 ```
-
-
-
-
 
 ### Visualization & Analysis
 
 **Visualization: Boxplot of using version 1**
-```{r}
-# ____ %>% 
-#   ggplot(aes(x = ____, fill = ____)) +
-#   geom_histogram(alpha = 0.6, bins = 15, position = "identity") +
-#   geom_vline(aes(xintercept = mean(scores)), color = "red", linetype = "dashed", size = 1) +
-#   labs(title = "Histogram of Quiz Scores by Teaching Method",
-#        x = "Quiz Score",
-#        y = "Count") +
-#   theme_minimal() +
-#   theme(plot.title = element_text(hjust = 0.5))
-```
 
+```{r}
+mod_1_quiz_responses_df %>%
+  ggplot(aes(x = total_score, fill = method)) +
+  geom_histogram(alpha = 0.6, bins = 15, position = "identity") +
+  geom_vline(aes(xintercept = mean(total_score)), color = "red", linetype = "dashed", size = 1) +
+  labs(title = "Histogram of Quiz Scores by Teaching Method",
+       x = "Quiz Score",
+       y = "Count") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
 
 **Analysis: Using `lm`**
+
 ```{r}
-
+model_1 <- lm(total_score ~ method, data =  mod_1_quiz_responses_df)
+summary(model_1)
 ```
-
-
-
-
-
